@@ -15,45 +15,35 @@
           hover
           @click="clickPostCard(item)"
         >
-          <v-img :src="item.eyecatch.data.source_url" />
+          <v-img
+            :src="item.eyecatch.data.source_url"
+            aspect-ratio="1.7"
+          />
           <v-card-subtitle>
             {{ item.title.rendered }}
           </v-card-subtitle>
         </v-card>
       </v-col>
     </v-row>
-    <div class="text-center mt-10 pagination">
-      <v-pagination
-        v-model="page"
-        :length="15"
-        :total-visible="7"
-        @input="changePage"
-      />
-    </div>
   </div>
 </template>
 
 <script>
-// import store from "@/store"
 export default {
-  name: 'PostList',
+  name: 'CategoryPostList',
   data () {
     return {
-      posts_base_url: 'https://freelance321.com/wp-json/wp/v2/posts',
-      page: 1,
-      per_page: 8,
-      pagination: [],
-
-      media_base_url: 'https://freelance321.com/wp-json/wp/v2/media/',
-      category_base_url: 'https://freelance321.com/wp-json/wp/v2/categories/',
-
-      posts: [],
-
       loading: false,
       message: {
         error: '',
         success: ''
-      }
+      },
+
+      category_id: '',
+      posts: [],
+      per_page: 20,
+
+      media_base_url: 'https://freelance321.com/wp-json/wp/v2/media/'
     }
   },
   created () {
@@ -62,13 +52,14 @@ export default {
   methods: {
     async getPostList () {
       this.loading = true
+      this.category_id = this.$route.query.c
       try {
+        const items = []
         const results = await this.$axios.get(
-          this.posts_base_url +
-          '?page=' + this.page +
+          'https://freelance321.com/wp-json/wp/v2/posts?categories=' +
+          this.category_id +
           '&per_page=' + this.per_page
         )
-        const items = []
         for (const item of results.data) {
           if (item.featured_media) {
             item.eyecatch = await this.$axios.get(
@@ -77,18 +68,11 @@ export default {
           }
           items.push(item)
         }
-        this.posts = results.data
-        this.setPaginations(results)
+        this.posts = items
       } catch {
         this.message.error = 'データの読み込みに失敗しました。'
       }
       this.loading = false
-    },
-    setPaginations (results) {
-      const total_page_num = Math.ceil(results.headers['x-wp-total'] / this.per_page)
-      for (let i = 1; i < total_page_num; i++) {
-        this.pagination.push(total_page_num[i])
-      }
     },
     async clickPostCard (post) {
       let category_slug = ''
@@ -123,26 +107,7 @@ export default {
       console.log(category)
       route_path = parent_category_slug + '/' + category_slug + '/' + post.slug
       this.$router.push(route_path)
-    },
-    changePage (number) {
-      this.posts = []
-      this.page = number
-      this.getPostList()
     }
   }
 }
 </script>
-
-<style scoped>
-.pagination >>> .theme--light.v-pagination .v-pagination__item--active {
-  background: #1867c0;
-}
-
-.pagination {
-  margin-top: 40px;
-  position: absolute;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
-}
-</style>

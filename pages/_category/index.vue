@@ -5,7 +5,8 @@
       <CategorySideBar />
     </v-col>
     <v-col cols="9">
-      {{ category }}
+      <div>{{ category }}</div>
+      <CategoryPostList />
     </v-col>
   </v-row>
 </template>
