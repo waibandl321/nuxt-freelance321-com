@@ -10,7 +10,11 @@
 
 <script>
 export default {
-  name: 'PageLayout'
+  name: 'PageLayout',
+  data () {
+    return {
+    }
+  }
 }
 </script>
 

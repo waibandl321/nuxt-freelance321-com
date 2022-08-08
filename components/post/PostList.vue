@@ -24,7 +24,7 @@
     </v-row>
     <div class="text-center mt-10 pagination">
       <v-pagination
-        v-model="page"
+        v-model="current_page"
         :length="15"
         :total-visible="7"
         @input="changePage"
@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       posts_base_url: 'https://freelance321.com/wp-json/wp/v2/posts',
-      page: 1,
+      current_page: 1,
       per_page: 8,
       pagination: [],
 
@@ -65,7 +65,7 @@ export default {
       try {
         const results = await this.$axios.get(
           this.posts_base_url +
-          '?page=' + this.page +
+          '?page=' + this.current_page +
           '&per_page=' + this.per_page
         )
         const items = []
@@ -126,7 +126,7 @@ export default {
     },
     changePage (number) {
       this.posts = []
-      this.page = number
+      this.current_page = number
       this.getPostList()
     }
   }

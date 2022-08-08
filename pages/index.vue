@@ -8,6 +8,6 @@
 <script>
 export default {
   name: 'IndexPage',
-  layout: 'page'
+  layout: 'top'
 }
 </script>

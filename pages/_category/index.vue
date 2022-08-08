@@ -5,6 +5,8 @@
       <CategorySideBar />
     </v-col>
     <v-col cols="9">
+      <v-card-title>カテゴリー：{{ category.name }}</v-card-title>
+      <v-card-text>{{ category.description }}</v-card-text>
       <div>{{ category }}</div>
       <CategoryPostList />
     </v-col>
