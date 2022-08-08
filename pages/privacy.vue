@@ -14,17 +14,24 @@ export default {
       page_data: null
     }
   },
-  created () {
+  async fetch () {
     this.slug = this.$route.name
-    this.getPageData()
+    this.page_data = await this.$axios.get(
+      this.base_url +
+      this.slug
+    )
+  },
+  created () {
+    // this.slug = this.$route.name
+    // this.getPageData()
   },
   methods: {
-    async getPageData () {
-      this.page_data = await this.$axios.get(
-        this.base_url +
-        this.slug
-      )
-    }
+    // async getPageData () {
+    //   this.page_data = await this.$axios.get(
+    //     this.base_url +
+    //     this.slug
+    //   )
+    // }
   }
 }
 </script>
