@@ -1,13 +1,11 @@
 <!-- TOP -->
 <template>
-  <div>
-    <PostList />
-  </div>
+  <div>お問い合わせ</div>
 </template>
 
 <script>
 export default {
-  name: 'IndexPage',
+  name: 'ContactPage',
   layout: 'page'
 }
 </script>

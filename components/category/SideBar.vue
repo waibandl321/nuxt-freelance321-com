@@ -14,9 +14,6 @@
 <script>
 
 export default {
-  name: 'CategorySideBar',
-  data: () => ({
-    
-  }),
+  name: 'CategorySideBar'
 }
 </script>

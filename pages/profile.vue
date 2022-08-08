@@ -1,13 +1,11 @@
 <!-- TOP -->
 <template>
-  <div>
-    <PostList />
-  </div>
+  <div>プロフィール</div>
 </template>
 
 <script>
 export default {
-  name: 'IndexPage',
+  name: 'ProfilePage',
   layout: 'page'
 }
 </script>

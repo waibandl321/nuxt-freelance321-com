@@ -1,13 +1,11 @@
-<!-- TOP -->
 <template>
   <div>
-    <PostList />
+    サイトマップ
   </div>
 </template>
-
 <script>
 export default {
-  name: 'IndexPage',
+  name: 'SitemapPage',
   layout: 'page'
 }
 </script>

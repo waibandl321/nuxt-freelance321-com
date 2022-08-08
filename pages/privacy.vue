@@ -1,13 +1,11 @@
-<!-- TOP -->
 <template>
   <div>
-    <PostList />
+    プライバシー
   </div>
 </template>
-
 <script>
 export default {
-  name: 'IndexPage',
+  name: 'PrivacyPage',
   layout: 'page'
 }
 </script>

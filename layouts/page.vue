@@ -11,10 +11,10 @@
 <script>
 export default {
   name: 'PageLayout',
-  data() {
+  data () {
     return {
     }
-  },
+  }
 }
 </script>
 

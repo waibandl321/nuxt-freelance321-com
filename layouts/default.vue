@@ -7,9 +7,9 @@
 <script>
 export default {
   name: 'DefaultLayout',
-  data() {
+  data () {
     return {
     }
-  },
+  }
 }
 </script>
