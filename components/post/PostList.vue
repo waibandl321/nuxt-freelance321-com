@@ -2,7 +2,7 @@
   <div>
     <CommonMessageViewer :message="message" />
     <CommonLoadingPageInner v-if="loading" />
-    <v-row v-else>
+    <v-row v-if="!loading">
       <v-col
         v-for="(item, idx) in posts"
         :key="idx"
@@ -15,7 +15,10 @@
           hover
           @click="clickPostCard(item)"
         >
-          <v-img :src="item.eyecatch.data.source_url" />
+          <v-img
+            :src="imagePath(item)"
+            aspect-ratio="1.7"
+          />
           <v-card-subtitle>
             {{ item.title.rendered }}
           </v-card-subtitle>
@@ -27,7 +30,7 @@
         v-model="current_page"
         :length="15"
         :total-visible="7"
-        @input="changePage"
+        @input="$fetch"
       />
     </div>
   </div>
@@ -44,7 +47,6 @@ export default {
       per_page: 8,
       pagination: [],
 
-      media_base_url: 'https://freelance321.com/wp-json/wp/v2/media/',
       category_base_url: 'https://freelance321.com/wp-json/wp/v2/categories/',
 
       posts: [],
@@ -56,33 +58,26 @@ export default {
       }
     }
   },
-  created () {
-    this.getPostList()
+  async fetch () {
+    this.loading = true
+    try {
+      const results = await this.$axios.get(
+        this.posts_base_url +
+        '?_embed' +
+        '&page=' + this.current_page +
+        '&per_page=' + this.per_page
+      )
+      this.posts = results.data
+      this.setPaginations(results)
+    } catch {
+      this.message.error = 'データの読み込みに失敗しました。'
+    }
+    this.loading = false
   },
   methods: {
-    async getPostList () {
-      this.loading = true
-      try {
-        const results = await this.$axios.get(
-          this.posts_base_url +
-          '?page=' + this.current_page +
-          '&per_page=' + this.per_page
-        )
-        const items = []
-        for (const item of results.data) {
-          if (item.featured_media) {
-            item.eyecatch = await this.$axios.get(
-              this.media_base_url + item.featured_media
-            )
-          }
-          items.push(item)
-        }
-        this.posts = results.data
-        this.setPaginations(results)
-      } catch {
-        this.message.error = 'データの読み込みに失敗しました。'
-      }
-      this.loading = false
+    imagePath (item) {
+      const base_url = 'https://freelance321.com/wp-content/uploads/'
+      return base_url + item._embedded['wp:featuredmedia'][0].media_details.file
     },
     setPaginations (results) {
       const total_page_num = Math.ceil(results.headers['x-wp-total'] / this.per_page)
@@ -97,8 +92,6 @@ export default {
       const category_id = post.categories[0]
 
       this.$store.dispatch('setPostView', post)
-      // eslint-disable-next-line no-console
-      console.log(this.$store.state.post_view)
 
       // 記事詳細にアクセスするために必要なデータ
       // 1. カテゴリーパス
@@ -120,14 +113,13 @@ export default {
         )
         parent_category_slug = parent_category.data.slug
       }
-      console.log(category)
       route_path = parent_category_slug + '/' + category_slug + '/' + post.slug
       this.$router.push(route_path)
     },
     changePage (number) {
       this.posts = []
       this.current_page = number
-      this.getPostList()
+      this.$fetch()
     }
   }
 }

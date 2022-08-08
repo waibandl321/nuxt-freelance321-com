@@ -16,10 +16,13 @@
         {{ link.text }}
       </v-btn>
       <div class="menu-wrap">
-        <div class="menu-first">
+        <v-btn
+          class="menu-first"
+          text
+        >
           カテゴリー
           <v-icon>mdi-chevron-down</v-icon>
-        </div>
+        </v-btn>
         <div class="menu-second">
           <div
             v-for="(category, index) in first_categories"
@@ -31,7 +34,7 @@
           </div>
         </div>
       </div>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-responsive max-width="260">
         <v-text-field
           dense
@@ -40,7 +43,7 @@
           rounded
           solo
           append-icon="mdi-magnify"
-        ></v-text-field>
+        />
       </v-responsive>
     </v-container>
   </v-app-bar>

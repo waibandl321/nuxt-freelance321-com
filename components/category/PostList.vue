@@ -16,7 +16,7 @@
           @click="clickPostCard(item)"
         >
           <v-img
-            :src="item.eyecatch.data.source_url"
+            :src="imagePath(item)"
             aspect-ratio="1.7"
           />
           <v-card-subtitle>
@@ -54,40 +54,31 @@ export default {
 
       current_page: 1,
       per_page: 8,
-      page_max: 1,
-
-      media_base_url: 'https://freelance321.com/wp-json/wp/v2/media/'
+      page_max: 1
     }
   },
-  created () {
-    this.getPostList()
+  async fetch () {
+    this.loading = true
+    this.category_id = this.$route.query.c
+    try {
+      const results = await this.$axios.get(
+        'https://freelance321.com/wp-json/wp/v2/posts?categories=' +
+        this.category_id +
+        '&_embed' +
+        '&page=' + this.current_page +
+        '&per_page=' + this.per_page
+      )
+      this.posts = results.data
+      this.setPaginations(results)
+    } catch {
+      this.message.error = 'データの読み込みに失敗しました。'
+    }
+    this.loading = false
   },
   methods: {
-    async getPostList () {
-      this.loading = true
-      this.category_id = this.$route.query.c
-      try {
-        const items = []
-        const results = await this.$axios.get(
-          'https://freelance321.com/wp-json/wp/v2/posts?categories=' +
-          this.category_id +
-          '&page=' + this.current_page +
-          '&per_page=' + this.per_page
-        )
-        for (const item of results.data) {
-          if (item.featured_media !== 0) {
-            item.eyecatch = await this.$axios.get(
-              this.media_base_url + item.featured_media
-            )
-          }
-          items.push(item)
-        }
-        this.setPaginations(results)
-        this.posts = items
-      } catch {
-        this.message.error = 'データの読み込みに失敗しました。'
-      }
-      this.loading = false
+    imagePath (item) {
+      const base_url = 'https://freelance321.com/wp-content/uploads/'
+      return base_url + item._embedded['wp:featuredmedia'][0].media_details.file
     },
     setPaginations (results) {
       this.page_max = Math.ceil(results.headers['x-wp-total'] / this.per_page)
@@ -119,14 +110,13 @@ export default {
         )
         parent_category_slug = parent_category.data.slug
       }
-      console.log(category)
       route_path = parent_category_slug + '/' + category_slug + '/' + post.slug
       this.$router.push(route_path)
     },
     changePage (number) {
       this.posts = []
       this.current_page = number
-      this.getPostList()
+      this.$fetch()
     }
   }
 }
