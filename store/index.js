@@ -1,7 +1,7 @@
 export default {
   state: {
     // 投稿
-    post_items: [],
+    // post_items: [],
     post_view: null,
     // カテゴリー
     category_items: [],
@@ -9,12 +9,12 @@ export default {
   },
   mutations: {
     // 投稿
-    SET_POST_ITEMS (state, data) {
-      state.post_items = data
-    },
-    DELETE_POST_ITEMS (state) {
-      state.post_items = []
-    },
+    // SET_POST_ITEMS (state, data) {
+    //   state.post_items = data
+    // },
+    // DELETE_POST_ITEMS (state) {
+    //   state.post_items = []
+    // },
     SET_POST_VIEW (state, post) {
       state.post_view = post
     },
@@ -37,12 +37,12 @@ export default {
   },
   actions: {
     // 投稿
-    setPostItems (context, data) {
-      context.commit('SET_POST_ITEMS', data)
-    },
-    deletePostItems (context, data = []) {
-      context.commit('DELETE_POST_ITEMS', data)
-    },
+    // setPostItems (context, data) {
+    //   context.commit('SET_POST_ITEMS', data)
+    // },
+    // deletePostItems (context, data = []) {
+    //   context.commit('DELETE_POST_ITEMS', data)
+    // },
     setPostView (context, post) {
       context.commit('SET_POST_VIEW', post)
     },
