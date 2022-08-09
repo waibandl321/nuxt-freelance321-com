@@ -83,13 +83,14 @@ export default {
   }),
   async fetch () {
     try {
-      const res = await this.$axios.get(
+      let response = await this.$axios.get(
         'https://freelance321.com/wp-json/wp/v2/categories?per_page=100'
       )
+      response = response.data.filter(v => v.id !== 1)
       const items = []
       // storeにカテゴリーデータを格納
-      this.$store.dispatch('setCategoryItems', res.data)
-      res.data.forEach((item) => {
+      this.$store.dispatch('setCategoryItems', response)
+      response.forEach((item) => {
         items.push(item)
       })
       this.header_links.categories = items
@@ -104,7 +105,12 @@ export default {
     clickCategoryMenu (category) {
       // storeにカテゴリー情報を格納する
       this.$store.dispatch('setCategoryView', category)
-      this.$router.push({ path: '/' + category.slug, query: { c: category.id } })
+      this.$router.push(
+        {
+          path: '/' + category.slug,
+          query: { c: category.id }
+        }
+      )
     }
   }
 }
@@ -119,12 +125,11 @@ export default {
 }
 .menu-wrap {
   position: relative;
+  font-size: 14px;
 }
-
 .menu-first:hover + .menu-second {
   display: block;
 }
-
 .menu-second {
   width: 200px;
   display: none;
