@@ -1,16 +1,20 @@
 <template>
   <v-list>
     <v-list-item
-      v-for="(item, index) in items"
-      :key="index"
+      v-for="(item, idx) in items"
+      :key="idx"
       :href="'#' + item.id"
+      dense
     >
-      <v-list-item-title>{{ item.name }}</v-list-item-title>
+      <v-list-item-content>
+        <v-list-item-title>{{ item.name }}</v-list-item-title>
+      </v-list-item-content>
       <v-list>
         <v-list-item
-          v-for="(sub, index) in item.sub"
-          :key="index"
+          v-for="(sub, idx2) in item.sub"
+          :key="idx2"
           class="ml-10"
+          dense
         >
           <v-list-item-content :href="'#' + sub.id">
             <v-list-item-title>{{ sub.name }}</v-list-item-title>
@@ -28,35 +32,35 @@ export default {
     content: String
   },
   data: () => ({
-    items: [],
+    items: []
   }),
-  mounted() {
+  mounted () {
     // 目次生成
     this.createTableOfContents()
   },
   methods: {
-    createTableOfContents() {
-      const tmpElmt = document.createElement('div');
-      tmpElmt.innerHTML = this.content;
+    createTableOfContents () {
+      const tmpElmt = document.createElement('div')
+      tmpElmt.innerHTML = this.content
       // h2とh3タグを目次の対象とする
       const result = []
-      tmpElmt.querySelectorAll("h2").forEach((h2, idx2) => {
-        h2.id = "outline__" + Number(idx2 + 1);
-        h2.name = h2.textContent;
-        h2.sub = [];
-        tmpElmt.querySelectorAll("h3").forEach((h3, idx3) => {
-          if(h3.getAttribute("id").includes(h2.id + "_")) {
+      tmpElmt.querySelectorAll('h2').forEach((h2, idx2) => {
+        h2.id = 'outline__' + Number(idx2 + 1)
+        h2.name = h2.textContent
+        h2.sub = []
+        tmpElmt.querySelectorAll('h3').forEach((h3, idx3) => {
+          if (h3.getAttribute('id').includes(h2.id + '_')) {
             h2.sub.push(
               {
-                id: h2.id + "_" + Number(idx3 + 1),
+                id: h2.id + '_' + Number(idx3 + 1),
                 name: h3.textContent
               }
             )
           }
         })
-        result.push(h2);
+        result.push(h2)
       })
-      this.items = result;
+      this.items = result
     }
   }
 }

@@ -42,14 +42,14 @@ export default {
   name: 'PostList',
   data () {
     return {
+      media_base_url: 'https://freelance321.com/wp-content/uploads/',
       posts_base_url: 'https://freelance321.com/wp-json/wp/v2/posts',
       current_page: 1,
       per_page: 8,
       pagination: [],
 
-      category_base_url: 'https://freelance321.com/wp-json/wp/v2/categories/',
-
       posts: [],
+      categories: [],
 
       loading: false,
       message: {
@@ -74,10 +74,12 @@ export default {
     }
     this.loading = false
   },
+  created () {
+    this.categories = this.$store.state.category_items
+  },
   methods: {
     imagePath (item) {
-      const base_url = 'https://freelance321.com/wp-content/uploads/'
-      return base_url + item._embedded['wp:featuredmedia'][0].media_details.file
+      return this.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
     },
     setPaginations (results) {
       const total_page_num = Math.ceil(results.headers['x-wp-total'] / this.per_page)
@@ -85,36 +87,26 @@ export default {
         this.pagination.push(total_page_num[i])
       }
     },
-    async clickPostCard (post) {
-      let category_slug = ''
-      let parent_category_slug = ''
-      let route_path = ''
-      const category_id = post.categories[0]
-
+    clickPostCard (post) {
+      let parent_category = null
+      // 詳細をstoreに保存
       this.$store.dispatch('setPostView', post)
-
-      // 記事詳細にアクセスするために必要なデータ
-      // 1. カテゴリーパス
-      // 2. サブカテゴリーパス
-      // 3. 記事詳細
-      // URL: base/category/subcategory/slug
-
+      const category_id = post.categories[0]
       // 現在のカテゴリー
-      const category = await this.$axios.get(
-        this.category_base_url + category_id
-      )
-      category_slug = category.data.slug
-
+      const current_category = this.categories.find(v => v.id === category_id)
       // 親カテゴリー
-      if (category.data.parent !== 0) {
-        const parent_category_id = category.data.parent
-        const parent_category = await this.$axios.get(
-          this.category_base_url + parent_category_id
-        )
-        parent_category_slug = parent_category.data.slug
+      if (current_category.parent !== 0) {
+        parent_category = this.categories.find(r => r.id === current_category.parent)
       }
-      route_path = parent_category_slug + '/' + category_slug + '/' + post.slug
-      this.$router.push(route_path)
+      this.$router.push(
+        parent_category
+          ? parent_category.slug
+          : '' +
+          '/' +
+          current_category.slug +
+          '/' +
+          post.slug
+      )
     },
     changePage (number) {
       this.posts = []

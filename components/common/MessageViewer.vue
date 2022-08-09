@@ -24,7 +24,7 @@
 export default {
   name: 'MessageViewer',
   props: {
-    message: Object,
+    message: Object
   }
 }
 </script>

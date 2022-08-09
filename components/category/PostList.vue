@@ -51,10 +51,14 @@ export default {
 
       category_id: '',
       posts: [],
+      categories: [],
 
       current_page: 1,
       per_page: 8,
-      page_max: 1
+      page_max: 1,
+
+      media_base_path: 'https://freelance321.com/wp-content/uploads/',
+      category_post_base_path: 'https://freelance321.com/wp-json/wp/v2/posts?categories='
     }
   },
   async fetch () {
@@ -62,7 +66,7 @@ export default {
     this.category_id = this.$route.query.c
     try {
       const results = await this.$axios.get(
-        'https://freelance321.com/wp-json/wp/v2/posts?categories=' +
+        this.category_post_base_path +
         this.category_id +
         '&_embed' +
         '&page=' + this.current_page +
@@ -75,46 +79,33 @@ export default {
     }
     this.loading = false
   },
+  created () {
+    this.categories = this.$store.state.category_items
+  },
   methods: {
     imagePath (item) {
-      const base_url = 'https://freelance321.com/wp-content/uploads/'
       if (!item._embedded['wp:featuredmedia']) {
-        return base_url + '2021/08/web-productions.jpg'
+        return this.media_base_path + '2021/08/web-productions.jpg'
       }
-      return base_url + item._embedded['wp:featuredmedia'][0].media_details.file
+      return this.media_base_path + item._embedded['wp:featuredmedia'][0].media_details.file
     },
     setPaginations (results) {
       this.page_max = Math.ceil(results.headers['x-wp-total'] / this.per_page)
     },
-    async clickPostCard (post) {
-      let category_slug = ''
-      let parent_category_slug = ''
-      let route_path = ''
-      const category_id = post.categories[0]
+    clickPostCard (post) {
+      let parent_category = null
       // 詳細データはAPIから取らずにストアに格納する
       this.$store.dispatch('setPostView', post)
-      // 記事詳細にアクセスするために必要なデータ
-      // 1. カテゴリーパス
-      // 2. サブカテゴリーパス
-      // 3. 記事詳細
-      // URL: base/category/subcategory/slug
-
-      // 現在のカテゴリー
-      const category = await this.$axios.get(
-        this.category_base_url + category_id
-      )
-      category_slug = category.data.slug
-
+      const current_category = this.categories.find(v => v.id === post.categories[0])
       // 親カテゴリー
-      if (category.data.parent !== 0) {
-        const parent_category_id = category.data.parent
-        const parent_category = await this.$axios.get(
-          this.category_base_url + parent_category_id
+      if (current_category.parent !== 0) {
+        parent_category = this.categories.find(r => r.id === current_category.parent)
+        this.$router.push(
+          parent_category.slug + '/' + current_category.slug + '/' + post.slug
         )
-        parent_category_slug = parent_category.data.slug
+        return
       }
-      route_path = parent_category_slug + '/' + category_slug + '/' + post.slug
-      this.$router.push(route_path)
+      this.$router.push(this.$route.params.category + '/' + post.slug)
     },
     changePage (number) {
       this.posts = []

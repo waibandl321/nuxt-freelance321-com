@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="3">
-      <PostSideBar />
+      <CategorySideBar />
     </v-col>
     <v-col cols="6">
       <div>投稿日： {{ article.date }}</div>

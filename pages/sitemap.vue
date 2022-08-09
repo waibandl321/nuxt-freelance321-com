@@ -10,13 +10,13 @@
           cols="4"
           class="mt-10"
         >
-          <div>{{ category.name }}</div>
+          <div class="sitemap-category">{{ category.name }}</div>
           <ul>
           <li
             v-for="(post, idx2) in category.posts.data"
             :key="idx2"
           >
-            {{ post.title.rendered }}
+            <a>{{ post.title.rendered }}</a>
           </li>
           </ul>
         </v-col>
@@ -59,3 +59,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.sitemap-category {
+  font-weight: bold;
+  font-size: 18px;
+}
+</style>
