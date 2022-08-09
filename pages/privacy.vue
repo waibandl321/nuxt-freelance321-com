@@ -1,6 +1,11 @@
 <template>
   <div>
-    {{ page_data }}
+    <CommonLoadingPageInner v-if="!page_data" />
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <div
+      v-else
+      v-html="page_content"
+    ></div>
   </div>
 </template>
 <script>
@@ -21,17 +26,10 @@ export default {
       this.slug
     )
   },
-  created () {
-    // this.slug = this.$route.name
-    // this.getPageData()
-  },
-  methods: {
-    // async getPageData () {
-    //   this.page_data = await this.$axios.get(
-    //     this.base_url +
-    //     this.slug
-    //   )
-    // }
+  computed: {
+    page_content () {
+      return this.page_data.data[0].content.rendered
+    }
   }
 }
 </script>
