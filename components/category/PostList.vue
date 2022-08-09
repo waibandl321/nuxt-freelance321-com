@@ -78,6 +78,9 @@ export default {
   methods: {
     imagePath (item) {
       const base_url = 'https://freelance321.com/wp-content/uploads/'
+      if (!item._embedded['wp:featuredmedia']) {
+        return base_url + '2021/08/web-productions.jpg'
+      }
       return base_url + item._embedded['wp:featuredmedia'][0].media_details.file
     },
     setPaginations (results) {

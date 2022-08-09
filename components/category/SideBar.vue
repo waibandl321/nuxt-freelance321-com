@@ -37,13 +37,6 @@ export default {
       this.categories = items
     },
     clickSideMenu (category) {
-      // let slug = ''
-      // if (category.parent !== 0) {
-      //   const parent = this.categories.find(v => v.id === category.parent)
-      //   slug = parent.slug + '/' + category.slug
-      // } else {
-      //   slug = category.slug
-      // }
       this.$store.dispatch('setCategoryView', category)
       this.$router.push('/' + category.slug)
       this.$router.push({ path: '/' + category.slug, query: { c: category.id } })
