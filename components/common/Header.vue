@@ -18,20 +18,36 @@
         </div>
         <div class="p-relative">
           <v-btn
-            class="menu-first"
+            class="first"
             text
           >
             カテゴリー
             <v-icon>mdi-chevron-down</v-icon>
           </v-btn>
-          <div class="menu-second">
+          <div class="second">
             <div
               v-for="(category, index) in first_categories"
               :key="index"
               class="menu-item p-relative"
               @click.stop="clickCategoryMenu(category)"
             >
-              <div>{{ category.name }}</div>
+              <div class="d-flex justify-space-between">
+                <span>{{ category.name }}</span>
+                <v-icon v-show="category.sub_categories.length > 0">mdi-chevron-right</v-icon>
+              </div>
+              <div
+                v-show="category.sub_categories.length > 0"
+                class="third"
+              >
+                <div
+                  v-for="(sub, index) in category.sub_categories"
+                  :key="index"
+                  class="menu-item p-relative"
+                  @click.stop="clickCategoryMenu(category)"
+                >
+                  {{ sub.name }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -70,6 +86,9 @@ export default {
       // storeにカテゴリーデータを格納
       this.$store.dispatch('setCategoryItems', response)
       response.forEach((item) => {
+        if (item.parent === 0) {
+          item.sub_categories = response.filter(v => v.parent === item.id)
+        }
         items.push(item)
       })
       this.header_links.categories = items
@@ -106,26 +125,33 @@ export default {
   display: flex;
   font-size: 14px;
 }
-.menu-first:hover + .menu-second {
+.first:hover + .second {
   display: block;
 }
-.menu-second {
-  width: 200px;
+.second,
+.third {
+  width: 220px;
   display: none;
   position: absolute;
-  padding: 16px;
   background: #fff;
   z-index: 2;
-  box-shadow: 0 4px 8px #eee;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
-.menu-second:hover {
+.second:hover {
   display: block;
 }
 .menu-item {
-  padding: 4px 8px;
+  padding: 8px 16px;
 }
 .menu-item:hover {
   background: #f8f5f5;
   cursor: pointer;
+}
+.second .menu-item:hover .third {
+  display: block;
+}
+.third {
+  left: 100%;
+  top: 0;
 }
 </style>

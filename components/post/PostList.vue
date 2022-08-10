@@ -97,7 +97,9 @@ export default {
       // 親カテゴリー
       if (current_category.parent !== 0) {
         parent_category = this.categories.find(r => r.id === current_category.parent)
-        this.$router.push(parent_category.slug + '/' + current_category.slug + '/' + post.slug)
+        this.$router.push(
+          parent_category.slug + '/' + current_category.slug + '/' + post.slug
+        )
         return
       }
       this.$router.push(
