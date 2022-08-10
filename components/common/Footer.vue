@@ -1,22 +1,21 @@
 <template>
   <v-footer
-      app
-      color="transparent"
-      height="72"
-      inset
-    >
-      <v-container>
-        <v-btn
-          v-for="(link, idx) in footer_links.common"
-          :key="idx"
-          :to="link.to"
-          text
-          nuxt
-        >
-          {{ link.text }}
-        </v-btn>
-      </v-container>
-    </v-footer>
+    app
+    height="72"
+    inset
+  >
+    <v-container>
+      <v-btn
+        v-for="(link, idx) in footer_links.common"
+        :key="idx"
+        :to="link.to"
+        text
+        nuxt
+      >
+        {{ link.text }}
+      </v-btn>
+    </v-container>
+  </v-footer>
 </template>
 <script>
 

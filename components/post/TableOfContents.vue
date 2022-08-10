@@ -17,30 +17,6 @@
       </ul>
     </li>
   </ul>
-  <!-- <v-list>
-    <v-list-item
-      v-for="(item, idx) in items"
-      :key="idx"
-      :href="'#' + item.id"
-      dense
-    >
-      <v-list-item-content>
-        <v-list-item-title>{{ item.name }}</v-list-item-title>
-      </v-list-item-content>
-      <v-list>
-        <v-list-item
-          v-for="(sub, idx2) in item.sub"
-          :key="idx2"
-          class="ml-10"
-          dense
-        >
-          <v-list-item-content :href="'#' + sub.id">
-            <v-list-item-title>{{ sub.name }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-list-item>
-  </v-list> -->
 </template>
 <script>
 
@@ -87,6 +63,9 @@ export default {
 <style scoped>
 .v-list-item {
   display: block;
+}
+.first {
+  font-size: 14px;
 }
 .second {
   padding-left: 16px;

@@ -56,16 +56,6 @@ export default {
     },
     clickSideMenu (category) {
       this.$store.dispatch('setCategoryView', category)
-      // if (category.parent !== 0) {
-      //   const parent = this.categories.find(v => v.id === category.parent)
-      //   this.$router.push(
-      //     {
-      //       path: '/' + parent.slug + '/' + category.slug,
-      //       query: { c: category.id }
-      //     }
-      //   )
-      //   return
-      // }
       this.$router.push(
         {
           path: '/' + category.slug,

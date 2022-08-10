@@ -7,9 +7,6 @@
         v-for="(item, idx) in posts"
         :key="idx"
         cols="4"
-        md="3"
-        sm="2"
-        xs="1"
       >
         <v-card
           hover
@@ -94,14 +91,17 @@ export default {
     },
     clickPostCard (post) {
       let parent_category = null
-      // 詳細データはAPIから取らずにストアに格納する
+      // 詳細データ store格納
       this.$store.dispatch('setPostView', post)
       const current_category = this.categories.find(v => v.id === post.categories[0])
       // 親カテゴリー
       if (current_category.parent !== 0) {
         parent_category = this.categories.find(r => r.id === current_category.parent)
         this.$router.push(
-          parent_category.slug + '/' + current_category.slug + '/' + post.slug
+          {
+            path: parent_category.slug + '/' + current_category.slug + '/' + post.slug,
+            query: { p: post.id }
+          }
         )
         return
       }

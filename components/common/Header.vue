@@ -2,7 +2,6 @@
 <template>
   <v-app-bar
     app
-    color="white"
     flat
   >
     <v-container class="fill-height">
