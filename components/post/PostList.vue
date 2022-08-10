@@ -100,7 +100,12 @@ export default {
         this.$router.push(parent_category.slug + '/' + current_category.slug + '/' + post.slug)
         return
       }
-      this.$router.push(current_category.slug + '/' + post.slug)
+      this.$router.push(
+        {
+          path: current_category.slug + '/' + post.slug,
+          query: { p: post.id }
+        }
+      )
     },
     changePage (number) {
       this.posts = []
