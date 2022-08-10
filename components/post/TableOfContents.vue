@@ -1,5 +1,23 @@
 <template>
-  <v-list>
+  <ul class="first">
+    <li
+      v-for="(item, idx) in items"
+      :key="idx"
+    >
+      <div>
+        <a :href="'#' + item.id">{{ item.name }}</a>
+      </div>
+      <ul class="second">
+        <li
+          v-for="(sub, idx2) in item.sub"
+          :key="idx2"
+        >
+          <a :href="'#' + sub.id">{{ sub.name }}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <!-- <v-list>
     <v-list-item
       v-for="(item, idx) in items"
       :key="idx"
@@ -22,7 +40,7 @@
         </v-list-item>
       </v-list>
     </v-list-item>
-  </v-list>
+  </v-list> -->
 </template>
 <script>
 
@@ -69,5 +87,8 @@ export default {
 <style scoped>
 .v-list-item {
   display: block;
+}
+.second {
+  padding-left: 16px;
 }
 </style>

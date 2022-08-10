@@ -6,31 +6,33 @@
     flat
   >
     <v-container class="fill-height">
-      <v-btn
-        v-for="(link, idx) in header_links.common"
-        :key="idx"
-        :to="link.to"
-        text
-        nuxt
-      >
-        {{ link.text }}
-      </v-btn>
       <div class="menu-wrap">
-        <v-btn
-          class="menu-first"
-          text
-        >
-          カテゴリー
-          <v-icon>mdi-chevron-down</v-icon>
-        </v-btn>
-        <div class="menu-second">
-          <div
-            v-for="(category, index) in first_categories"
-            :key="index"
-            class="menu-item p-relative"
-            @click.stop="clickCategoryMenu(category)"
+        <div>
+          <v-btn
+            text
+            to="/"
+            nuxt
           >
-            <div>{{ category.name }}</div>
+              TOP
+          </v-btn>
+        </div>
+        <div class="p-relative">
+          <v-btn
+            class="menu-first"
+            text
+          >
+            カテゴリー
+            <v-icon>mdi-chevron-down</v-icon>
+          </v-btn>
+          <div class="menu-second">
+            <div
+              v-for="(category, index) in first_categories"
+              :key="index"
+              class="menu-item p-relative"
+              @click.stop="clickCategoryMenu(category)"
+            >
+              <div>{{ category.name }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -55,30 +57,7 @@ export default {
   data: () => ({
     header_links: {
       categories: [],
-      category_base_url: 'https://freelance321.com/wp-json/wp/v2/categories',
-
-      common: [
-        {
-          text: 'TOP',
-          to: '/'
-        },
-        {
-          text: 'プライバシーポリシー',
-          to: '/privacy'
-        },
-        {
-          text: 'お問い合わせ',
-          to: '/contact'
-        },
-        {
-          text: 'サイトマップ',
-          to: '/sitemap'
-        },
-        {
-          text: 'プロフィール',
-          to: '/profile'
-        }
-      ]
+      category_base_url: 'https://freelance321.com/wp-json/wp/v2/categories'
     }
   }),
   async fetch () {
@@ -124,7 +103,7 @@ export default {
   position: relative;
 }
 .menu-wrap {
-  position: relative;
+  display: flex;
   font-size: 14px;
 }
 .menu-first:hover + .menu-second {
