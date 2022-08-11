@@ -48,7 +48,6 @@ export default {
 
       category_id: '',
       posts: [],
-      categories: [],
 
       current_page: 1,
       per_page: 8,
@@ -76,8 +75,12 @@ export default {
     }
     this.loading = false
   },
-  created () {
-    this.categories = this.$store.state.category_items
+  computed: {
+    categories: {
+      get () {
+        return this.$store.getters.storeGetCategoryItems
+      }
+    }
   },
   methods: {
     imagePath (item) {
@@ -92,7 +95,7 @@ export default {
     clickPostCard (post) {
       let parent_category = null
       // 詳細データ store格納
-      this.$store.dispatch('setPostView', post)
+      this.$store.dispatch('storeSetPostView', JSON.parse(JSON.stringify(post)))
       const current_category = this.categories.find(v => v.id === post.categories[0])
       // 親カテゴリー
       if (current_category.parent !== 0) {

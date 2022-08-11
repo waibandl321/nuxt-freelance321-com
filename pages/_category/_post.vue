@@ -18,13 +18,12 @@
 export default {
   name: 'PostPage',
   layout: 'post',
-  data () {
-    return {
-      article: {}
+  computed: {
+    article: {
+      get () {
+        return Object.assign({}, this.$store.getters.storeGetPostView)
+      }
     }
-  },
-  created () {
-    this.article = this.$store.state.post_view
   }
 }
 </script>

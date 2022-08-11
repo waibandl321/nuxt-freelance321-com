@@ -55,7 +55,7 @@ export default {
       this.categories = items.filter(v => v.parent === 0)
     },
     clickSideMenu (category) {
-      this.$store.dispatch('setCategoryView', category)
+      this.$store.dispatch('storeSetCategoryView', JSON.parse(JSON.stringify(category)))
       this.$router.push(
         {
           path: '/' + category.slug,

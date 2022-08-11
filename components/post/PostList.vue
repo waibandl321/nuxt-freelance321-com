@@ -6,10 +6,7 @@
       <v-col
         v-for="(item, idx) in posts"
         :key="idx"
-        cols="4"
-        md="3"
-        sm="2"
-        xs="1"
+        cols="3"
       >
         <v-card
           hover
@@ -49,7 +46,6 @@ export default {
       pagination: [],
 
       posts: [],
-      categories: [],
 
       loading: false,
       message: {
@@ -74,8 +70,12 @@ export default {
     }
     this.loading = false
   },
-  created () {
-    this.categories = this.$store.state.category_items
+  computed: {
+    categories: {
+      get () {
+        return this.$store.getters.storeGetCategoryItems
+      }
+    }
   },
   methods: {
     imagePath (item) {
@@ -90,7 +90,7 @@ export default {
     clickPostCard (post) {
       let parent_category = null
       // 詳細をstoreに保存
-      this.$store.dispatch('setPostView', post)
+      this.$store.dispatch('storeSetPostView', JSON.parse(JSON.stringify(post)))
       const category_id = post.categories[0]
       // 現在のカテゴリー
       const current_category = this.categories.find(v => v.id === category_id)
@@ -98,7 +98,10 @@ export default {
       if (current_category.parent !== 0) {
         parent_category = this.categories.find(r => r.id === current_category.parent)
         this.$router.push(
-          parent_category.slug + '/' + current_category.slug + '/' + post.slug
+          {
+            path: parent_category.slug + '/' + current_category.slug + '/' + post.slug,
+            query: { p: post.id }
+          }
         )
         return
       }

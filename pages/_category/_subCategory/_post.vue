@@ -18,11 +18,12 @@
 export default {
   name: 'PostPage',
   layout: 'post',
-  data: () => ({
-    article: {}
-  }),
-  created () {
-    this.article = this.$store.state.post_view
+  computed: {
+    article: {
+      get () {
+        return this.$store.getters.storeGetPostView
+      }
+    }
   }
 }
 </script>

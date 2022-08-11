@@ -124,7 +124,7 @@ export default {
       response = response.data.filter(v => v.id !== 1)
       const items = []
       // storeにカテゴリーデータを格納
-      this.$store.dispatch('setCategoryItems', response)
+      this.$store.dispatch('storeSetCategoryItems', JSON.parse(JSON.stringify(response)))
       this.categories = response
       response.forEach((item) => {
         if (item.parent === 0) {
@@ -143,7 +143,7 @@ export default {
   methods: {
     clickCategoryMenu (category) {
       // storeにカテゴリー情報を格納する
-      this.$store.dispatch('setCategoryView', category)
+      this.$store.dispatch('storeSetCategoryView', JSON.parse(JSON.stringify(category)))
       this.$router.push(
         {
           path: '/' + category.slug,
@@ -168,7 +168,7 @@ export default {
       this.search_items = []
       this.search_query = ''
       this.search_loading = false
-      this.$store.dispatch('setPostView', post)
+      this.$store.dispatch('storeSetPostView', JSON.parse(JSON.stringify(post)))
 
       let parent_category = null
       const category_id = post.category.term_id
