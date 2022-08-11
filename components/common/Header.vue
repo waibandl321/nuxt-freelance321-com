@@ -52,28 +52,69 @@
         </div>
       </div>
       <v-spacer />
-      <v-responsive max-width="260">
-        <v-text-field
-          dense
-          flat
-          hide-details
-          rounded
-          solo
-          append-icon="mdi-magnify"
-        />
-      </v-responsive>
+      <div class="search">
+        <v-responsive max-width="260">
+          <v-text-field
+            v-model.trim="search_query"
+            dense
+            flat
+            hide-details
+            rounded
+            solo
+            append-icon="mdi-magnify"
+            @input="search()"
+          />
+        </v-responsive>
+        <!-- 検索結果？ -->
+        <div
+          class="search-result"
+          v-if="search_items.length > 0"
+        >
+          <!-- 検索ローディング -->
+          <loading-search v-if="search_loading" />
+          <v-list v-else>
+            <v-list-item
+              v-for="(post, index) in search_items"
+              :key="index"
+              dense
+              link
+              nuxt
+              @click="clickSearchItem(post)"
+            >
+              <v-list-item-content>
+                <v-list-item-title>
+                  <div class="d-inline-block">{{ post.title }}</div>
+                  <v-list-item-subtitle>
+                    {{ post.category.name }}
+                  </v-list-item-subtitle>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </div>
+      </div>
     </v-container>
   </v-app-bar>
 </template>
 <script>
-
+import LoadingPageInner from '@/components/common/LoadingPageInner.vue'
 export default {
   name: 'HeaderComponent',
+  components: {
+    'loading-search': LoadingPageInner
+  },
   data: () => ({
     header_links: {
       categories: [],
       category_base_url: 'https://freelance321.com/wp-json/wp/v2/categories'
-    }
+    },
+    // 検索
+    search_api_path: 'https://freelance321.com/wp-json/wp/api/search/',
+    search_query: '',
+    search_items: [],
+    search_loading: false,
+    search_error: '',
+    categories: []
   }),
   async fetch () {
     try {
@@ -84,6 +125,7 @@ export default {
       const items = []
       // storeにカテゴリーデータを格納
       this.$store.dispatch('setCategoryItems', response)
+      this.categories = response
       response.forEach((item) => {
         if (item.parent === 0) {
           item.sub_categories = response.filter(v => v.parent === item.id)
@@ -106,6 +148,43 @@ export default {
         {
           path: '/' + category.slug,
           query: { c: category.id }
+        }
+      )
+    },
+    async search () {
+      if (!this.search_query) {
+        this.search_items = []
+        return
+      }
+      this.search_items = []
+      this.search_loading = true
+      try {
+        const results = await this.$axios.get(this.search_api_path + this.search_query)
+        this.search_items = results.data
+      } catch {}
+      this.search_loading = false
+    },
+    clickSearchItem (post) {
+      this.search_items = []
+      this.search_query = ''
+      this.search_loading = false
+      this.$store.dispatch('setPostView', post)
+
+      let parent_category = null
+      const category_id = post.category.term_id
+      const current_category = this.categories.find(v => v.id === category_id)
+
+      if (current_category.parent !== 0) {
+        parent_category = this.categories.find(r => r.id === current_category.parent)
+        this.$router.push(
+          '/' + parent_category.slug + '/' + current_category.slug + '/' + post.slug
+        )
+        return
+      }
+      this.$router.push(
+        {
+          path: '/' + current_category.slug + '/' + post.slug,
+          query: { p: post.id }
         }
       )
     }
@@ -152,5 +231,20 @@ export default {
 .third {
   left: 100%;
   top: 0;
+}
+.search {
+  position: relative;
+}
+.search-result {
+  font-size: 12px;
+  width: 150%;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-height: 200px;
+  max-height: 500px;
+  overflow-y: auto;
+  background-color: #fff;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
 }
 </style>

@@ -5,11 +5,11 @@
     </v-col>
     <v-col cols="6">
       <div>投稿日： {{ article.date }}</div>
-      <v-card-title>{{ article.title.rendered }}</v-card-title>
-      <div v-html="article.content.rendered"></div>
+      <v-card-title>{{ article.title.rendered || article.title }}</v-card-title>
+      <div v-html="article.content.rendered || article.content"></div>
     </v-col>
     <v-col cols="3">
-      <PostTableOfContents :content="article.content.rendered"/>
+      <PostTableOfContents :content="article.content.rendered || article.content" />
     </v-col>
   </v-row>
 </template>
