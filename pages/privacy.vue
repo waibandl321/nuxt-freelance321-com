@@ -14,16 +14,13 @@ export default {
   layout: 'page',
   data () {
     return {
-      base_url: 'https://freelance321.com/wp-json/wp/v2/pages?slug=',
-      slug: '',
       page_data: null
     }
   },
   async fetch () {
-    this.slug = this.$route.name
-    this.page_data = await this.$axios.get(
-      this.base_url +
-      this.slug
+    this.page_data = await this.apiGetPageRelatedSlug(
+      this.$route.name,
+      this.apiTypeDefault()
     )
   },
   computed: {
