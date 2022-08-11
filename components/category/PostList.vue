@@ -93,27 +93,10 @@ export default {
       this.page_max = Math.ceil(results.headers['x-wp-total'] / this.per_page)
     },
     clickPostCard (post) {
-      let parent_category = null
       // 詳細データ store格納
-      this.$store.dispatch('storeSetPostView', JSON.parse(JSON.stringify(post)))
+      this.$store.dispatch('storeSetPostView', this.copyJson(post))
       const current_category = this.categories.find(v => v.id === post.categories[0])
-      // 親カテゴリー
-      if (current_category.parent !== 0) {
-        parent_category = this.categories.find(r => r.id === current_category.parent)
-        this.$router.push(
-          {
-            path: parent_category.slug + '/' + current_category.slug + '/' + post.slug,
-            query: { p: post.id }
-          }
-        )
-        return
-      }
-      this.$router.push(
-        {
-          path: this.$route.params.category + '/' + post.slug,
-          query: { p: post.id }
-        }
-      )
+      this.pageMovePost(current_category, post)
     },
     changePage (number) {
       this.posts = []

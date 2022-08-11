@@ -124,7 +124,7 @@ export default {
       response = response.data.filter(v => v.id !== 1)
       const items = []
       // storeにカテゴリーデータを格納
-      this.$store.dispatch('storeSetCategoryItems', JSON.parse(JSON.stringify(response)))
+      this.$store.dispatch('storeSetCategoryItems', this.copyJson(response))
       this.categories = response
       response.forEach((item) => {
         if (item.parent === 0) {
@@ -143,13 +143,8 @@ export default {
   methods: {
     clickCategoryMenu (category) {
       // storeにカテゴリー情報を格納する
-      this.$store.dispatch('storeSetCategoryView', JSON.parse(JSON.stringify(category)))
-      this.$router.push(
-        {
-          path: '/' + category.slug,
-          query: { c: category.id }
-        }
-      )
+      this.$store.dispatch('storeSetCategoryView', this.copyJson(category))
+      this.pageMoveCategory(category)
     },
     async search () {
       if (!this.search_query) {
@@ -168,25 +163,12 @@ export default {
       this.search_items = []
       this.search_query = ''
       this.search_loading = false
-      this.$store.dispatch('storeSetPostView', JSON.parse(JSON.stringify(post)))
+      this.$store.dispatch('storeSetPostView', this.copyJson(post))
 
-      let parent_category = null
       const category_id = post.category.term_id
       const current_category = this.categories.find(v => v.id === category_id)
 
-      if (current_category.parent !== 0) {
-        parent_category = this.categories.find(r => r.id === current_category.parent)
-        this.$router.push(
-          '/' + parent_category.slug + '/' + current_category.slug + '/' + post.slug
-        )
-        return
-      }
-      this.$router.push(
-        {
-          path: '/' + current_category.slug + '/' + post.slug,
-          query: { p: post.id }
-        }
-      )
+      this.pageMovePost(current_category, post)
     }
   }
 }

@@ -55,13 +55,8 @@ export default {
       this.categories = items.filter(v => v.parent === 0)
     },
     clickSideMenu (category) {
-      this.$store.dispatch('storeSetCategoryView', JSON.parse(JSON.stringify(category)))
-      this.$router.push(
-        {
-          path: '/' + category.slug,
-          query: { c: category.id }
-        }
-      )
+      this.$store.dispatch('storeSetCategoryView', this.copyJson(category))
+      this.pageMoveCategory(category)
     }
   }
 }

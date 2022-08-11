@@ -88,29 +88,12 @@ export default {
       }
     },
     clickPostCard (post) {
-      let parent_category = null
       // 詳細をstoreに保存
-      this.$store.dispatch('storeSetPostView', JSON.parse(JSON.stringify(post)))
+      this.$store.dispatch('storeSetPostView', this.copyJson(post))
       const category_id = post.categories[0]
       // 現在のカテゴリー
       const current_category = this.categories.find(v => v.id === category_id)
-      // 親カテゴリー
-      if (current_category.parent !== 0) {
-        parent_category = this.categories.find(r => r.id === current_category.parent)
-        this.$router.push(
-          {
-            path: parent_category.slug + '/' + current_category.slug + '/' + post.slug,
-            query: { p: post.id }
-          }
-        )
-        return
-      }
-      this.$router.push(
-        {
-          path: current_category.slug + '/' + post.slug,
-          query: { p: post.id }
-        }
-      )
+      this.pageMovePost(current_category, post)
     },
     changePage (number) {
       this.posts = []
