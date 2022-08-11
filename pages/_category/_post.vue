@@ -21,7 +21,7 @@ export default {
   computed: {
     article: {
       get () {
-        return Object.assign({}, this.$store.getters.storeGetPostView)
+        return this.$store.getters.storeGetPostView
       }
     }
   }

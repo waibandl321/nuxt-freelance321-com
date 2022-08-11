@@ -53,23 +53,22 @@ export default {
       per_page: 8,
       page_max: 1,
 
-      media_base_path: 'https://freelance321.com/wp-content/uploads/',
-      category_post_base_path: 'https://freelance321.com/wp-json/wp/v2/posts?categories='
+      media_base_url: 'https://freelance321.com/wp-content/uploads/'
     }
   },
   async fetch () {
     this.loading = true
     this.category_id = this.$route.query.c
     try {
-      const results = await this.$axios.get(
-        this.category_post_base_path +
-        this.category_id +
-        '&_embed' +
-        '&page=' + this.current_page +
-        '&per_page=' + this.per_page
-      )
-      this.posts = results.data
-      this.setPaginations(results)
+      this.posts = await this.apiGetCategoryPostList(
+        this.$route.query.c,
+        this.current_page,
+        this.per_page,
+        this.apiTypeDefault()
+      ).then((response) => {
+        this.setPaginations(response)
+        return response.data
+      })
     } catch {
       this.message.error = 'データの読み込みに失敗しました。'
     }
@@ -85,9 +84,9 @@ export default {
   methods: {
     imagePath (item) {
       if (!item._embedded['wp:featuredmedia']) {
-        return this.media_base_path + '2021/08/web-productions.jpg'
+        return this.media_base_url + '2021/08/web-productions.jpg'
       }
-      return this.media_base_path + item._embedded['wp:featuredmedia'][0].media_details.file
+      return this.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
     },
     setPaginations (results) {
       this.page_max = Math.ceil(results.headers['x-wp-total'] / this.per_page)

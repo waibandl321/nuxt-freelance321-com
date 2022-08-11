@@ -46,7 +46,10 @@ export default {
       const categories = this.$store.state.category_items
       try {
         categories.forEach(async (item) => {
-          item.posts = await this.apiGetPostsRelatedCategory(item, this.apiTypeDefault())
+          item.posts = await this.apiGetPostsRelatedCategory(
+            item,
+            this.apiTypeDefault()
+          )
           this.categories.push(item)
         })
       } catch (error) {

@@ -40,7 +40,6 @@ export default {
   data () {
     return {
       media_base_url: 'https://freelance321.com/wp-content/uploads/',
-      posts_base_url: 'https://freelance321.com/wp-json/wp/v2/posts',
       current_page: 1,
       per_page: 8,
       pagination: [],
@@ -57,14 +56,14 @@ export default {
   async fetch () {
     this.loading = true
     try {
-      const results = await this.$axios.get(
-        this.posts_base_url +
-        '?_embed' +
-        '&page=' + this.current_page +
-        '&per_page=' + this.per_page
-      )
-      this.posts = results.data
-      this.setPaginations(results)
+      this.posts = await this.apiGetPostList(
+        this.current_page,
+        this.per_page,
+        this.apiTypeDefault()
+      ).then((response) => {
+        this.setPaginations(response)
+        return response.data
+      })
     } catch {
       this.message.error = 'データの読み込みに失敗しました。'
     }

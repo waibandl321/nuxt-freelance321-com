@@ -12,9 +12,10 @@
             to="/"
             nuxt
           >
-              TOP
+            TOP
           </v-btn>
         </div>
+        <!-- カテゴリ -->
         <div class="p-relative">
           <v-btn
             class="first"
@@ -25,14 +26,18 @@
           </v-btn>
           <div class="second">
             <div
-              v-for="(category, index) in first_categories"
+              v-for="(category, index) in header_links.categories"
               :key="index"
               class="menu-item p-relative"
               @click.stop="clickCategoryMenu(category)"
             >
               <div class="d-flex justify-space-between">
                 <span>{{ category.name }}</span>
-                <v-icon v-show="category.sub_categories.length > 0">mdi-chevron-right</v-icon>
+                <v-icon
+                  v-show="category.sub_categories.length > 0"
+                >
+                  mdi-chevron-right
+                </v-icon>
               </div>
               <div
                 v-show="category.sub_categories.length > 0"
@@ -42,7 +47,7 @@
                   v-for="(sub, index) in category.sub_categories"
                   :key="index"
                   class="menu-item p-relative"
-                  @click.stop="clickCategoryMenu(category)"
+                  @click.stop="clickCategoryMenu(sub)"
                 >
                   {{ sub.name }}
                 </div>
@@ -52,6 +57,7 @@
         </div>
       </div>
       <v-spacer />
+      <!-- 検索 -->
       <div class="search">
         <v-responsive max-width="260">
           <v-text-field
@@ -67,8 +73,8 @@
         </v-responsive>
         <!-- 検索結果？ -->
         <div
-          class="search-result"
           v-if="search_items.length > 0"
+          class="search-result"
         >
           <!-- 検索ローディング -->
           <loading-search v-if="search_loading" />
@@ -105,8 +111,7 @@ export default {
   },
   data: () => ({
     header_links: {
-      categories: [],
-      category_base_url: 'https://freelance321.com/wp-json/wp/v2/categories'
+      categories: []
     },
     // 検索
     search_api_path: 'https://freelance321.com/wp-json/wp/api/search/',
@@ -118,27 +123,23 @@ export default {
   }),
   async fetch () {
     try {
-      let response = await this.$axios.get(
-        'https://freelance321.com/wp-json/wp/v2/categories?per_page=100'
-      )
-      response = response.data.filter(v => v.id !== 1)
-      const items = []
+      this.categories = await this.apiGetAllCategories(
+        this.apiTypeDefault()
+      ).then((response) => {
+        return response.data.filter(v => v.id !== 1)
+      })
       // storeにカテゴリーデータを格納
-      this.$store.dispatch('storeSetCategoryItems', this.copyJson(response))
-      this.categories = response
-      response.forEach((item) => {
+      this.$store.dispatch('storeSetCategoryItems', this.copyJson(this.categories))
+      // サブカテゴリーマージ
+      const items = []
+      this.categories.forEach((item) => {
         if (item.parent === 0) {
-          item.sub_categories = response.filter(v => v.parent === item.id)
+          item.sub_categories = this.categories.filter(v => v.parent === item.id)
         }
         items.push(item)
       })
-      this.header_links.categories = items
+      this.header_links.categories = items.filter(v => v.parent === 0)
     } catch {}
-  },
-  computed: {
-    first_categories () {
-      return this.header_links.categories.filter(v => v.parent === 0)
-    }
   },
   methods: {
     clickCategoryMenu (category) {
@@ -151,11 +152,14 @@ export default {
         this.search_items = []
         return
       }
-      this.search_items = []
       this.search_loading = true
       try {
-        const results = await this.$axios.get(this.search_api_path + this.search_query)
-        this.search_items = results.data
+        this.search_items = await this.apiGetPostsSearch(
+          this.search_query,
+          this.apiCustomType()
+        ).then((response) => {
+          return response.data
+        })
       } catch {}
       this.search_loading = false
     },
