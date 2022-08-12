@@ -40,6 +40,21 @@ Vue.mixin({
         this.createApiBuildUrl(base_url, params)
       )
     },
+    // 個別カテゴリ
+    async apiGetCategoryFromId (cat_id, custom_api) {
+      const base_url = this.getApiBaseUrl(custom_api)
+      const params = 'categories/' + cat_id
+      return await this.callGetApi(
+        this.createApiBuildUrl(base_url, params)
+      )
+    },
+    async apiGetCategoryFromSlug (cat_slug, custom_api) {
+      const base_url = this.getApiBaseUrl(custom_api)
+      const params = 'categories?slug=' + cat_slug
+      return await this.callGetApi(
+        this.createApiBuildUrl(base_url, params)
+      )
+    },
     // カテゴリ記事一覧取得（カテゴリーページ用）
     async apiGetCategoryPostList (category_id, current_page, per_page, custom_api) {
       const base_url = this.getApiBaseUrl(custom_api)
@@ -71,6 +86,22 @@ Vue.mixin({
         this.createApiBuildUrl(base_url, params)
       )
     },
+    // 記事詳細
+    async apiGetPostDetail (post_id, custom_api) {
+      const params = 'posts/' + post_id
+      const base_url = this.getApiBaseUrl(custom_api)
+      return await this.callGetApi(
+        this.createApiBuildUrl(base_url, params)
+      )
+    },
+    // 記事詳細（スラッグから)
+    async apiGetPostFromSlug (slug, custom_api) {
+      const params = 'posts?slug=' + slug
+      const base_url = this.getApiBaseUrl(custom_api)
+      return await this.callGetApi(
+        this.createApiBuildUrl(base_url, params)
+      )
+    },
     // 固定ページ詳細取得
     async apiGetPageRelatedSlug (slug, custom_api) {
       const params = 'pages?slug=' + slug
@@ -81,7 +112,7 @@ Vue.mixin({
     },
     // API呼び出し共通処理
     async callGetApi (buildPath) {
-      console.log(buildPath)
+      console.log('call api:' + buildPath)
       return await this.$axios.get(buildPath, {
         headers: {
           'Content-Type': 'application/json'

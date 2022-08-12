@@ -1,22 +1,22 @@
 <template>
-  <ul class="first">
-    <li
+  <v-list class="first">
+    <v-list-item
       v-for="(item, idx) in items"
       :key="idx"
     >
       <div>
         <a :href="'#' + item.id">{{ item.name }}</a>
       </div>
-      <ul class="second">
-        <li
+      <v-list class="second">
+        <v-list-item
           v-for="(sub, idx2) in item.sub"
           :key="idx2"
         >
           <a :href="'#' + sub.id">{{ sub.name }}</a>
-        </li>
-      </ul>
-    </li>
-  </ul>
+        </v-list-item>
+      </v-list>
+    </v-list-item>
+  </v-list>
 </template>
 <script>
 
@@ -55,9 +55,7 @@ export default {
           result.push(h2)
         })
         this.items = result
-      } catch (error) {
-        console.log(error)
-      }
+      } catch {}
     }
   }
 }

@@ -5,8 +5,12 @@
       <CategorySideBar />
     </v-col>
     <v-col cols="9">
-      <v-card-title>カテゴリー：{{ category.name }}</v-card-title>
-      <v-card-text>{{ category.description }}</v-card-text>
+      <v-card-title class="px-0">
+        カテゴリー：{{ category.name }}
+      </v-card-title>
+      <v-card-text class="px-0">
+        {{ category.description }}
+      </v-card-text>
       <CategoryPostList />
     </v-col>
   </v-row>
@@ -18,11 +22,29 @@ export default {
   layout: 'post',
   data () {
     return {
-      category: {}
+      category: {},
+      loading: false
     }
   },
-  created () {
-    this.category = this.$store.state.category_view
+  async fetch () {
+    this.loading = true
+    if (this.$route.query.c) {
+      await this.apiGetCategoryFromId(
+        this.$route.query.c,
+        this.apiTypeDefault()
+      ).then((res) => {
+        this.category = res.data
+      })
+    } else {
+      // queryなしの場合（旧サイト対応)
+      await this.apiGetCategoryFromSlug(
+        this.$route.params.category,
+        this.apiTypeDefault()
+      ).then((res) => {
+        this.category = res.data[0]
+      })
+    }
+    this.loading = false
   }
 }
 </script>

@@ -13,7 +13,7 @@
           @click="clickPostCard(item)"
         >
           <v-img
-            :src="imagePath(item)"
+            :src="getEyecatchUrl(item)"
             aspect-ratio="1.7"
           />
           <v-card-subtitle>
@@ -45,8 +45,6 @@ export default {
         error: '',
         success: ''
       },
-
-      category_id: '',
       posts: [],
 
       current_page: 1,
@@ -57,22 +55,7 @@ export default {
     }
   },
   async fetch () {
-    this.loading = true
-    this.category_id = this.$route.query.c
-    try {
-      this.posts = await this.apiGetCategoryPostList(
-        this.$route.query.c,
-        this.current_page,
-        this.per_page,
-        this.apiTypeDefault()
-      ).then((response) => {
-        this.setPaginations(response)
-        return response.data
-      })
-    } catch {
-      this.message.error = 'データの読み込みに失敗しました。'
-    }
-    this.loading = false
+    await this.initPostList()
   },
   computed: {
     categories: {
@@ -82,7 +65,22 @@ export default {
     }
   },
   methods: {
-    imagePath (item) {
+    async initPostList () {
+      this.loading = true
+      this.posts = await this.apiGetCategoryPostList(
+        this.$route.query.c,
+        this.current_page,
+        this.per_page,
+        this.apiTypeDefault()
+      ).then((response) => {
+        this.setPaginations(response)
+        return response.data
+      }).catch(() => {
+        this.message.error = 'データの読み込みに失敗しました。'
+      })
+      this.loading = false
+    },
+    getEyecatchUrl (item) {
       if (!item._embedded['wp:featuredmedia']) {
         return this.media_base_url + '2021/08/web-productions.jpg'
       }
@@ -92,8 +90,6 @@ export default {
       this.page_max = Math.ceil(results.headers['x-wp-total'] / this.per_page)
     },
     clickPostCard (post) {
-      // 詳細データ store格納
-      this.$store.dispatch('storeSetPostView', this.copyJson(post))
       const current_category = this.categories.find(v => v.id === post.categories[0])
       this.pageMovePost(current_category, post)
     },

@@ -1,0 +1,30 @@
+
+h2#outline__1 {
+  margin-top: 16px;
+}
+.container .post-content h2 {
+  margin-top: 64px;
+  margin-bottom: 16px;
+}
+.container .post-content h3 {
+  margin-top: 40px;
+  margin-bottom: 16px;
+}
+.container .post-content img,
+.container .post-content video {
+  max-width: 100%;
+}
+.container .post-content p {
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.container .post-content ul, .container .post-content ol {
+  margin-top: 16px;
+}
+.container .post-content h4 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+.container .post-content figure + p {
+  margin-top: 16px;
+}

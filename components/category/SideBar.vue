@@ -1,33 +1,30 @@
 <template>
-  <ul>
-    <li
+  <v-list>
+    <div
       v-for="(category, idx) in categories"
       :key="idx"
     >
-      <div>
-        <v-btn
-          @click="clickSideMenu(category)"
-          text
-        >
-          {{ category.name }}
-        </v-btn>
-      </div>
-      <ul
+      <v-list-item
+        @click="clickSideMenu(category)"
+        dense
+      >
+        <v-list-item-title>{{ category.name }}</v-list-item-title>
+      </v-list-item>
+      <div
         v-show="category.sub_category"
         class="second"
       >
-        <li
+        <v-list-item
           v-for="(sub, idx2) in category.sub_category"
           :key="idx2"
+          @click="clickSideMenu(sub)"
+          dense
         >
-          <v-btn
-            text
-            @click="clickSideMenu(sub)"
-          >{{ sub.name }}</v-btn>
-        </li>
-      </ul>
-    </li>
-  </ul>
+          <v-list-item-title>{{ sub.name }}</v-list-item-title>
+        </v-list-item>
+      </div>
+    </div>
+  </v-list>
 </template>
 <script>
 export default {
@@ -37,14 +34,13 @@ export default {
       categories: []
     }
   },
-  mounted () {
+  created () {
     this.init()
   },
   methods: {
     init () {
       const results = this.$store.state.category_items.filter(v => v.id !== 1)
-      // 16 categories
-      // TODO: 階層マージしたい
+      // サブカテゴリマージ
       const items = []
       results.forEach((item) => {
         if (item.parent === 0) {

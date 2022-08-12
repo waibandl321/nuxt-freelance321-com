@@ -87,11 +87,7 @@ export default {
       }
     },
     clickPostCard (post) {
-      // 詳細をstoreに保存
-      this.$store.dispatch('storeSetPostView', this.copyJson(post))
-      const category_id = post.categories[0]
-      // 現在のカテゴリー
-      const current_category = this.categories.find(v => v.id === category_id)
+      const current_category = this.categories.find(v => v.id === post.categories[0])
       this.pageMovePost(current_category, post)
     },
     changePage (number) {

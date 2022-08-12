@@ -1,17 +1,9 @@
 export const state = () => ({
-  // 投稿
-  post_view: {},
   // カテゴリー
   category_items: [],
   category_view: {}
 })
 export const mutations = {
-  SET_POST_VIEW (state, post) {
-    state.post_view = post
-  },
-  DELETE_POST_VIEW (state) {
-    state.post_view = {}
-  },
   // カテゴリー
   SET_CATEGORY_ITEMS (state, data) {
     state.category_items = data
@@ -27,12 +19,6 @@ export const mutations = {
   }
 }
 export const actions = {
-  storeSetPostView (context, post) {
-    context.commit('SET_POST_VIEW', post)
-  },
-  storeDeletePostView (context, post = {}) {
-    context.commit('DELETE_POST_VIEW', post)
-  },
   // カテゴリー
   storeSetCategoryItems (context, data) {
     context.commit('SET_CATEGORY_ITEMS', data)

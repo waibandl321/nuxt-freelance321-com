@@ -18,7 +18,10 @@ Vue.mixin({
       if (current_category.parent !== 0) {
         parent_category = this.categories.find(r => r.id === current_category.parent)
         this.$router.push(
-          '/' + parent_category.slug + '/' + current_category.slug + '/' + post.slug
+          {
+            path: '/' + parent_category.slug + '/' + current_category.slug + '/' + post.slug,
+            query: { p: post.id }
+          }
         )
         return
       }

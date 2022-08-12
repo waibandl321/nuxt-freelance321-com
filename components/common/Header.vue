@@ -67,6 +67,7 @@
             hide-details
             rounded
             solo
+            placeholder="記事検索"
             append-icon="mdi-magnify"
             @input="search()"
           />
@@ -167,11 +168,8 @@ export default {
       this.search_items = []
       this.search_query = ''
       this.search_loading = false
-      this.$store.dispatch('storeSetPostView', this.copyJson(post))
 
-      const category_id = post.category.term_id
-      const current_category = this.categories.find(v => v.id === category_id)
-
+      const current_category = this.categories.find(v => v.id === post.category.term_id)
       this.pageMovePost(current_category, post)
     }
   }
