@@ -144,8 +144,6 @@ export default {
   },
   methods: {
     clickCategoryMenu (category) {
-      // storeにカテゴリー情報を格納する
-      this.$store.dispatch('storeSetCategoryView', this.copyJson(category))
       this.pageMoveCategory(category)
     },
     async search () {

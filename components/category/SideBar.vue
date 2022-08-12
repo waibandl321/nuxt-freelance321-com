@@ -11,11 +11,11 @@
         <v-list-item-title>{{ category.name }}</v-list-item-title>
       </v-list-item>
       <div
-        v-show="category.sub_category"
+        v-show="category.sub_categories"
         class="second"
       >
         <v-list-item
-          v-for="(sub, idx2) in category.sub_category"
+          v-for="(sub, idx2) in category.sub_categories"
           :key="idx2"
           @click="clickSideMenu(sub)"
           dense
@@ -34,24 +34,28 @@ export default {
       categories: []
     }
   },
-  created () {
-    this.init()
-  },
-  methods: {
-    init () {
-      const results = this.$store.state.category_items.filter(v => v.id !== 1)
-      // サブカテゴリマージ
+  // TODO: パフォーマンス的にAPI呼び出しではなくStoreで対応したいが...
+  async fetch () {
+    try {
+      const ret = await this.apiGetAllCategories(
+        this.apiTypeDefault()
+      ).then((response) => {
+        // 未分類カテゴリ除外
+        return response.data.filter(v => v.id !== 1)
+      })
+      // サブカテゴリーマージ
       const items = []
-      results.forEach((item) => {
+      ret.forEach((item) => {
         if (item.parent === 0) {
-          item.sub_category = results.filter(v => v.parent === item.id)
+          item.sub_categories = ret.filter(v => v.parent === item.id)
         }
         items.push(item)
       })
       this.categories = items.filter(v => v.parent === 0)
-    },
+    } catch {}
+  },
+  methods: {
     clickSideMenu (category) {
-      this.$store.dispatch('storeSetCategoryView', this.copyJson(category))
       this.pageMoveCategory(category)
     }
   }
