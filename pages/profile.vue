@@ -5,6 +5,7 @@
     <div
       v-else
       v-html="page_content"
+      class="post-content"
     ></div>
   </div>
 </template>

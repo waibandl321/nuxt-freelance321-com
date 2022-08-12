@@ -1,4 +1,6 @@
-
+.container .post-content {
+  padding-top: 24px;
+}
 h2#outline__1 {
   margin-top: 16px;
 }

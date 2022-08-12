@@ -3,14 +3,16 @@
     <v-list-item
       v-for="(item, idx) in items"
       :key="idx"
+      dense
     >
       <div>
         <a :href="'#' + item.id">{{ item.name }}</a>
       </div>
-      <v-list class="second">
+      <v-list class="second" v-show="item.sub.length > 0">
         <v-list-item
           v-for="(sub, idx2) in item.sub"
           :key="idx2"
+          dense
         >
           <a :href="'#' + sub.id">{{ sub.name }}</a>
         </v-list-item>
@@ -42,11 +44,12 @@ export default {
           h2.id = 'outline__' + Number(idx2 + 1)
           h2.name = h2.textContent
           h2.sub = []
-          tmpElmt.querySelectorAll('h3').forEach((h3, idx3) => {
+          const h3s = tmpElmt.querySelectorAll('h3')
+          h3s.forEach((h3) => {
             if (h3.getAttribute('id').includes(h2.id + '_')) {
               h2.sub.push(
                 {
-                  id: h2.id + '_' + Number(idx3 + 1),
+                  id: h2.id + '_' + h3.getAttribute('id').slice(-1),
                   name: h3.textContent
                 }
               )
