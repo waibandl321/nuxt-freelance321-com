@@ -1,7 +1,6 @@
 <template>
   <div>
     <CommonLoadingPageInner v-if="!page_data" />
-    <!-- eslint-disable-next-line vue/no-v-html -->
     <div
       v-else
       v-html="page_content"

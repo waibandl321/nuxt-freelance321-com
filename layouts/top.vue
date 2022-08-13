@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <CommonHeader />
-    <v-container>
+    <v-container class="mt-6">
       <Nuxt />
     </v-container>
     <CommonFooter />

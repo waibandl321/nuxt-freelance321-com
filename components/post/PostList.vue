@@ -70,10 +70,8 @@ export default {
     this.loading = false
   },
   computed: {
-    categories: {
-      get () {
-        return this.$store.getters.storeGetCategoryItems
-      }
+    categories () {
+      return this.storeGetCategories()
     }
   },
   methods: {

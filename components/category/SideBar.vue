@@ -7,6 +7,7 @@
       <v-list-item
         @click="clickSideMenu(category)"
         dense
+        :class="{ 'blue lighten-4': judgeActive(category) }"
       >
         <v-list-item-title>{{ category.name }}</v-list-item-title>
       </v-list-item>
@@ -19,6 +20,7 @@
           :key="idx2"
           @click="clickSideMenu(sub)"
           dense
+          :class="{ 'blue lighten-4': judgeActive(sub) }"
         >
           <v-list-item-title>{{ sub.name }}</v-list-item-title>
         </v-list-item>
@@ -35,26 +37,48 @@ export default {
     }
   },
   // TODO: パフォーマンス的にAPI呼び出しではなくStoreで対応したいが...
-  async fetch () {
-    try {
-      const ret = await this.apiGetAllCategories(
-        this.apiTypeDefault()
-      ).then((response) => {
-        // 未分類カテゴリ除外
-        return response.data.filter(v => v.id !== 1)
-      })
+  // async fetch () {
+  //   try {
+  //     const ret = await this.apiGetAllCategories(
+  //       this.apiTypeDefault()
+  //     ).then((response) => {
+  //       // 未分類カテゴリ除外
+  //       return response.data.filter(v => v.id !== 1)
+  //     })
+  //     // サブカテゴリーマージ
+  //     const items = []
+  //     ret.forEach((item) => {
+  //       if (item.parent === 0) {
+  //         item.sub_categories = ret.filter(v => v.parent === item.id)
+  //       }
+  //       items.push(item)
+  //     })
+  //     this.categories = items.filter(v => v.parent === 0)
+  //   } catch {}
+  // },
+  computed: {
+    store_categories () {
+      return this.storeGetCategories()
+    }
+  },
+  created () {
+    this.initCategories()
+  },
+  methods: {
+    initCategories () {
       // サブカテゴリーマージ
       const items = []
-      ret.forEach((item) => {
+      this.store_categories.forEach((item) => {
         if (item.parent === 0) {
-          item.sub_categories = ret.filter(v => v.parent === item.id)
+          item.sub_categories = this.store_categories.filter(v => v.parent === item.id)
         }
         items.push(item)
       })
       this.categories = items.filter(v => v.parent === 0)
-    } catch {}
-  },
-  methods: {
+    },
+    judgeActive (category) {
+      return Number(category.id) === Number(this.$route.query.c)
+    },
     clickSideMenu (category) {
       this.pageMoveCategory(category)
     }

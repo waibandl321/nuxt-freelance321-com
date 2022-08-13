@@ -58,11 +58,12 @@ export default {
     await this.initPostList()
   },
   computed: {
-    categories: {
-      get () {
-        return this.$store.getters.storeGetCategoryItems
-      }
+    categories () {
+      return this.storeGetCategories()
     }
+  },
+  created () {
+    console.log('post list created')
   },
   methods: {
     async initPostList () {

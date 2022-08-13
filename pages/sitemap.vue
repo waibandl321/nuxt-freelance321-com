@@ -39,10 +39,8 @@ export default {
     }
   },
   computed: {
-    store_categories: {
-      get () {
-        return this.$store.getters.storeGetCategoryItems
-      }
+    store_categories () {
+      return this.storeGetCategories()
     }
   },
   created () {

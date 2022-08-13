@@ -130,7 +130,7 @@ export default {
         return response.data.filter(v => v.id !== 1)
       })
       // storeにカテゴリーデータを格納
-      this.$store.dispatch('storeSetCategoryItems', this.copyJson(this.categories))
+      this.storeSetCategories(this.categories)
       // サブカテゴリーマージ
       const items = []
       this.categories.forEach((item) => {
@@ -141,6 +141,9 @@ export default {
       })
       this.header_links.categories = items.filter(v => v.parent === 0)
     } catch {}
+  },
+  created () {
+    console.log('header created')
   },
   methods: {
     clickCategoryMenu (category) {
@@ -202,6 +205,7 @@ export default {
 }
 .menu-item {
   padding: 8px 16px;
+  font-size: 14px;
 }
 .menu-item:hover {
   background: #f8f5f5;
