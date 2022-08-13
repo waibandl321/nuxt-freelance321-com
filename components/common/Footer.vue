@@ -25,10 +25,6 @@ export default {
     footer_links: {
       common: [
         {
-          text: 'TOP',
-          to: '/'
-        },
-        {
           text: 'プライバシーポリシー',
           to: '/privacy'
         },

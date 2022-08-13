@@ -62,8 +62,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route.params.category)
-    console.log(this.$route.params.subCategory)
     this.initCategories()
   },
   methods: {
@@ -97,6 +95,8 @@ export default {
 .side-menu {
   position: sticky;
   top: 84px;
+  max-height: calc(100vh - 162px);
+  overflow: auto;
 }
 .second {
   padding-left: 16px;

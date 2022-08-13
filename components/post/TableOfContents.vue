@@ -86,6 +86,8 @@ export default {
   font-size: 14px;
   position: sticky;
   top: 84px;
+  max-height: calc(100vh - 162px);
+  overflow: auto;
 }
 .second {
   padding-left: 16px;

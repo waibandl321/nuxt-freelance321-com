@@ -142,9 +142,6 @@ export default {
       this.header_links.categories = items.filter(v => v.parent === 0)
     } catch {}
   },
-  created () {
-    console.log('header created')
-  },
   methods: {
     clickCategoryMenu (category) {
       this.pageMoveCategory(category)
@@ -186,7 +183,6 @@ export default {
 }
 .menu-wrap {
   display: flex;
-  font-size: 14px;
 }
 .first:hover + .second {
   display: block;
@@ -205,7 +201,7 @@ export default {
 }
 .menu-item {
   padding: 8px 16px;
-  font-size: 14px;
+  font-size: 13px;
 }
 .menu-item:hover {
   background: #f8f5f5;
