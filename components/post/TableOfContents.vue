@@ -6,7 +6,13 @@
       dense
     >
       <div>
-        <a :href="'#' + item.id">{{ item.name }}</a>
+        <!-- v-scroll-to="'#anchor'" -->
+        <a
+          href="#"
+          v-scroll-to="'#' + item.id"
+        >
+          {{ item.name }}
+        </a>
       </div>
       <v-list class="second" v-show="item.sub.length > 0">
         <v-list-item
@@ -14,7 +20,12 @@
           :key="idx2"
           dense
         >
-          <a :href="'#' + sub.id">{{ sub.name }}</a>
+          <a
+            href="#"
+            v-scroll-to="'#' + sub.id"
+          >
+            {{ sub.name }}
+          </a>
         </v-list-item>
       </v-list>
     </v-list-item>
