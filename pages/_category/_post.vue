@@ -6,7 +6,7 @@
         <CategorySideBar />
       </v-col>
       <v-col cols="6">
-        <div>投稿日： {{ article.date }}</div>
+        <div class="mt-6">投稿日： {{ article.date }}</div>
         <v-card-title
           class="px-0 font-weight-bold"
         >

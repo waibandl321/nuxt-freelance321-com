@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list class="side-menu">
     <div
       v-for="(category, idx) in categories"
       :key="idx"
@@ -62,6 +62,8 @@ export default {
     }
   },
   created () {
+    console.log(this.$route.params.category)
+    console.log(this.$route.params.subCategory)
     this.initCategories()
   },
   methods: {
@@ -77,7 +79,13 @@ export default {
       this.categories = items.filter(v => v.parent === 0)
     },
     judgeActive (category) {
-      return Number(category.id) === Number(this.$route.query.c)
+      if (this.$route.query.c) {
+        return Number(category.id) === Number(this.$route.query.c)
+      } else if (!this.$route.params.subCategory) {
+        return this.$route.params.category === category.slug
+      } else {
+        return this.$route.params.subCategory === category.slug
+      }
     },
     clickSideMenu (category) {
       this.pageMoveCategory(category)
@@ -86,6 +94,10 @@ export default {
 }
 </script>
 <style scoped>
+.side-menu {
+  position: sticky;
+  top: 84px;
+}
 .second {
   padding-left: 16px;
 }

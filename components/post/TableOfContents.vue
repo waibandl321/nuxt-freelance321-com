@@ -1,34 +1,37 @@
 <template>
   <v-list class="first">
-    <v-list-item
+    <div
       v-for="(item, idx) in items"
       :key="idx"
-      dense
     >
-      <div>
-        <!-- v-scroll-to="'#anchor'" -->
-        <a
-          href="#"
-          v-scroll-to="'#' + item.id"
-        >
+      <v-list-item
+        v-scroll-to="'#' + item.id"
+        debse
+        nuxt
+        href="#"
+      >
+        <v-list-item-content>
           {{ item.name }}
-        </a>
-      </div>
-      <v-list class="second" v-show="item.sub.length > 0">
+        </v-list-item-content>
+      </v-list-item>
+      <div
+        v-show="item.sub.length > 0"
+        class="second"
+      >
         <v-list-item
           v-for="(sub, idx2) in item.sub"
           :key="idx2"
+          v-scroll-to="'#' + sub.id"
           dense
+          nuxt
+          href="#"
         >
-          <a
-            href="#"
-            v-scroll-to="'#' + sub.id"
-          >
-            {{ sub.name }}
-          </a>
+          <v-list-item-content>
+            <v-list-item-title>{{ sub.name }}</v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
-      </v-list>
-    </v-list-item>
+      </div>
+    </div>
   </v-list>
 </template>
 <script>
@@ -81,6 +84,8 @@ export default {
 }
 .first {
   font-size: 14px;
+  position: sticky;
+  top: 84px;
 }
 .second {
   padding-left: 16px;
