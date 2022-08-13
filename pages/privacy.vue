@@ -24,6 +24,11 @@ export default {
       this.apiTypeDefault()
     )
   },
+  head () {
+    return {
+      title: 'プライバシーポリシー'
+    }
+  },
   computed: {
     page_content () {
       return this.page_data.data[0].content.rendered

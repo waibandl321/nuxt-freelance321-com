@@ -15,6 +15,7 @@
           <v-img
             :src="getEyecatchUrl(item)"
             aspect-ratio="1.7"
+            style="background-color: #f8f5f5;"
           />
           <v-card-subtitle>
             {{ item.title.rendered }}
@@ -49,9 +50,7 @@ export default {
 
       current_page: 1,
       per_page: 8,
-      page_max: 1,
-
-      media_base_url: 'https://freelance321.com/wp-content/uploads/'
+      page_max: 1
     }
   },
   async fetch () {
@@ -61,9 +60,6 @@ export default {
     categories () {
       return this.storeGetCategories()
     }
-  },
-  created () {
-    console.log('post list created')
   },
   methods: {
     async initPostList () {
@@ -82,10 +78,9 @@ export default {
       this.loading = false
     },
     getEyecatchUrl (item) {
-      if (!item._embedded['wp:featuredmedia']) {
-        return this.media_base_url + '2021/08/web-productions.jpg'
+      if (item._embedded['wp:featuredmedia']) {
+        return this.media.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
       }
-      return this.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
     },
     setPaginations (results) {
       this.page_max = Math.ceil(results.headers['x-wp-total'] / this.per_page)

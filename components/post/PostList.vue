@@ -15,6 +15,7 @@
           <v-img
             :src="imagePath(item)"
             aspect-ratio="1.7"
+            style="background-color: #f8f5f5"
           />
           <v-card-subtitle>
             {{ item.title.rendered }}
@@ -34,12 +35,10 @@
 </template>
 
 <script>
-// import store from "@/store"
 export default {
   name: 'PostList',
   data () {
     return {
-      media_base_url: 'https://freelance321.com/wp-content/uploads/',
       current_page: 1,
       per_page: 8,
       pagination: [],
@@ -76,7 +75,9 @@ export default {
   },
   methods: {
     imagePath (item) {
-      return this.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
+      if (item._embedded['wp:featuredmedia']) {
+        return this.media.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
+      }
     },
     setPaginations (results) {
       const total_page_num = Math.ceil(results.headers['x-wp-total'] / this.per_page)

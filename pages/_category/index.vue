@@ -4,7 +4,7 @@
     <v-col cols="3">
       <CategorySideBar />
     </v-col>
-    <v-col cols="9">
+    <v-col cols="9" v-if="category">
       <v-card-title class="px-0">
         カテゴリー：{{ category.name }}
       </v-card-title>
@@ -26,11 +26,12 @@ export default {
   data () {
     return {
       category: {},
-      loading: false
+      meta: {
+        title: ''
+      }
     }
   },
   async fetch () {
-    this.loading = true
     if (this.$route.query.c) {
       await this.apiGetCategoryFromId(
         this.$route.query.c,
@@ -47,7 +48,17 @@ export default {
         this.category = res.data[0]
       })
     }
-    this.loading = false
+  },
+  head () {
+    return {
+      title: this.meta.title
+    }
+  },
+  watch: {
+    // MEMO: 非同期処理で投稿取得するため、取得状況を監視してmeta titleに割り当てる
+    category (newValue) {
+      this.meta.title = newValue.name
+    }
   }
 }
 </script>

@@ -6,6 +6,11 @@
 <script>
 export default {
   name: 'ContactPage',
-  layout: 'page'
+  layout: 'page',
+  head () {
+    return {
+      title: 'お問い合わせ'
+    }
+  }
 }
 </script>

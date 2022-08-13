@@ -38,6 +38,11 @@ export default {
       }
     }
   },
+  head () {
+    return {
+      title: 'サイトマップ'
+    }
+  },
   computed: {
     store_categories () {
       return this.storeGetCategories()

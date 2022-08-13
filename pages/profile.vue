@@ -23,6 +23,11 @@ export default {
       this.apiTypeDefault()
     )
   },
+  head () {
+    return {
+      title: 'プロフィール'
+    }
+  },
   computed: {
     page_content () {
       return this.page_data.data[0].content.rendered
