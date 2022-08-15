@@ -23,7 +23,10 @@
         </v-card>
       </v-col>
     </v-row>
-    <div class="text-center mt-10 pagination">
+    <div
+      v-if="!loading"
+      class="text-center mt-10 pagination"
+    >
       <v-pagination
         v-model="current_page"
         :length="15"
@@ -101,13 +104,5 @@ export default {
 <style scoped>
 .pagination >>> .theme--light.v-pagination .v-pagination__item--active {
   background: #1867c0;
-}
-
-.pagination {
-  margin-top: 40px;
-  position: absolute;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
 }
 </style>

@@ -1,24 +1,42 @@
-.container .post-content {
+/* .container .post-content {
   padding-top: 24px;
-}
+} */
 h2#outline__1 {
   margin-top: 16px;
+}
+.post-wrap h2 {
+  font-size: 24px;
 }
 .container .post-content h2 {
   margin-top: 64px;
   margin-bottom: 16px;
+  font-size: 20px;
+  padding: 20px;
+  color: #191919;
+  background: #f5f6f7;
 }
 .container .post-content h3 {
   margin-top: 40px;
   margin-bottom: 16px;
+  padding: 10px 20px;
+  border-left: 5px solid #e5e5e5;
+  font-size: 18px;
+}
+.container .post-content h4 {
+  font-size: 16px;
 }
 .container .post-content img,
 .container .post-content video {
   max-width: 100%;
+  height: auto;
 }
 .container .post-content p {
   font-size: 14px;
   margin-bottom: 24px;
+  line-height: 1.8;
+}
+.container .post-content p.has-background {
+  padding: 1.25em 2.375em;
 }
 .container .post-content ul, .container .post-content ol {
   margin-top: 16px;
@@ -27,6 +45,87 @@ h2#outline__1 {
   margin-top: 24px;
   margin-bottom: 16px;
 }
+.container .post-content figure {
+  margin-top: 16px;
+}
 .container .post-content figure + p {
   margin-top: 16px;
+}
+/* テーブル周り */
+.container .post-content table {
+  width: 100%;
+  border-top: 1px solid #E5E5E5;
+  border-left: 1px solid #E5E5E5;
+}
+.container .post-content table th {
+  padding: 10px;
+	background-color: #f6f7f8;
+  border-right: 1px solid #E5E5E5;
+  border-bottom: 1px solid #E5E5E5;
+}
+.container .post-content table td {
+	background-color: #fff;
+  padding: 10px;
+  border-right: 1px solid #E5E5E5;
+  border-bottom: 1px solid #E5E5E5;
+}
+.container .post-content table th,
+.container .post-content table td {
+	color: inherit;
+	font-size: 14px;
+}
+.container .post-content table th:first-child,
+.container .post-content table td:first-child {
+	width: 150px;
+}
+.container .post-content table button {
+	width: 100%;
+	border: none;
+	background: #96c344;
+	border-radius: 8px;
+	padding: 24px 8px;
+	box-shadow: 0 12px 10px -6px rgba(0,0,0,.25);
+}
+.container .post-content table button a {
+	display: block;
+	color: #fff!important;
+}
+.container .post-content table img {
+	height: auto;
+}
+.container .post-content h2 + .wp-block-table {
+	margin-top: 40px;
+}
+.container .post-content p + .wp-block-table,
+.container .post-content h4 + .wp-block-table {
+	margin-top: 24px;
+}
+@media(max-width: 767px) {
+	.container .post-content table th,
+	.container .post-content table td {
+		font-size: 14px;
+	}
+	.container .post-content table th:first-child,
+	.container .post-content table td:first-child {
+		width: 100px;
+	}
+}
+@media(max-width: 400px) {
+	.container .post-content table th,
+	.container .post-content table td {
+		font-size: 12px;
+		padding: 4px;
+	}
+	
+}
+/*リスト設定*/
+.container .post-content ul,
+.container .post-content ol {
+	margin: 16px 0;
+}
+.container .post-content ul li,
+.container .post-content ol li {
+	position:relative;
+	padding: 4px 8px;
+	font-size: 14px;
 }

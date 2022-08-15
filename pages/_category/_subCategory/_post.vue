@@ -9,8 +9,8 @@
         <!-- パンくず -->
         <PostBreadcrumbs :post="post" />
         <!-- 投稿詳細 -->
-        <div>
-          <div class="mt-6">投稿日： {{ post.date }}</div>
+        <div class="post-wrap">
+          <div>投稿日： {{ post.date }}</div>
           <v-card-title
             class="px-0 font-weight-bold"
           >

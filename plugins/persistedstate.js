@@ -6,7 +6,8 @@ export default ({ store }) => {
     paths: [
       'post_view',
       'category_items',
-      'category_view'
+      'category_view',
+      'form'
     ]
   })(store)
 }

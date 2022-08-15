@@ -34,7 +34,8 @@ export default {
     '@/plugins/vue-scrollto.js',
     '@/plugins/mixins/utils.js',
     '@/plugins/mixins/api.js',
-    '@/plugins/mixins/store.js'
+    '@/plugins/mixins/store.js',
+    '@/plugins/vuelidate.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

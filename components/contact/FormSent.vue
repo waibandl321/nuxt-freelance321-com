@@ -1,0 +1,9 @@
+<template>
+  <v-card>
+    <v-card-title>フォームが送信されました。</v-card-title>
+    <v-card-text>
+      お問い合わせいただき、ありがとうございます。<br>
+      内容につきましては、確認の上ご返信をさせていただきます。
+    </v-card-text>
+  </v-card>
+</template>

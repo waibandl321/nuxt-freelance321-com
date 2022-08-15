@@ -4,55 +4,126 @@
     ref="form"
     @submit.prevent="submit()"
   >
-    <v-text-field
-      v-model="form_data.name"
-      label="お名前"
-      name="text215"
-    />
-    <v-text-field
-      v-model="form_data.email"
-      label="メールアドレス"
-      type="email"
-      name="email439"
-    />
-    <v-text-field
-      v-model="form_data.phone"
-      label="電話番号"
-      type="tel"
-      name="tel443"
-    />
-    <v-textarea
-      v-model="form_data.message"
-      name="textarea440"
-      label="問い合わせ内容"
-    />
-    <v-checkbox
-      v-model="form_data.checked"
-      name="checkbox403"
-      label="送信前にチェックを入れてください。"
-      value="送信前にチェックを入れてください。"
-    />
-    <v-btn
-      type="submit"
-      width="100%"
-    >
-      送信する
-    </v-btn>
+    <div>
+      <v-text-field
+        v-model.trim="$v.form_data.name.$model"
+        label="お名前"
+        name="text215"
+        hide-details="auto"
+      />
+    </div>
+    <div class="input-error" v-if="!$v.form_data.name.required">
+      「お名前」は入力必須です
+    </div>
+    <div class="mt-10">
+      <v-text-field
+        v-model.trim="$v.form_data.email.$model"
+        label="メールアドレス"
+        type="email"
+        name="email439"
+        hide-details="auto"
+      />
+      <div
+        v-if="!$v.form_data.email.required"
+        class="input-error"
+      >
+        「メールアドレス」は入力必須です
+      </div>
+      <div
+        v-if="!$v.form_data.email.email"
+        class="input-error"
+      >
+        適切なメールアドレスの形式ではありません
+      </div>
+    </div>
+    <div class="mt-10">
+      <v-text-field
+        v-model.trim="$v.form_data.phone.$model"
+        label="電話番号(ハイフンなし)"
+        type="number"
+        name="tel443"
+        hide-details="auto"
+      />
+      <div class="input-error" v-if="!$v.form_data.phone.required">
+        「電話番号」は入力必須です
+      </div>
+    </div>
+    <div class="mt-10">
+      <v-textarea
+        v-model.trim="$v.form_data.message.$model"
+        name="textarea440"
+        label="問い合わせ内容（150文字以内）"
+        :maxlength="maxLength_message"
+        hide-details="auto"
+        :counter="maxLength_message"
+      />
+      <div
+        v-if="!$v.form_data.message.required"
+        class="input-error"
+      >
+        「問い合わせ内容」は入力必須項目です
+      </div>
+    </div>
+    <div class="mt-10">
+      <v-checkbox
+        v-model="$v.form_data.checked.$model"
+        name="checkbox403"
+        label="送信前にチェックを入れてください。"
+        value="送信前にチェックを入れてください。"
+        hide-details="auto"
+      />
+      <div
+        v-if="!$v.form_data.checked.isChecked"
+        class="input-error"
+      >
+        チェックは必須です
+      </div>
+    </div>
+    <div class="mt-10">
+      <v-btn
+        @click="clickConfirm()"
+        width="100%"
+        :disabled="$v.$invalid"
+        color="primary"
+      >
+        確認画面へ
+      </v-btn>
+    </div>
   </v-form>
 </template>
 
 <script>
+import { required, maxLength, email } from 'vuelidate/lib/validators'
+const isChecked = (value) => {
+  return value === '送信前にチェックを入れてください。'
+}
 export default {
   name: 'FormInput',
+  props: {
+    changeMode: Function,
+    form_data: Object
+  },
+  validations: {
+    form_data: {
+      name: { required },
+      email: {
+        required,
+        email
+      },
+      phone: {
+        required
+      },
+      message: {
+        required,
+        maxLengthValue: maxLength(10)
+      },
+      checked: { isChecked }
+    }
+  },
   data () {
     return {
-      form_data: {
-        name: '',
-        email: '',
-        phone: '',
-        message: '',
-        checked: false
-      }
+      maxLength_message: 150,
+      maxLength_phone: 11
     }
   },
   head () {
@@ -60,37 +131,22 @@ export default {
       title: 'お問い合わせ'
     }
   },
+  // created () {
+  //   this.form_data = this.storeGetContactForm()
+  // },
   methods: {
-    clear () {
-      this.$refs.form.reset()
-      this.form_data.checked = false
-    },
-    async submit () {
-      // 1. 送信データ用意
-      const emailBody = {
-        text215: this.form_data.name,
-        email439: this.form_data.email,
-        tel443: this.form_data.phone,
-        textarea440: this.form_data.message,
-        checkbox403: this.form_data.checked
-      }
-      // 2. formData生成
-      const form = new FormData()
-      for (const field in emailBody) {
-        form.append(field, emailBody[field])
-      }
-      // 3. post
-      await this.$axios
-        .post(
-          'https://freelance321.com/wp-json/contact-form-7/v1/contact-forms/7/feedback',
-          form
-        ).then((response) => {
-          console.log(response)
-          this.clear()
-        }).catch((error) => {
-          console.log(error)
-        })
+    clickConfirm () {
+      // this.storeSetContactForm(this.form_data)
+      // eslint-disable-next-line vue/no-mutating-props
+      this.changeMode('confirm')
     }
   }
 }
 </script>
+<style scoped>
+.input-error {
+  font-size: 12px;
+  color: red;
+  margin-top: 8px;
+}
+</style>
