@@ -2,10 +2,10 @@
   <div>
     <CommonLoadingPageInner v-if="loading" />
     <v-row v-else>
-      <v-col cols="3">
+      <v-col cols="3" class="d-none d-sm-block">
         <CategorySideBar />
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12" sm="6">
         <!-- パンくず -->
         <PostBreadcrumbs :post="post" />
         <!-- 投稿詳細 -->
@@ -22,7 +22,7 @@
           ></div>
         </div>
       </v-col>
-      <v-col cols="3">
+      <v-col cols="3" class="d-none d-sm-block">
         <PostTableOfContents :content="post.content.rendered || post.content" />
       </v-col>
     </v-row>

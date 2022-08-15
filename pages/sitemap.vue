@@ -6,7 +6,9 @@
         <v-col
           v-if="judgePostExists(category)"
           :key="i"
-          cols="4"
+          cols="12"
+          sm="6"
+          md="4"
           class="mt-10"
         >
           <div class="sitemap-category">

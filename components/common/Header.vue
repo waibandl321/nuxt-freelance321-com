@@ -4,7 +4,7 @@
     app
     flat
   >
-    <v-container class="fill-height">
+    <v-container class="fill-height pa-0">
       <div class="menu-wrap">
         <div>
           <v-btn
@@ -58,7 +58,7 @@
       </div>
       <v-spacer />
       <!-- 検索 -->
-      <div class="search">
+      <div class="search d-none d-sm-block">
         <v-responsive max-width="260">
           <v-text-field
             v-model.trim="search_query"

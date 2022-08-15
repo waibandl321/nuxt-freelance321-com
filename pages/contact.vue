@@ -1,6 +1,6 @@
 <!-- TOP -->
 <template>
-  <v-container>
+  <div>
     <CommonLoadingOverlay
       v-if="loading"
     />
@@ -19,7 +19,7 @@
     <ContactFormSent
       v-if="mode === 'sent'"
     />
-  </v-container>
+  </div>
 </template>
 
 <script>

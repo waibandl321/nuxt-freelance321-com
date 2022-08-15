@@ -6,7 +6,9 @@
       <v-col
         v-for="(item, idx) in posts"
         :key="idx"
-        cols="4"
+        md="4"
+        sm="6"
+        cols="12"
       >
         <v-card
           hover

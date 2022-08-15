@@ -1,10 +1,9 @@
 <template>
   <v-footer
     app
-    height="72"
     inset
   >
-    <v-container>
+    <v-container class="px-0">
       <v-btn
         v-for="(link, idx) in footer_links.common"
         :key="idx"

@@ -1,10 +1,14 @@
 <!-- TOP -->
 <template>
   <v-row>
-    <v-col cols="3">
+    <v-col cols="3" class="d-none d-sm-block">
       <CategorySideBar />
     </v-col>
-    <v-col cols="9" v-if="category">
+    <v-col
+      v-if="category"
+      cols="12"
+      sm="9"
+    >
       <v-card-title class="px-0">
         カテゴリー：{{ category.name }}
       </v-card-title>
