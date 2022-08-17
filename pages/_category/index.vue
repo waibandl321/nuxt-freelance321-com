@@ -9,7 +9,7 @@
       cols="12"
       sm="9"
     >
-      <v-card-title class="px-0">
+      <v-card-title class="px-0 pt-0">
         カテゴリー：{{ category.name }}
       </v-card-title>
       <v-card-subtitle class="px-0">

@@ -93,8 +93,9 @@ export default {
 </script>
 <style scoped>
 .side-menu {
+  padding-top: 0;
   position: sticky;
-  top: 84px;
+  top: 76px;
   max-height: calc(100vh - 162px);
   overflow: auto;
 }

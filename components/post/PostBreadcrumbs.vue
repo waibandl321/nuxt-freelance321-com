@@ -1,7 +1,7 @@
 <template>
   <v-breadcrumbs
     :items="breadcrumbs"
-    class="px-0"
+    class="px-0 pt-0"
   >
     <template v-slot:item="{ item }">
       <v-breadcrumbs-item

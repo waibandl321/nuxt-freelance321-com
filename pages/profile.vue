@@ -1,11 +1,17 @@
 <template>
   <div>
     <CommonLoadingPageInner v-if="!page_data" />
-    <div
-      v-else
-      v-html="page_content"
-      class="post-content"
-    ></div>
+    <div v-else>
+      <v-card-title
+        class="px-0 font-weight-bold"
+      >
+        {{ page_title }}
+      </v-card-title>
+      <div
+        v-html="page_content"
+        class="post-content"
+      ></div>
+    </div>
   </div>
 </template>
 <script>
@@ -31,6 +37,9 @@ export default {
   computed: {
     page_content () {
       return this.page_data.data[0].content.rendered
+    },
+    page_title () {
+      return this.page_data.data[0].title.rendered
     }
   }
 }

@@ -147,6 +147,6 @@ export default {
 .input-error {
   font-size: 12px;
   color: red;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 </style>

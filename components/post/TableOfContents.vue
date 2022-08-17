@@ -85,6 +85,7 @@ export default {
 .first {
   font-size: 14px;
   position: sticky;
+  padding-top: 0;
   top: 84px;
   max-height: calc(100vh - 162px);
   overflow: auto;

@@ -4,6 +4,11 @@
     <CommonLoadingOverlay
       v-if="loading"
     />
+    <v-card-title
+      class="px-0 font-weight-bold"
+    >
+      お問い合わせ
+    </v-card-title>
     <ContactFormInput
       v-if="mode === 'input'"
       :changeMode="changeMode"
@@ -78,10 +83,9 @@ export default {
           form
         ).then((response) => {
           if (response.status === 200 && response.data.status === 'mail_sent') {
-            this.mode = 'sent'
             this.init()
+            this.mode = 'sent'
           }
-          console.log(response)
         }).catch((error) => {
           this.message.error = 'フィームの送信に失敗しました。時間を置いてから再度送信ください。'
           console.log(error)
