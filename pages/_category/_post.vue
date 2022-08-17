@@ -9,7 +9,7 @@
         <!-- パンくず -->
         <PostBreadcrumbs :post="post" />
         <div class="post-wrap">
-          <div>投稿日： {{ post.date }}</div>
+          <v-card-text class="pa-0">投稿日： {{ post.date }}</v-card-text>
           <v-card-title
             class="px-0 font-weight-bold"
           >
@@ -49,6 +49,7 @@ export default {
         this.apiTypeDefault()
       ).then((res) => {
         this.post = res.data
+        this.post.date = this.formatDate(this.post.date)
       })
     } else {
       // queryがない場合はparams.slugから詳細データを取得する（旧サイト対応）
@@ -58,6 +59,7 @@ export default {
         this.apiTypeDefault()
       ).then((res) => {
         this.post = res.data[0]
+        this.post.date = this.formatDate(this.post.date)
       })
     }
     this.loading = false
