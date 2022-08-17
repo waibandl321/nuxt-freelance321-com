@@ -36,26 +36,6 @@ export default {
       categories: []
     }
   },
-  // TODO: パフォーマンス的にAPI呼び出しではなくStoreで対応したいが...
-  // async fetch () {
-  //   try {
-  //     const ret = await this.apiGetAllCategories(
-  //       this.apiTypeDefault()
-  //     ).then((response) => {
-  //       // 未分類カテゴリ除外
-  //       return response.data.filter(v => v.id !== 1)
-  //     })
-  //     // サブカテゴリーマージ
-  //     const items = []
-  //     ret.forEach((item) => {
-  //       if (item.parent === 0) {
-  //         item.sub_categories = ret.filter(v => v.parent === item.id)
-  //       }
-  //       items.push(item)
-  //     })
-  //     this.categories = items.filter(v => v.parent === 0)
-  //   } catch {}
-  // },
   computed: {
     store_categories () {
       return this.storeGetCategories()

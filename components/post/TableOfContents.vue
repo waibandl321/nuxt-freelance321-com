@@ -60,19 +60,24 @@ export default {
           h2.sub = []
           const h3s = tmpElmt.querySelectorAll('h3')
           h3s.forEach((h3) => {
-            if (h3.getAttribute('id').includes(h2.id + '_')) {
-              h2.sub.push(
-                {
-                  id: h2.id + '_' + h3.getAttribute('id').slice(-1),
-                  name: h3.textContent
-                }
-              )
+            if (h3.getAttribute('id')) {
+              if (h3.getAttribute('id').includes(h2.id + '_')) {
+                h2.sub.push(
+                  {
+                    id: h2.id + '_' + h3.getAttribute('id').slice(-1),
+                    name: h3.textContent
+                  }
+                )
+              }
             }
           })
           result.push(h2)
         })
         this.items = result
-      } catch {}
+      } catch (error) {
+        console.log('例外発生')
+        console.log(error)
+      }
     }
   }
 }
