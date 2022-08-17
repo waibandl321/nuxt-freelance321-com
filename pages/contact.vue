@@ -79,7 +79,7 @@ export default {
       // 3. post
       await this.$axios
         .post(
-          'https://freelance321.com/wp-json/contact-form-7/v1/contact-forms/7/feedback',
+          'https://admin.freelance321.com/wp-json/contact-form-7/v1/contact-forms/7/feedback',
           form
         ).then((response) => {
           if (response.status === 200 && response.data.status === 'mail_sent') {

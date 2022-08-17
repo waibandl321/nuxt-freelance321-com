@@ -3,12 +3,11 @@ Vue.mixin({
   data () {
     return {
       api_conf: {
-        base_path: 'https://freelance321.com/wp-json/wp/v2/',
-        custom_path: 'https://freelance321.com/wp-json/wp/api/'
+        base_path: 'https://admin.freelance321.com/wp-json/wp/v2/',
+        custom_path: 'https://admin.freelance321.com/wp-json/wp/api/'
       },
       media: {
-        media_base_url: 'https://freelance321.com/wp-content/uploads/',
-        _media_base_url: 'https://admin.freelance321.com/wp-content/uploads/'
+        media_base_url: 'https://admin.freelance321.com/wp-content/uploads/'
       }
     }
   },
