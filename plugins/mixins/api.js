@@ -7,7 +7,8 @@ Vue.mixin({
         custom_path: 'https://freelance321.com/wp-json/wp/api/'
       },
       media: {
-        media_base_url: 'https://freelance321.com/wp-content/uploads/'
+        media_base_url: 'https://freelance321.com/wp-content/uploads/',
+        _media_base_url: 'https://admin.freelance321.com/wp-content/uploads/'
       }
     }
   },
