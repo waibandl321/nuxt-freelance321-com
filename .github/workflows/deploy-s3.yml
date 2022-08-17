@@ -1,23 +1,48 @@
-name: Upload to S3
+name: deploy to s3
+
 on:
   push:
-      branches:
-        - main
+    branches:
+      - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v2
 
-      - name: Install Dependencies
-        run: npm install
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
 
-      - name: Build
-        run: npm run build
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
 
-      - name: Deploy to S3
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install packages
+        run: npm ci
+
+      - name: Run test
+        run: npm run lint
+
+      - name: Genarate files
+        run: npm run generate
+
+      - name: Upload dist files to S3
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: aws s3 sync ./dist s3://nuxt.freelance321.com
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+        run: aws s3 sync ./dist s3://$S3_BUCKET_NAME/ --quiet
