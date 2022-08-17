@@ -25,3 +25,4 @@ jobs:
         env:
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
         run: aws s3 sync ./dist s3://$S3_BUCKET_NAME
+        
