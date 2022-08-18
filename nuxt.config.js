@@ -55,7 +55,7 @@ export default {
     '@nuxtjs/axios',
     ['@nuxtjs/google-gtag', {
       id: 'G-HFB5R1ZBG2',
-      debug: true
+      debug: false
     }]
   ],
 
