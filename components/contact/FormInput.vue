@@ -12,7 +12,10 @@
         hide-details="auto"
       />
     </div>
-    <div class="input-error" v-if="!$v.form_data.name.required">
+    <div
+      v-if="!$v.form_data.name.required"
+      class="input-error"
+    >
       「お名前」は入力必須です
     </div>
     <div class="mt-10">
