@@ -15,6 +15,7 @@
           >
             {{ post.title.rendered || post.title }}
           </v-card-title>
+          <CommonGoogleAds />
           <div
             v-html="post.content.rendered || post.content"
             class="post-content"
