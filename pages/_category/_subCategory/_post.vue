@@ -24,6 +24,7 @@
       </v-col>
       <v-col cols="3" class="d-none d-sm-block">
         <PostTableOfContents :content="post.content.rendered || post.content" />
+        <CommonGoogleAds />
       </v-col>
     </v-row>
   </div>

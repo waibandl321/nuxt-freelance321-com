@@ -56,6 +56,9 @@ export default {
     ['@nuxtjs/google-gtag', {
       id: 'G-HFB5R1ZBG2',
       debug: false
+    }],
+    ['@nuxtjs/google-adsense', {
+      id: 'ca-pub-9512438052623099'
     }]
   ],
 
