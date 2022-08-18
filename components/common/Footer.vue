@@ -27,10 +27,10 @@ export default {
           text: 'プライバシーポリシー',
           to: '/privacy'
         },
-        // {
-        //   text: 'お問い合わせ',
-        //   to: '/contact'
-        // },
+        {
+          text: 'お問い合わせ',
+          to: '/contact'
+        },
         {
           text: 'サイトマップ',
           to: '/sitemap'
