@@ -16,6 +16,7 @@
           >
             {{ post.title.rendered || post.title }}
           </v-card-title>
+          <CommonGoogleAds />
           <div
             v-html="post.content.rendered || post.content"
             class="post-content"
@@ -24,7 +25,6 @@
       </v-col>
       <v-col cols="3" class="d-none d-sm-block">
         <PostTableOfContents :content="post.content.rendered || post.content" />
-        <CommonGoogleAds />
       </v-col>
     </v-row>
   </div>
