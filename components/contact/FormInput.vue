@@ -8,7 +8,7 @@
       <v-text-field
         v-model.trim="$v.form_data.name.$model"
         label="お名前"
-        name="text215"
+        name="entry.247993782"
         hide-details="auto"
       />
     </div>
@@ -20,7 +20,7 @@
         v-model.trim="$v.form_data.email.$model"
         label="メールアドレス"
         type="email"
-        name="email439"
+        name="entry.2089866053"
         hide-details="auto"
       />
       <div
@@ -41,7 +41,7 @@
         v-model.trim="$v.form_data.phone.$model"
         label="電話番号(ハイフンなし)"
         type="number"
-        name="tel443"
+        name="entry.666391459"
         hide-details="auto"
       />
       <div class="input-error" v-if="!$v.form_data.phone.required">
@@ -51,7 +51,7 @@
     <div class="mt-10">
       <v-textarea
         v-model.trim="$v.form_data.message.$model"
-        name="textarea440"
+        name="entry.682995808"
         label="問い合わせ内容（150文字以内）"
         :maxlength="maxLength_message"
         hide-details="auto"
@@ -67,7 +67,7 @@
     <div class="mt-10">
       <v-checkbox
         v-model="$v.form_data.checked.$model"
-        name="checkbox403"
+        name="entry.1849326221_sentinel"
         label="送信前にチェックを入れてください。"
         value="送信前にチェックを入れてください。"
         hide-details="auto"
@@ -131,12 +131,8 @@ export default {
       title: 'お問い合わせ'
     }
   },
-  // created () {
-  //   this.form_data = this.storeGetContactForm()
-  // },
   methods: {
     clickConfirm () {
-      // this.storeSetContactForm(this.form_data)
       // eslint-disable-next-line vue/no-mutating-props
       this.changeMode('confirm')
     }

@@ -3,7 +3,15 @@
     <v-card-title>フォームが送信されました。</v-card-title>
     <v-card-text>
       お問い合わせいただき、ありがとうございます。<br>
-      内容につきましては、確認の上ご返信をさせていただきます。
+      内容につきましては、確認の上ご返信をさせていただきます。<br>
+      尚、自動返信メールは送信されません。
+    </v-card-text>
+    <v-card-text>
+      <v-btn
+        outlined
+        to="/"
+        nuxt
+      >TOPページに戻る</v-btn>
     </v-card-text>
   </v-card>
 </template>
