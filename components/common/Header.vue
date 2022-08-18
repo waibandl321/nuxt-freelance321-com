@@ -127,8 +127,7 @@ export default {
       this.categories = await this.apiGetAllCategories(
         this.apiTypeDefault()
       ).then((response) => {
-        console.log(response.data)
-        return response.data.filter(v => v.id !== 14)
+        return response.data.filter(v => v.id !== 14 && v.id !== 1)
       })
       // storeにカテゴリーデータを格納
       this.storeSetCategories(this.categories)

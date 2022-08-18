@@ -76,15 +76,24 @@ export default {
       for (const field in emailBody) {
         form.append(field, emailBody[field])
       }
+      const h = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+      const post_url = 'https://admin.freelance321.com/wp-json/contact-form-7/v1/contact-forms/7/feedback'
       // 3. post
       await this.$axios
         .post(
-          'https://admin.freelance321.com/wp-json/contact-form-7/v1/contact-forms/7/feedback',
-          form
+          post_url,
+          form,
+          { headers: h }
         ).then((response) => {
+          console.log(response)
           if (response.status === 200 && response.data.status === 'mail_sent') {
             this.init()
             this.mode = 'sent'
+          } else {
+            this.message.error = 'フィームの送信に失敗しました。時間を置いてから再度送信ください。'
           }
         }).catch((error) => {
           this.message.error = 'フィームの送信に失敗しました。時間を置いてから再度送信ください。'
