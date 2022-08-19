@@ -16,12 +16,9 @@
           >
             {{ post.title.rendered || post.title }}
           </v-card-title>
-          <pre v-highlightjs>
-            <code class="javascript">console.log('hello world!');</code>
-          </pre>
           <CommonGoogleAds />
           <div
-            v-html="post.content.rendered || post.content"
+            v-html="render_html"
             class="post-content"
           ></div>
         </div>
@@ -34,6 +31,7 @@
 </template>
 
 <script>
+import hljs from 'highlight.js'
 import PostBreadcrumbs from '@/components/post/PostBreadcrumbs.vue'
 export default {
   name: 'PostPage',
@@ -74,6 +72,32 @@ export default {
   head () {
     return {
       title: this.meta.title
+    }
+  },
+  computed: {
+    render_html () {
+      const dom = document.createElement('div')
+      const post = this.post.content.rendered || this.post.content
+      dom.innerHTML = post
+      dom.querySelectorAll('pre').forEach((element) => {
+        const r = hljs.highlightAuto(element.textContent)
+        const lang = element.getAttribute('data-lang')
+        const code = element.querySelector('code')
+        code.innerHTML = r.value
+        code.classList.add('hljs')
+        code.classList.add(lang)
+        code.classList.add('language-' + lang)
+        // 邪魔な属性を削除する
+        const arrs = element.attributes
+        const arr_obj = []
+        for (const objAttrib of arrs) {
+          arr_obj.push(objAttrib.name)
+        }
+        arr_obj.forEach((a) => {
+          element.removeAttribute(a)
+        })
+      })
+      return dom.outerHTML
     }
   },
   watch: {

@@ -51,6 +51,9 @@ h2#outline__1 {
 .container .post-content figure + p {
   margin-top: 16px;
 }
+.container .post-content .hcb_wrap {
+  margin-bottom: 24px;
+}
 /* テーブル周り */
 .container .post-content table {
   width: 100%;
