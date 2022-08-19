@@ -19,5 +19,6 @@ export default {
   padding-bottom: 100px;
   min-height: calc(100vh - 136px);
   position: relative;
+  margin-top: 76px;
 }
 </style>

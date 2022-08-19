@@ -175,9 +175,9 @@ export default {
 </script>
 <style scoped>
 /* stylelint-disable */
-.v-app-bar.v-app-bar--fixed {
+/* .v-app-bar.v-app-bar--fixed {
   position: sticky;
-}
+} */
 .p-relative {
   position: relative;
 }
