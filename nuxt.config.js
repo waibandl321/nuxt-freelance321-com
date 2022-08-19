@@ -25,7 +25,11 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/css/post.css',
-    '@/assets/css/code.css'
+    '@/assets/css/code.css',
+    {
+      src: '~/node_modules/highlight.js/styles/tomorrow-night-bright.css',
+      lang: 'css'
+    }
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -35,7 +39,8 @@ export default {
     '@/plugins/mixins/utils.js',
     '@/plugins/mixins/api.js',
     '@/plugins/mixins/store.js',
-    '@/plugins/vuelidate.js'
+    '@/plugins/vuelidate.js',
+    '@/plugins/vue-highlightjs'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

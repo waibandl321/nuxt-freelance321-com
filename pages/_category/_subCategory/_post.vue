@@ -16,6 +16,9 @@
           >
             {{ post.title.rendered || post.title }}
           </v-card-title>
+          <pre v-highlightjs>
+            <code class="javascript">console.log('hello world!');</code>
+          </pre>
           <CommonGoogleAds />
           <div
             v-html="post.content.rendered || post.content"
