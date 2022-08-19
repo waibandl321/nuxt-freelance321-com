@@ -44,3 +44,9 @@ export default {
   })
 }
 </script>
+
+<style scoped>
+.v-footer--fixed {
+  position: sticky;
+}
+</style>
