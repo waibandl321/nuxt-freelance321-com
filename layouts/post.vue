@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <CommonHeader />
-    <v-container>
+    <v-container style="min-height: calc(100vh - 136px)!important;">
       <Nuxt />
     </v-container>
     <CommonFooter />
