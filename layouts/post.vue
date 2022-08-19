@@ -19,9 +19,9 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.v-application--wrap .container {
   padding-bottom: 100px;
-  min-height: calc(100vh - 136px);
+  min-height: calc(100vh - 136px)!important;
   position: relative;
 }
 </style>
