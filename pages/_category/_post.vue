@@ -76,24 +76,24 @@ export default {
       const dom = document.createElement('div')
       const post = this.post.content.rendered || this.post.content
       dom.innerHTML = post
-      dom.querySelectorAll('.hcb_wrap pre').forEach((element) => {
-        const r = hljs.highlightAuto(element.textContent)
-        const lang = element.getAttribute('data-lang')
-        const code = element.querySelector('code')
-        code.innerHTML = r.value
-        code.classList.add('hljs')
-        code.classList.add(lang)
-        code.classList.add('language-' + lang)
-        // 邪魔な属性を削除する
-        const arrs = element.attributes
-        const arr_obj = []
-        for (const objAttrib of arrs) {
-          arr_obj.push(objAttrib.name)
-        }
-        arr_obj.forEach((a) => {
-          element.removeAttribute(a)
+      try {
+        dom.querySelectorAll('.hcb_wrap pre').forEach((element) => {
+          const r = hljs.highlightAuto(element.textContent)
+          const lang = element.getAttribute('data-lang')
+          const code = element.querySelector('code')
+          code.innerHTML = r.value
+          code.classList.add('hljs', lang, 'language-' + lang)
+          // 邪魔な属性を削除する
+          const arrs = element.attributes
+          const arr_obj = []
+          for (const objAttrib of arrs) {
+            arr_obj.push(objAttrib.name)
+          }
+          arr_obj.forEach((a) => {
+            element.removeAttribute(a)
+          })
         })
-      })
+      } catch {}
       return dom.outerHTML
     }
   },
