@@ -76,7 +76,7 @@ export default {
       const dom = document.createElement('div')
       const post = this.post.content.rendered || this.post.content
       dom.innerHTML = post
-      dom.querySelectorAll('pre').forEach((element) => {
+      dom.querySelectorAll('.hcb_wrap pre').forEach((element) => {
         const r = hljs.highlightAuto(element.textContent)
         const lang = element.getAttribute('data-lang')
         const code = element.querySelector('code')
