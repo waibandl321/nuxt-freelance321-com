@@ -86,6 +86,7 @@ export default {
       if (item._embedded['wp:featuredmedia']) {
         return this.media.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
       }
+      return 'https://media.freelance321.com/uploads/2022/08/no-image.png'
     },
     setPaginations (results) {
       this.page_max = Math.ceil(results.headers['x-wp-total'] / this.per_page)
