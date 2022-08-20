@@ -80,6 +80,9 @@ export default {
       this.loading = false
     },
     getEyecatchUrl (item) {
+      if (item.jetpack_featured_media_url) {
+        return item.jetpack_featured_media_url
+      }
       if (item._embedded['wp:featuredmedia']) {
         return this.media.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
       }
