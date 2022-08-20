@@ -81,6 +81,10 @@ export default {
   },
   methods: {
     imagePath (item) {
+      if (item.jetpack_featured_media_url) {
+        return item.jetpack_featured_media_url
+      }
+      // 古いメディア対応
       if (item._embedded['wp:featuredmedia']) {
         return this.media.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
       }
