@@ -115,7 +115,6 @@ export default {
       categories: []
     },
     // 検索
-    search_api_path: 'https://freelance321.com/wp-json/wp/api/search/',
     search_query: '',
     search_items: [],
     search_loading: false,
@@ -175,9 +174,6 @@ export default {
 </script>
 <style scoped>
 /* stylelint-disable */
-/* .v-app-bar.v-app-bar--fixed {
-  position: sticky;
-} */
 .p-relative {
   position: relative;
 }

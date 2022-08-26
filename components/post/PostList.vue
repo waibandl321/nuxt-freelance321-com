@@ -97,6 +97,7 @@ export default {
       }
     },
     clickPostCard (post) {
+      console.log(post)
       const current_category = this.categories.find(v => v.id === post.categories[0])
       this.pageMovePost(current_category, post)
     },
