@@ -38,7 +38,7 @@ Vue.mixin({
     // 全カテゴリ取得
     async apiGetAllCategories (custom_api) {
       const base_url = this.getApiBaseUrl(custom_api)
-      const params = 'categories?per_page=100'
+      const params = 'categories?per_page=50'
       return await this.callGetApi(
         this.createApiBuildUrl(base_url, params)
       )
