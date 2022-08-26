@@ -83,9 +83,9 @@ export default {
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
-      if (item._embedded['wp:featuredmedia']) {
-        return this.media.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
-      }
+      // if (item._embedded['wp:featuredmedia']) {
+      //   return this.media.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
+      // }
       return 'https://media.freelance321.com/uploads/2022/08/no-image.png'
     },
     setPaginations (results) {
