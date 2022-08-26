@@ -40,8 +40,7 @@ export default {
     '@/plugins/mixins/api.js',
     '@/plugins/mixins/store.js',
     '@/plugins/vuelidate.js',
-    '@/plugins/vue-highlightjs',
-    '@/plugins/lazyload.js'
+    '@/plugins/vue-highlightjs'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
