@@ -50,7 +50,7 @@ export default {
       const items = []
       this.store_categories.forEach((item) => {
         if (item.parent === 0) {
-          item.sub_categories = this.store_categories.filter(v => v.parent === item.id)
+          item.sub_categories = this.store_categories.filter(v => v.parent === item.id && v.count !== 0)
         }
         items.push(item)
       })
