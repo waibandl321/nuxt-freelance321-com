@@ -27,7 +27,7 @@
           href="#"
         >
           <v-list-item-content>
-            <v-list-item-title>{{ sub.name }}</v-list-item-title>
+            {{ sub.name }}
           </v-list-item-content>
         </v-list-item>
       </div>
@@ -88,7 +88,7 @@ export default {
   display: block;
 }
 .first {
-  font-size: 14px;
+  font-size: 13px;
   position: sticky;
   padding-top: 0;
   top: 84px;

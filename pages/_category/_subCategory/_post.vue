@@ -5,7 +5,7 @@
       <v-col cols="3" class="d-none d-sm-block">
         <CategorySideBar />
       </v-col>
-      <v-col cols="12" sm="6">
+      <v-col cols="12" sm="7">
         <!-- パンくず -->
         <PostBreadcrumbs :post="post" />
         <!-- 投稿詳細 -->
@@ -23,7 +23,7 @@
           ></div>
         </div>
       </v-col>
-      <v-col cols="3" class="d-none d-sm-block">
+      <v-col cols="2" class="d-none d-sm-block">
         <PostTableOfContents :content="post.content.rendered || post.content" />
       </v-col>
     </v-row>
