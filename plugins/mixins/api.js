@@ -91,7 +91,7 @@ Vue.mixin({
     },
     // 記事詳細
     async apiGetPostDetail (post_id, custom_api) {
-      const params = 'posts/' + post_id
+      const params = 'posts/' + post_id + '?_embed'
       const base_url = this.getApiBaseUrl(custom_api)
       return await this.callGetApi(
         this.createApiBuildUrl(base_url, params)
