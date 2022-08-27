@@ -84,11 +84,7 @@ export default {
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
-      // 古いメディア対応
-      if (item._embedded['wp:featuredmedia']) {
-        return this.media.media_base_url + item._embedded['wp:featuredmedia'][0].media_details.file
-      }
-      return 'https://media.freelance321.com/uploads/2022/08/no-image.png'
+      return this.media.media_base_url + '2022/08/no-image.png'
     },
     setPaginations (results) {
       const total_page_num = Math.ceil(results.headers['x-wp-total'] / this.per_page)
