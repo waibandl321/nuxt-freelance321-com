@@ -15,9 +15,6 @@
       <v-card-subtitle class="px-0">
         記事数：{{ category.count }}
       </v-card-subtitle>
-      <v-card-text class="px-0">
-        {{ category.description }}
-      </v-card-text>
       <CategoryPostList />
     </v-col>
   </v-row>
