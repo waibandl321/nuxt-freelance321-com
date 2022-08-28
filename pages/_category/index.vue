@@ -52,7 +52,10 @@ export default {
   },
   head () {
     return {
-      title: this.meta.title
+      title: this.meta.title,
+      meta: [
+        { hid: 'robots', name: 'robots', content: 'noindex' }
+      ]
     }
   },
   watch: {
