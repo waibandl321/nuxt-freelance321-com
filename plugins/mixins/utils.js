@@ -5,7 +5,7 @@ Vue.mixin({
     copyJson (value) {
       return JSON.parse(JSON.stringify(value))
     },
-    formatDate (data, format = 'YYYY/MM/dd') {
+    formatDate (data, format = 'YYYY-MM-dd') {
       if (!data) { return }
       const date_obj = new Date(data)
       const year = date_obj.getFullYear()

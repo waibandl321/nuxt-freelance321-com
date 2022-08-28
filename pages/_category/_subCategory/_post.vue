@@ -71,6 +71,18 @@ export default {
   },
   head () {
     return {
+      // 構造化データ
+      __dangerouslyDisableSanitizers: ['script'],
+      script: [{
+        innerHTML: `{
+          "@context": "http://schema.org",
+          "@type": "Article",
+          "author": "${this.post.author === 1 ? 'Jumpei Onishi' : 'user'}",
+          "name": "${this.meta.title}"
+          "datePublished": "${this.post.date}"
+        }`,
+        type: 'application/ld+json'
+      }],
       title: this.meta.title
     }
   },
