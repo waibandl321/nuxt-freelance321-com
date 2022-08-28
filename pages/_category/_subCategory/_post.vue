@@ -76,6 +76,17 @@ export default {
   },
   computed: {
     render_html () {
+      return this.createHtml()
+    }
+  },
+  watch: {
+    // MEMO: 非同期処理で投稿取得するため、取得状況を監視してmeta titleに割り当てる
+    post (newValue) {
+      this.meta.title = newValue.title.rendered
+    }
+  },
+  methods: {
+    createHtml () {
       const dom = document.createElement('div')
       const post = this.post.content.rendered || this.post.content
       dom.innerHTML = post
@@ -98,12 +109,6 @@ export default {
         })
       } catch {}
       return dom.outerHTML
-    }
-  },
-  watch: {
-    // MEMO: 非同期処理で投稿取得するため、取得状況を監視してmeta titleに割り当てる
-    post (newValue) {
-      this.meta.title = newValue.title.rendered
     }
   }
 }
