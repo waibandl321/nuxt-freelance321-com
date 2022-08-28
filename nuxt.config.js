@@ -56,7 +56,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/axios
+    '@nuxtjs/sitemap',
     '@nuxtjs/axios',
     ['@nuxtjs/google-gtag', {
       id: 'G-HFB5R1ZBG2',
@@ -66,6 +66,10 @@ export default {
     //   id: 'ca-pub-9512438052623099'
     // }]
   ],
+  sitemap: {
+    path: '/sitemap.xml',
+    hostname: 'http://freelance321.com/'
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
