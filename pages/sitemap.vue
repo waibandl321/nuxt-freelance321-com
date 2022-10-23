@@ -9,7 +9,7 @@
           cols="12"
           sm="6"
           md="4"
-          class="mt-10"
+          class="mb-10"
         >
           <div class="sitemap-category">
             {{ category.name }}
