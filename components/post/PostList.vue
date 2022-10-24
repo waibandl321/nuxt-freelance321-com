@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { MEDIA_API_PATH } from '@/config/blog'
 export default {
   name: 'PostList',
   data () {
@@ -84,7 +85,7 @@ export default {
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
-      return this.media.media_base_url + '2022/08/no-image.png'
+      return MEDIA_API_PATH + '2022/08/no-image.png'
     },
     setPaginations (results) {
       const total_page_num = Math.ceil(results.headers['x-wp-total'] / this.per_page)

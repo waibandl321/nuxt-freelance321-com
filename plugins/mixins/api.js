@@ -1,18 +1,7 @@
 import Vue from 'vue'
+import { WP_API_PATH, CUSTOM_API_PATH } from '@/config/blog'
+
 Vue.mixin({
-  data () {
-    return {
-      api_conf: {
-        base_path: 'https://admin.freelance321.com/wp-json/wp/v2/',
-        custom_path: 'https://admin.freelance321.com/wp-json/wp/api/'
-      },
-      media: {
-        media_base_url: 'https://media.freelance321.com/uploads/'
-      }
-    }
-  },
-  // 引数
-  // custom_api: [false: wp api, true: custom api()]
   methods: {
     apiTypeDefault () {
       return false
@@ -24,7 +13,7 @@ Vue.mixin({
       return base_url + params
     },
     getApiBaseUrl (custom_api) {
-      return custom_api ? this.api_conf.custom_path : this.api_conf.base_path
+      return custom_api ? CUSTOM_API_PATH : WP_API_PATH
     },
 
     // 検索
