@@ -26,7 +26,7 @@
           </v-btn>
           <div class="second">
             <div
-              v-for="(category, index) in header_links.categories"
+              v-for="(category, index) in categoryList"
               :key="index"
               class="menu-item p-relative"
               @click.stop="clickCategoryMenu(category)"
@@ -112,6 +112,11 @@ export default {
   components: {
     'loading-search': LoadingPageInner
   },
+  props: {
+    categoryList: {
+      type: Array
+    }
+  },
   data: () => ({
     header_links: {
       categories: []
@@ -120,29 +125,8 @@ export default {
     search_query: '',
     search_items: [],
     search_loading: false,
-    search_error: '',
-    categories: []
+    search_error: ''
   }),
-  async fetch () {
-    try {
-      this.categories = await this.apiGetAllCategories(
-        this.apiTypeDefault()
-      ).then((response) => {
-        return response.data.filter(v => v.id !== 14 && v.id !== 1)
-      })
-      // storeにカテゴリーデータを格納
-      this.storeSetCategories(this.categories)
-      // サブカテゴリーマージ
-      const items = []
-      this.categories.forEach((item) => {
-        if (item.parent === 0) {
-          item.sub_categories = this.categories.filter(v => v.parent === item.id)
-        }
-        items.push(item)
-      })
-      this.header_links.categories = items.filter(v => v.parent === 0)
-    } catch {}
-  },
   methods: {
     clickCategoryMenu (category) {
       this.pageMoveCategory(category)

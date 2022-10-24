@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <CommonHeader />
+    <CommonHeader :category-list="categoryList" />
     <v-container>
       <Nuxt />
     </v-container>
@@ -10,7 +10,29 @@
 
 <script>
 export default {
-  name: 'PageLayout'
+  name: 'PageLayout',
+  data () {
+    return {
+      categoryList: []
+    }
+  },
+  async fetch () {
+    const categories = await this.apiGetAllCategories(this.apiTypeDefault())
+      .then((response) => {
+        return response.data.filter(v => v.id !== 14 && v.id !== 1)
+      })
+    // storeにカテゴリーデータを格納
+    this.storeSetCategories(categories)
+    // サブカテゴリーマージ
+    const items = []
+    categories.forEach((item) => {
+      if (item.parent === 0) {
+        item.sub_categories = categories.filter(v => v.parent === item.id)
+      }
+      items.push(item)
+    })
+    this.categoryList = items.filter(v => v.parent === 0)
+  }
 }
 </script>
 
