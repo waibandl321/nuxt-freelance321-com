@@ -1,5 +1,5 @@
 <template>
-  <v-list >
+  <v-list>
     <v-list-item
       v-for="(post, index) in searchItems"
       :key="index"

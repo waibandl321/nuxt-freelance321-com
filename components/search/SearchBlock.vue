@@ -26,14 +26,6 @@ export default {
     LoadingPageInner,
     SearchInput
   },
-  props: {
-    categoryList: {
-      type: Array
-    }
-  },
-  created () {
-    console.log(this.categoryList)
-  },
   data () {
     return {
       search_items: [],
@@ -43,29 +35,26 @@ export default {
   },
   methods: {
     async search (search_query) {
+      this.search_loading = true
       if (!search_query) {
         this.search_items = []
         return
       }
-      this.search_loading = true
-      try {
-        this.search_items = await this.apiGetPostsSearch(
-          search_query,
-          this.apiCustomType()
-        ).then((response) => {
+      this.search_items = await this.apiGetPostsSearch(search_query, this.apiCustomType())
+        .then((response) => {
           return response.data
         })
-      } catch {}
       this.search_loading = false
     },
     clickSearchItem (post) {
       this.search_items = []
       this.search_loading = false
 
-      const categories = this.categoryList
-      console.log(categories)
-      const current_category = categories.find(v => v.id === post.category.term_id)
-      this.pageMovePost(current_category, post)
+      const categories = this.storeGetCategories()
+      const current_category = categories.find((v) => {
+        return v.id === post.category.term_id
+      })
+      this.$_pageMovePost(current_category, post, categories)
     }
   }
 }

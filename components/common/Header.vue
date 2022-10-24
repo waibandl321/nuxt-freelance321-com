@@ -55,31 +55,17 @@
       </div>
       <v-spacer />
       <!-- 検索 -->
-      <div class="search d-none d-sm-block">
-        <SearchInput :search="search" />
-        <!-- 検索結果？ -->
-        <div
-          v-if="search_items.length > 0"
-          class="search-result"
-        >
-          <LoadingPageInner v-if="search_loading" />
-          <SearchResult v-else :search-items="search_items" :clickSearchItem="clickSearchItem" />
-        </div>
-      </div>
+      <SearchBlock />
     </v-container>
   </v-app-bar>
 </template>
 <script>
-import LoadingPageInner from '@/components/common/LoadingPageInner.vue'
-import SearchResult from '@/components/search/SearchResult.vue'
-import SearchInput from '@/components/search/SearchInput.vue'
+import SearchBlock from '../search/SearchBlock.vue'
 
 export default {
   name: 'HeaderComponent',
   components: {
-    SearchResult,
-    LoadingPageInner,
-    SearchInput
+    SearchBlock
   },
   props: {
     categoryList: {
@@ -89,41 +75,11 @@ export default {
   data: () => ({
     header_links: {
       categories: []
-    },
-    // 検索
-    search_items: [],
-    search_loading: false,
-    search_error: ''
+    }
   }),
   methods: {
     clickCategoryMenu (category) {
       this.pageMoveCategory(category)
-    },
-    async search (search_query) {
-      if (!search_query) {
-        this.search_items = []
-        return
-      }
-      this.search_loading = true
-      try {
-        this.search_items = await this.apiGetPostsSearch(
-          search_query,
-          this.apiCustomType()
-        ).then((response) => {
-          return response.data
-        })
-      } catch {}
-      this.search_loading = false
-    },
-    clickSearchItem (post) {
-      this.search_items = []
-      this.search_loading = false
-      let current_category = {}
-      current_category = this.categoryList.find(v =>
-        v.id === post.parent ||
-        v.sub_categories[0]?.id === post.parent
-      )
-      this.$_pageMovePost(current_category, post, this.categoryList)
     }
   }
 }
