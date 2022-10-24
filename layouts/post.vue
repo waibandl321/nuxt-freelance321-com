@@ -4,7 +4,7 @@
     <v-container>
       <v-row>
         <v-col cols="3" class="d-none d-sm-block">
-          <CategorySideBar />
+          <CategorySideBar :category-list="categoryList" />
         </v-col>
         <v-col cols="12" sm="9">
           <Nuxt />

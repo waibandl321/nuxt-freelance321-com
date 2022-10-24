@@ -1,7 +1,7 @@
 <template>
   <v-list class="side-menu">
     <div
-      v-for="(category, idx) in categories"
+      v-for="(category, idx) in categoryList"
       :key="idx"
     >
       <v-list-item
@@ -31,31 +31,12 @@
 <script>
 export default {
   name: 'CategorySideBar',
-  data () {
-    return {
-      categories: []
+  props: {
+    categoryList: {
+      type: Array
     }
-  },
-  computed: {
-    store_categories () {
-      return this.storeGetCategories()
-    }
-  },
-  created () {
-    this.initCategories()
   },
   methods: {
-    initCategories () {
-      // サブカテゴリーマージ
-      const items = []
-      this.store_categories.forEach((item) => {
-        if (item.parent === 0) {
-          item.sub_categories = this.store_categories.filter(v => v.parent === item.id && v.count !== 0)
-        }
-        items.push(item)
-      })
-      this.categories = items.filter(v => v.parent === 0)
-    },
     judgeActive (category) {
       if (this.$route.query.c) {
         return Number(category.id) === Number(this.$route.query.c)
