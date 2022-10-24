@@ -63,7 +63,7 @@
           class="search-result"
         >
           <LoadingPageInner v-if="search_loading" />
-          <SearchResult v-else :search-items="search_items" />
+          <SearchResult v-else :search-items="search_items" :clickSearchItem="clickSearchItem" />
         </div>
       </div>
     </v-container>
@@ -118,9 +118,12 @@ export default {
     clickSearchItem (post) {
       this.search_items = []
       this.search_loading = false
-
-      const current_category = this.categories.find(v => v.id === post.category.term_id)
-      this.pageMovePost(current_category, post)
+      let current_category = {}
+      current_category = this.categoryList.find(v =>
+        v.id === post.parent ||
+        v.sub_categories[0]?.id === post.parent
+      )
+      this.$_pageMovePost(current_category, post, this.categoryList)
     }
   }
 }

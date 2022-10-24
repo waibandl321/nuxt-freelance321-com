@@ -27,6 +27,9 @@ export default {
   props: {
     searchItems: {
       type: Array
+    },
+    clickSearchItem: {
+      type: Function
     }
   }
 }
