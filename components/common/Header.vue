@@ -1,9 +1,6 @@
 <!-- eslint-disable eqeqeq -->
 <template>
-  <v-app-bar
-    app
-    flat
-  >
+  <v-app-bar app flat>
     <v-container class="fill-height pa-0">
       <div class="menu-wrap">
         <div>
@@ -59,47 +56,14 @@
       <v-spacer />
       <!-- 検索 -->
       <div class="search d-none d-sm-block">
-        <v-responsive max-width="260">
-          <v-text-field
-            v-model.trim="search_query"
-            dense
-            flat
-            hide-details
-            rounded
-            solo
-            placeholder="記事検索"
-            append-icon="mdi-magnify"
-            @input="search()"
-          />
-        </v-responsive>
+        <SearchInput :search="search" />
         <!-- 検索結果？ -->
         <div
           v-if="search_items.length > 0"
           class="search-result"
         >
-          <!-- 検索ローディング -->
-          <loading-search v-if="search_loading" />
-          <v-list v-else>
-            <v-list-item
-              v-for="(post, index) in search_items"
-              :key="index"
-              dense
-              link
-              nuxt
-              @click="clickSearchItem(post)"
-            >
-              <v-list-item-content>
-                <v-list-item-title>
-                  <div class="d-inline-block">
-                    {{ post.title }}
-                  </div>
-                  <v-list-item-subtitle>
-                    {{ post.category.name }}
-                  </v-list-item-subtitle>
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
+          <LoadingPageInner v-if="search_loading" />
+          <SearchResult v-else :search-items="search_items" />
         </div>
       </div>
     </v-container>
@@ -107,10 +71,15 @@
 </template>
 <script>
 import LoadingPageInner from '@/components/common/LoadingPageInner.vue'
+import SearchResult from '@/components/search/SearchResult.vue'
+import SearchInput from '@/components/search/SearchInput.vue'
+
 export default {
   name: 'HeaderComponent',
   components: {
-    'loading-search': LoadingPageInner
+    SearchResult,
+    LoadingPageInner,
+    SearchInput
   },
   props: {
     categoryList: {
@@ -122,7 +91,6 @@ export default {
       categories: []
     },
     // 検索
-    search_query: '',
     search_items: [],
     search_loading: false,
     search_error: ''
@@ -131,15 +99,15 @@ export default {
     clickCategoryMenu (category) {
       this.pageMoveCategory(category)
     },
-    async search () {
-      if (!this.search_query) {
+    async search (search_query) {
+      if (!search_query) {
         this.search_items = []
         return
       }
       this.search_loading = true
       try {
         this.search_items = await this.apiGetPostsSearch(
-          this.search_query,
+          search_query,
           this.apiCustomType()
         ).then((response) => {
           return response.data
@@ -149,7 +117,6 @@ export default {
     },
     clickSearchItem (post) {
       this.search_items = []
-      this.search_query = ''
       this.search_loading = false
 
       const current_category = this.categories.find(v => v.id === post.category.term_id)
