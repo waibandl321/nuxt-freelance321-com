@@ -11,12 +11,12 @@
     </v-card-title>
     <ContactFormInput
       v-if="mode === 'input'"
-      :changeMode="changeMode"
+      :change-mode="changeMode"
       :form_data="form_data"
     />
     <ContactFormConfirm
       v-if="mode === 'confirm'"
-      :changeMode="changeMode"
+      :change-mode="changeMode"
       :submit="submit"
       :form_data="form_data"
       :message="message"

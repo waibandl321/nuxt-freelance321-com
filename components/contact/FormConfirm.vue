@@ -1,10 +1,12 @@
 <template>
   <div>
     <CommonMessageViewer :message="message" />
-    <div class="font-weight-bold">以下の内容で送信してよろしいですか？</div>
+    <div class="font-weight-bold">
+      以下の内容で送信してよろしいですか？
+    </div>
     <div class="mt-10">
       <v-simple-table>
-        <template v-slot:default>
+        <template #default>
           <tbody>
             <tr>
               <td>お名前</td>

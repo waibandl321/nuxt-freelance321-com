@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-alert
-        v-if="message.error"
-        text
-        prominent
-        type="error"
-        icon="mdi-cloud-alert"
-      >
-        {{ message.error }}
+      v-if="message.error"
+      text
+      prominent
+      type="error"
+      icon="mdi-cloud-alert"
+    >
+      {{ message.error }}
     </v-alert>
     <v-alert
       v-if="message.success"

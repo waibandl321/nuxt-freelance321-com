@@ -8,9 +8,9 @@
         {{ page_title }}
       </v-card-title>
       <div
-        v-html="page_content"
         class="post-content"
-      ></div>
+        v-html="page_content"
+      />
     </div>
   </div>
 </template>

@@ -90,7 +90,9 @@
             >
               <v-list-item-content>
                 <v-list-item-title>
-                  <div class="d-inline-block">{{ post.title }}</div>
+                  <div class="d-inline-block">
+                    {{ post.title }}
+                  </div>
                   <v-list-item-subtitle>
                     {{ post.category.name }}
                   </v-list-item-subtitle>

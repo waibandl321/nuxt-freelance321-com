@@ -3,7 +3,7 @@
     :items="breadcrumbs"
     class="px-0 pt-0"
   >
-    <template v-slot:item="{ item }">
+    <template #item="{ item }">
       <v-breadcrumbs-item
         class="post-breadcrumb-item primary--text"
         :disabled="item.disabled"

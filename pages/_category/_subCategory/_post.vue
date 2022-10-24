@@ -10,7 +10,9 @@
         <PostBreadcrumbs :post="post" />
         <!-- 投稿詳細 -->
         <div class="post-wrap">
-          <v-card-text class="pa-0">投稿日： {{ post.date }}</v-card-text>
+          <v-card-text class="pa-0">
+            投稿日： {{ post.date }}
+          </v-card-text>
           <v-card-title
             class="px-0 font-weight-bold"
           >
@@ -18,9 +20,9 @@
           </v-card-title>
           <!-- <CommonGoogleAds /> -->
           <div
-            v-html="render_html"
             class="post-content"
-          ></div>
+            v-html="render_html"
+          />
         </div>
       </v-col>
       <v-col cols="2" class="d-none d-sm-block">

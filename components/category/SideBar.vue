@@ -5,9 +5,9 @@
       :key="idx"
     >
       <v-list-item
-        @click="clickSideMenu(category)"
         dense
         :class="{ 'blue lighten-4': judgeActive(category) }"
+        @click="clickSideMenu(category)"
       >
         <v-list-item-title>{{ category.name }}</v-list-item-title>
       </v-list-item>
@@ -18,9 +18,9 @@
         <v-list-item
           v-for="(sub, idx2) in category.sub_categories"
           :key="idx2"
-          @click="clickSideMenu(sub)"
           dense
           :class="{ 'blue lighten-4': judgeActive(sub) }"
+          @click="clickSideMenu(sub)"
         >
           <v-list-item-title>{{ sub.name }}</v-list-item-title>
         </v-list-item>

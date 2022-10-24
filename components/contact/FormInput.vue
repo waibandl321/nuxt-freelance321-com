@@ -47,7 +47,7 @@
         name="entry.666391459"
         hide-details="auto"
       />
-      <div class="input-error" v-if="!$v.form_data.phone.required">
+      <div v-if="!$v.form_data.phone.required" class="input-error">
         「電話番号」は入力必須です
       </div>
     </div>
@@ -84,10 +84,10 @@
     </div>
     <div class="mt-10">
       <v-btn
-        @click="clickConfirm()"
         width="100%"
         :disabled="$v.$invalid"
         color="primary"
+        @click="clickConfirm()"
       >
         確認画面へ
       </v-btn>

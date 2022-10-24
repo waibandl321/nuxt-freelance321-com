@@ -11,7 +11,9 @@
         outlined
         to="/"
         nuxt
-      >TOPページに戻る</v-btn>
+      >
+        TOPページに戻る
+      </v-btn>
     </v-card-text>
   </v-card>
 </template>
