@@ -51,7 +51,7 @@ export default {
         this.apiTypeDefault()
       ).then((res) => {
         this.post = res.data
-        this.post.date = this.formatDate(this.post.date)
+        this.post.date = this.$formatDate(this.post.date)
       })
     } catch {}
     this.loading = false

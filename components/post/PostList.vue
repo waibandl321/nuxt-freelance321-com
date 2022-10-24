@@ -62,14 +62,11 @@ export default {
   async fetch () {
     this.loading = true
     try {
-      this.posts = await this.apiGetPostList(
-        this.current_page,
-        this.per_page,
-        this.apiTypeDefault()
-      ).then((response) => {
-        this.setPaginations(response)
-        return response.data
-      })
+      this.posts = await this.apiGetPostList(this.current_page, this.per_page, this.apiTypeDefault())
+        .then((response) => {
+          this.setPaginations(response)
+          return response.data
+        })
     } catch {
       this.message.error = 'データの読み込みに失敗しました。'
     }
