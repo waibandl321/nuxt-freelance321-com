@@ -2,7 +2,14 @@
   <v-app>
     <CommonHeader :category-list="categoryList" />
     <v-container>
-      <Nuxt />
+      <v-row>
+        <v-col cols="3" class="d-none d-sm-block">
+          <CategorySideBar />
+        </v-col>
+        <v-col cols="12" sm="9">
+          <Nuxt />
+        </v-col>
+      </v-row>
     </v-container>
     <CommonFooter />
   </v-app>

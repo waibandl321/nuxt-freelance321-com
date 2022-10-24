@@ -2,12 +2,10 @@
   <div>
     <CommonLoadingPageInner v-if="loading" />
     <v-row v-else>
-      <v-col cols="3" class="d-none d-sm-block">
-        <CategorySideBar />
-      </v-col>
-      <v-col cols="12" sm="7">
+      <v-col cols="12" sm="9">
         <!-- パンくず -->
         <PostBreadcrumbs :post="post" />
+        <!-- 投稿詳細 -->
         <div class="post-wrap">
           <v-card-text class="pa-0">
             投稿日： {{ post.date }}
@@ -17,14 +15,13 @@
           >
             {{ post.title.rendered || post.title }}
           </v-card-title>
-          <!-- <CommonGoogleAds /> -->
           <div
             class="post-content"
             v-html="render_html"
           />
         </div>
       </v-col>
-      <v-col cols="2" class="d-none d-sm-block">
+      <v-col cols="3" class="d-none d-sm-block">
         <PostTableOfContents :content="post.content.rendered || post.content" />
       </v-col>
     </v-row>
