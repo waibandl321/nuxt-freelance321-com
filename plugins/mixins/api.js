@@ -23,8 +23,8 @@ Vue.mixin({
     createApiBuildUrl (base_url, params) {
       return base_url + params
     },
-    getApiBaseUrl (api_type) {
-      return api_type ? this.api_conf.custom_path : this.api_conf.base_path
+    getApiBaseUrl (custom_api) {
+      return custom_api ? this.api_conf.custom_path : this.api_conf.base_path
     },
 
     // 検索
@@ -36,9 +36,9 @@ Vue.mixin({
       )
     },
     // 全カテゴリ取得
-    async apiGetAllCategories (custom_api) {
+    async apiGetCategories (custom_api) {
       const base_url = this.getApiBaseUrl(custom_api)
-      const params = 'categories?per_page=50'
+      const params = 'categories?per_page=20'
       return await this.callGetApi(
         this.createApiBuildUrl(base_url, params)
       )
