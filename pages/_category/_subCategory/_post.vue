@@ -52,7 +52,7 @@ export default {
   },
   async fetch () {
     this.loading = true
-    if (this.$route.query.p) {
+    try {
       await this.apiGetPostDetail(
         this.$route.query.p,
         this.apiTypeDefault()
@@ -60,15 +60,7 @@ export default {
         this.post = res.data
         this.post.date = this.formatDate(this.post.date)
       })
-    } else {
-      // queryがない場合はparams.slugから詳細データを取得する（旧サイト対応）
-      await this.apiGetPostFromSlug(
-        this.$route.params.post,
-        this.apiTypeDefault()
-      ).then((res) => {
-        this.post = res.data[0]
-      })
-    }
+    } catch {}
     this.loading = false
   },
   head () {

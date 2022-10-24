@@ -33,22 +33,10 @@ export default {
     }
   },
   async fetch () {
-    if (this.$route.query.c) {
-      await this.apiGetCategoryFromId(
-        this.$route.query.c,
-        this.apiTypeDefault()
-      ).then((res) => {
+    await this.apiGetCategoryFromId(this.$route.query.c, this.apiTypeDefault())
+      .then((res) => {
         this.category = res.data
       })
-    } else {
-      // queryなしの場合（旧サイト対応)
-      await this.apiGetCategoryFromSlug(
-        this.$route.params.category,
-        this.apiTypeDefault()
-      ).then((res) => {
-        this.category = res.data[0]
-      })
-    }
   },
   head () {
     return {
