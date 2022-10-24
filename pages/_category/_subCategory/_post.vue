@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div>
     <CommonLoadingPageInner v-if="loading" />
@@ -15,7 +16,6 @@
           >
             {{ post.title.rendered || post.title }}
           </v-card-title>
-          <!-- <CommonGoogleAds /> -->
           <div
             class="post-content"
             v-html="render_html"
