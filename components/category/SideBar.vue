@@ -47,7 +47,7 @@ export default {
       }
     },
     clickSideMenu (category) {
-      this.pageMoveCategory(category)
+      this.$pageMoveCategory(category)
     }
   }
 }

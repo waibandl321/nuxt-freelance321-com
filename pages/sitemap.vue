@@ -59,7 +59,7 @@ export default {
         this.store_categories.forEach(async (item) => {
           item.posts = await this.apiGetPostsRelatedCategory(
             item,
-            this.apiTypeDefault()
+            this.isWpApi()
           )
           this.categories.push(item)
         })
@@ -73,7 +73,7 @@ export default {
     },
     clickPostLink (post) {
       const current_category = this.categories.find(v => v.id === post.categories[0])
-      this.pageMovePost(current_category, post)
+      this.$pageMovePost(current_category, post, this.storeGetCategories())
     }
   }
 }

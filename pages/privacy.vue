@@ -21,7 +21,7 @@ export default {
   async fetch () {
     this.page_data = await this.apiGetPageRelatedSlug(
       this.$route.name,
-      this.apiTypeDefault()
+      this.isWpApi()
     )
   },
   head () {

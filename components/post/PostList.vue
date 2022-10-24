@@ -62,7 +62,7 @@ export default {
   async fetch () {
     this.loading = true
     try {
-      this.posts = await this.apiGetPostList(this.current_page, this.per_page, this.apiTypeDefault())
+      this.posts = await this.apiGetPostList(this.current_page, this.per_page, this.isWpApi())
         .then((response) => {
           this.setPaginations(response)
           return response.data
@@ -92,7 +92,7 @@ export default {
     },
     clickPostCard (post) {
       const current_category = this.categories.find(v => v.id === post.categories[0])
-      this.pageMovePost(current_category, post)
+      this.$pageMovePost(current_category, post, this.storeGetCategories())
     },
     changePage (number) {
       this.posts = []

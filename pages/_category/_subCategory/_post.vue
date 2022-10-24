@@ -52,7 +52,7 @@ export default {
     try {
       await this.apiGetPostDetail(
         this.$route.query.p,
-        this.apiTypeDefault()
+        this.isWpApi()
       ).then((res) => {
         this.post = res.data
         this.post.date = this.$formatDate(this.post.date)

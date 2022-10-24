@@ -24,7 +24,7 @@ export default {
     }
   },
   async fetch () {
-    await this.apiGetCategoryFromId(this.$route.query.c, this.apiTypeDefault())
+    await this.apiGetCategoryFromId(this.$route.query.c, this.isWpApi())
       .then((res) => {
         this.category = res.data
       })

@@ -79,7 +79,7 @@ export default {
   }),
   methods: {
     clickCategoryMenu (category) {
-      this.pageMoveCategory(category)
+      this.$pageMoveCategory(category)
     }
   }
 }

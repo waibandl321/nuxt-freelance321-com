@@ -36,12 +36,9 @@ export default {
   plugins: [
     { src: '~/plugins/persistedstate.js', ssr: false },
     '@/plugins/common.js',
-    '@/plugins/vue-scrollto.js',
-    '@/plugins/mixins/utils.js',
     '@/plugins/mixins/api.js',
     '@/plugins/mixins/store.js',
-    '@/plugins/vuelidate.js',
-    '@/plugins/vue-highlightjs'
+    '@/plugins/plugins.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

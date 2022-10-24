@@ -40,7 +40,7 @@ export default {
         this.search_items = []
         return
       }
-      this.search_items = await this.apiGetPostsSearch(search_query, this.apiCustomType())
+      this.search_items = await this.apiGetPostsSearch(search_query, this.isCustomApi())
         .then((response) => {
           return response.data
         })
@@ -54,7 +54,7 @@ export default {
       const current_category = categories.find((v) => {
         return v.id === post.category.term_id
       })
-      this.$_pageMovePost(current_category, post, categories)
+      this.$pageMovePost(current_category, post, categories)
     }
   }
 }

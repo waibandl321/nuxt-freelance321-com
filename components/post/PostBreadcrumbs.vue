@@ -57,7 +57,7 @@ export default {
       this.breadcrumbs = results
     },
     clickBreadcrumbs (item) {
-      this.pageMoveCategory(item.obj)
+      this.$pageMoveCategory(item.obj)
     }
   }
 }

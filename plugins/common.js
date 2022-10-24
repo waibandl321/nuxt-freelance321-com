@@ -10,7 +10,7 @@ function formatCategories (categories) {
   return items.filter(v => v.parent === 0)
 }
 
-function _pageMovePost (current_category, post, categories) {
+function pageMovePost (current_category, post, categories) {
   let parent_category = null
   if (current_category.parent !== 0) {
     parent_category = categories.find(r => r.id === current_category.parent)
@@ -50,9 +50,24 @@ function formatDate (data, format = 'YYYY-MM-dd') {
     .replace('ss', seconds)
 }
 
+function pageMoveCategory (category) {
+  this.$router.push(
+    {
+      path: '/' + category.slug,
+      query: { c: category.id }
+    }
+  )
+}
+
+function copyJson (value) {
+  return JSON.parse(JSON.stringify(value))
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default ({ app }, inject) => {
   inject('formatCategories', formatCategories)
   inject('formatDate', formatDate)
-  inject('_pageMovePost', _pageMovePost)
+  inject('pageMoveCategory', pageMoveCategory)
+  inject('copyJson', copyJson)
+  inject('pageMovePost', pageMovePost)
 }

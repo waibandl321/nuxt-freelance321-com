@@ -24,7 +24,7 @@ export default {
     }
   },
   async fetch () {
-    this.categoryList = await this.apiGetCategories(this.apiTypeDefault())
+    this.categoryList = await this.apiGetCategories(this.isWpApi())
       .then((response) => {
         return response.data.filter(v => v.id !== 14 && v.id !== 1)
       })
