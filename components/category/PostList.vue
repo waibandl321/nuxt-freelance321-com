@@ -40,6 +40,8 @@
 
 <script>
 import { MEDIA_API_PATH } from '@/config/blog'
+import { isWpApi } from '@/api/api'
+
 export default {
   name: 'CategoryPostList',
   data () {
@@ -59,19 +61,14 @@ export default {
   async fetch () {
     await this.initPostList()
   },
-  computed: {
-    categories () {
-      return this.storeGetCategories()
-    }
-  },
   methods: {
     async initPostList () {
       this.loading = true
-      this.posts = await this.apiGetCategoryPostList(
+      this.posts = await this.apiGetCategoryPosts(
         this.$route.query.c,
         this.current_page,
         this.per_page,
-        this.isWpApi()
+        isWpApi
       ).then((response) => {
         this.setPaginations(response)
         return response.data
@@ -90,7 +87,8 @@ export default {
       this.page_max = Math.ceil(results.headers['x-wp-total'] / this.per_page)
     },
     clickPostCard (post) {
-      const current_category = this.categories.find(v => v.id === post.categories[0])
+      const categories = this.storeGetCategories()
+      const current_category = categories.find(v => v.id === post.categories[0])
       this.$pageMovePost(current_category, post, this.storeGetCategories())
     },
     changePage (number) {

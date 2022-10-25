@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { isWpApi } from '@/api/api'
 export default {
   name: 'PostLayout',
   data () {
@@ -24,7 +25,7 @@ export default {
     }
   },
   async fetch () {
-    this.categoryList = await this.apiGetCategories(this.isWpApi())
+    this.categoryList = await this.apiGetCategories(isWpApi)
       .then((response) => {
         return response.data.filter(v => v.id !== 14 && v.id !== 1)
       })

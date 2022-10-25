@@ -42,6 +42,8 @@
 
 <script>
 import { MEDIA_API_PATH } from '@/config/blog'
+import { isWpApi } from '@/api/api'
+
 export default {
   name: 'PostList',
   data () {
@@ -62,7 +64,7 @@ export default {
   async fetch () {
     this.loading = true
     try {
-      this.posts = await this.apiGetPostList(this.current_page, this.per_page, this.isWpApi())
+      this.posts = await this.apiGetPosts(this.current_page, this.per_page, isWpApi)
         .then((response) => {
           this.setPaginations(response)
           return response.data
@@ -71,11 +73,6 @@ export default {
       this.message.error = 'データの読み込みに失敗しました。'
     }
     this.loading = false
-  },
-  computed: {
-    categories () {
-      return this.storeGetCategories()
-    }
   },
   methods: {
     imagePath (item) {
@@ -91,7 +88,8 @@ export default {
       }
     },
     clickPostCard (post) {
-      const current_category = this.categories.find(v => v.id === post.categories[0])
+      const categories = this.storeGetCategories()
+      const current_category = categories.find(v => v.id === post.categories[0])
       this.$pageMovePost(current_category, post, this.storeGetCategories())
     },
     changePage (number) {

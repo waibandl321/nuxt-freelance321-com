@@ -20,6 +20,8 @@
 import LoadingPageInner from '@/components/common/LoadingPageInner.vue'
 import SearchResult from '@/components/search/SearchResult.vue'
 import SearchInput from '@/components/search/SearchInput.vue'
+import { isCustomApi } from '@/api/api'
+
 export default {
   components: {
     SearchResult,
@@ -40,7 +42,7 @@ export default {
         this.search_items = []
         return
       }
-      this.search_items = await this.apiGetPostsSearch(search_query, this.isCustomApi())
+      this.search_items = await this.apiGetSearchPosts(search_query, isCustomApi)
         .then((response) => {
           return response.data
         })

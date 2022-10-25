@@ -1,34 +1,29 @@
 <template>
   <div>
     <CommonMessageViewer :message="message" />
-    <v-row>
-      <template v-for="(category, i) in categories">
-        <v-col
-          v-if="judgePostExists(category)"
-          :key="i"
-          cols="12"
-          sm="6"
-          md="4"
-          class="mb-10"
+    <div
+      v-for="(category, i) in categories"
+      :key="i"
+      class="mb-10"
+    >
+      <div class="sitemap-category">
+        {{ category.name }}
+      </div>
+      <ul class="post-list">
+        <li
+          v-for="(post, idx2) in category.posts.data"
+          :key="idx2"
+          @click="clickPostLink(post)"
         >
-          <div class="sitemap-category">
-            {{ category.name }}
-          </div>
-          <ul class="post-list">
-            <li
-              v-for="(post, idx2) in category.posts.data"
-              :key="idx2"
-              @click="clickPostLink(post)"
-            >
-              <a>{{ post.title.rendered }}</a>
-            </li>
-          </ul>
-        </v-col>
-      </template>
-    </v-row>
+          <a>{{ post.title.rendered }}</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
+
 <script>
+import { isWpApi } from '@/api/api'
 export default {
   name: 'SitemapPage',
   layout: 'page',
@@ -45,31 +40,20 @@ export default {
       title: 'サイトマップ'
     }
   },
-  computed: {
-    store_categories () {
-      return this.storeGetCategories()
-    }
-  },
   created () {
     this.init()
   },
   methods: {
     init () {
+      const categories = this.storeGetCategories()
       try {
-        this.store_categories.forEach(async (item) => {
-          item.posts = await this.apiGetPostsRelatedCategory(
-            item,
-            this.isWpApi()
-          )
-          this.categories.push(item)
+        categories.forEach(async (category) => {
+          category.posts = await this.apiGetSitemapPosts(category, isWpApi)
+          this.categories.push(category)
         })
       } catch (error) {
         this.message.error = error
       }
-    },
-    // 投稿0の場合はカテゴリー非表示にする
-    judgePostExists (category) {
-      return category.posts.data.length > 0
     },
     clickPostLink (post) {
       const current_category = this.categories.find(v => v.id === post.categories[0])

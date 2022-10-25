@@ -15,6 +15,7 @@
   </div>
 </template>
 <script>
+import { isWpApi } from '@/api/api'
 export default {
   name: 'PrivacyPage',
   layout: 'page',
@@ -24,10 +25,7 @@ export default {
     }
   },
   async fetch () {
-    this.page_data = await this.apiGetPageRelatedSlug(
-      this.$route.name,
-      this.isWpApi()
-    )
+    this.page_data = await this.apiGetPageDetail(this.$route.name, isWpApi)
   },
   head () {
     return {

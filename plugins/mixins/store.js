@@ -2,7 +2,6 @@ import Vue from 'vue'
 
 Vue.mixin({
   methods: {
-    // カテゴリ
     storeSetCategories (categories) {
       this.$store.dispatch('storeSetCategoryItems', this.$copyJson(categories))
     },

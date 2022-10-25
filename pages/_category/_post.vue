@@ -31,6 +31,8 @@
 
 <script>
 import hljs from 'highlight.js'
+import { isWpApi } from '@/api/api'
+
 export default {
   name: 'PostPage',
   layout: 'post',
@@ -46,13 +48,11 @@ export default {
   async fetch () {
     this.loading = true
     try {
-      await this.apiGetPostDetail(
-        this.$route.query.p,
-        this.isWpApi()
-      ).then((res) => {
-        this.post = res.data
-        this.post.date = this.$formatDate(this.post.date)
-      })
+      await this.apiGetPostDetail(this.$route.query.p, isWpApi)
+        .then((res) => {
+          this.post = res.data
+          this.post.date = this.$formatDate(this.post.date)
+        })
     } catch {}
     this.loading = false
   },

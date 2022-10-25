@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { isWpApi } from '@/api/api'
+
 export default {
   name: 'CategoryParentPage',
   layout: 'post',
@@ -24,7 +26,7 @@ export default {
     }
   },
   async fetch () {
-    await this.apiGetCategoryFromId(this.$route.query.c, this.isWpApi())
+    await this.apiGetCategoryDetail(this.$route.query.c, isWpApi)
       .then((res) => {
         this.category = res.data
       })
