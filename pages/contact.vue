@@ -28,8 +28,9 @@
 </template>
 
 <script>
+import { GOOGLE_FORM_URL } from '@/config/blog'
+
 export default {
-  name: 'ContactPage',
   layout: 'page',
   data () {
     return {
@@ -77,9 +78,7 @@ export default {
         form.append(field, emailBody[field])
       }
 
-      // const CORS_PROXY = 'http://localhost:3000/'
-      const GOOGLE_FORM_ACTION = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSeQMtV-x4ZXnHqmy7XoUeqJUFhgYgjCkp3wG56_IS7hGP6kNQ/formResponse'
-      await this.$axios.post(GOOGLE_FORM_ACTION, form)
+      await this.$axios.post(GOOGLE_FORM_URL, form)
         .then((response) => {
           if (response.status === 200) {
             this.init()
@@ -91,23 +90,6 @@ export default {
           this.message.error = 'フィームの送信に失敗しました。時間を置いてから再度送信ください。'
           console.log(error)
         })
-      // 3. post
-      // await this.$axios
-      //   .post(
-      //     'https://admin.freelance321.com/wp-json/contact-form-7/v1/contact-forms/7/feedback',
-      //     form
-      //   ).then((response) => {
-      //     console.log(response)
-      //     if (response.status === 200 && response.data.status === 'mail_sent') {
-      //       this.init()
-      //       this.mode = 'sent'
-      //     } else {
-      //       this.message.error = response.data.message
-      //     }
-      //   }).catch((error) => {
-      //     this.message.error = 'フィームの送信に失敗しました。時間を置いてから再度送信ください。'
-      //     console.log(error)
-      //   })
       this.loading = false
     }
   }

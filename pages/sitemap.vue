@@ -24,8 +24,8 @@
 
 <script>
 import { isWpApi } from '@/api/api'
+
 export default {
-  name: 'SitemapPage',
   layout: 'page',
   data () {
     return {

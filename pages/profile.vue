@@ -17,7 +17,6 @@
 <script>
 import { isWpApi } from '@/api/api'
 export default {
-  name: 'PrivacyPage',
   layout: 'page',
   data () {
     return {
