@@ -22,10 +22,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { isWpApi } from '@/api/api'
 
-export default {
+interface Caregory {
+
+}
+
+interface Data {
+  categories: Array<Caregory>;
+  message: {
+    error: string;
+  }
+}
+
+export default Vue.extend({
   layout: 'page',
   data () {
     return {
@@ -33,7 +45,7 @@ export default {
       message: {
         error: ''
       }
-    }
+    } as Data
   },
   head () {
     return {
@@ -60,7 +72,7 @@ export default {
       this.$pageMovePost(current_category, post, this.storeGetCategories())
     }
   }
-}
+})
 </script>
 
 <style scoped>

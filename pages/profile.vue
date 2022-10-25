@@ -14,11 +14,15 @@
     </div>
   </div>
 </template>
-<script>
+
+<script lang="ts">
+import Vue from 'vue'
 import { isWpApi } from '@/api/api'
-export default {
+import type { PageDataType } from '@/types/page'
+
+export default Vue.extend({
   layout: 'page',
-  data () {
+  data (): { page_data: PageDataType | null } {
     return {
       page_data: null
     }
@@ -32,12 +36,12 @@ export default {
     }
   },
   computed: {
-    page_content () {
-      return this.page_data.data[0].content.rendered
+    page_content (): string | undefined {
+      return this.page_data?.data[0].content.rendered
     },
-    page_title () {
-      return this.page_data.data[0].title.rendered
+    page_title (): string | undefined {
+      return this.page_data?.data[0].title.rendered
     }
   }
-}
+})
 </script>

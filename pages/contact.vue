@@ -27,10 +27,34 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { GOOGLE_FORM_URL } from '@/config/blog'
 
-export default {
+interface Data {
+  mode: string;
+  loading: boolean;
+  form_data: {
+    name: string;
+    email: string;
+    phone: string;
+    message: string;
+    checked: boolean;
+  };
+  message: {
+    error: String;
+  }
+}
+
+interface GoogleFormData {
+  'entry.247993782': string;
+  'entry.2089866053': string;
+  'entry.666391459': string;
+  'entry.682995808': string;
+  'entry.1849326221_sentinel': boolean;
+}
+
+export default Vue.extend({
   layout: 'page',
   data () {
     return {
@@ -41,31 +65,31 @@ export default {
         email: '',
         phone: '',
         message: '',
-        checked: null
+        checked: false
       },
       message: {
         error: ''
       }
-    }
+    } as Data
   },
   methods: {
-    changeMode (mode) {
+    changeMode (mode: string): void {
       this.mode = mode
     },
-    init () {
+    init (): void {
       this.form_data = {
         name: '',
         email: '',
         phone: '',
         message: '',
-        checked: null
+        checked: false
       }
     },
-    async submit () {
+    async submit (): Promise<void> {
       this.loading = true
       this.message.error = ''
       // 1. 送信データ用意
-      const emailBody = {
+      const googleFormData: GoogleFormData = {
         'entry.247993782': this.form_data.name,
         'entry.2089866053': this.form_data.email,
         'entry.666391459': this.form_data.phone,
@@ -74,10 +98,10 @@ export default {
       }
       // 2. formData生成
       const form = new FormData()
-      for (const field in emailBody) {
-        form.append(field, emailBody[field])
+      for (const field in googleFormData) {
+        form.append(field, googleFormData[field])
       }
-
+      // 3. 送信
       await this.$axios.post(GOOGLE_FORM_URL, form)
         .then((response) => {
           if (response.status === 200) {
@@ -93,5 +117,5 @@ export default {
       this.loading = false
     }
   }
-}
+})
 </script>
