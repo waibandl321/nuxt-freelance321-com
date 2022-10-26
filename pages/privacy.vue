@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { isWpApi } from '~/api/api'
+import { apiGetPageDetail } from '~/api/api'
 import type { Page } from '@/types/page'
 
 export default Vue.extend({
@@ -23,7 +23,7 @@ export default Vue.extend({
     }
   },
   async fetch () {
-    this.page_data = await this.apiGetPageDetail(this.$route.name, isWpApi)
+    this.page_data = await apiGetPageDetail(this.$route.name)
   },
   head () {
     return {

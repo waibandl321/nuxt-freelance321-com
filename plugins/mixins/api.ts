@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { getApiBaseUrl, callGetApi } from '~/api/api'
-import type { Page, Post, SearchPost, Category } from '@/types/page'
+import type { Post, SearchPost, Category } from '@/types/page'
 
 Vue.mixin({
   methods: {
@@ -39,12 +39,6 @@ Vue.mixin({
       const params: string = 'posts?categories=' + category_id + '&_embed' + '&page=' + current_page + '&per_page=' + per_page
       return await callGetApi(base_url + params)
     },
-    async apiGetPageDetail (slug: string, api_type: string): Promise<Page> {
-      const params: string = 'pages?slug=' + slug
-      const base_url: string = getApiBaseUrl(api_type)
-      return await callGetApi(base_url + params)
-    },
-
     async apiGetSitemapPosts (category, api_type: string): Promise<Post[]> {
       const params: string = 'posts?categories=' + category.id + '&per_page=100'
       const base_url: string = getApiBaseUrl(api_type)

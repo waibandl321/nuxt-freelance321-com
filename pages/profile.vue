@@ -16,30 +16,32 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import { isWpApi } from '~/api/api'
+import Vue from 'vue'
+import { apiGetPageDetail } from '~/api/api'
 import type { Page } from '@/types/page'
 
-@Component({
-  layout: 'page'
+export default Vue.extend({
+  layout: 'page',
+  data (): { page_data: Page | null } {
+    return {
+      page_data: null
+    }
+  },
+  async fetch () {
+    this.page_data = await apiGetPageDetail(this.$route.name)
+  },
+  head () {
+    return {
+      title: 'プロフィール'
+    }
+  },
+  computed: {
+    pageContent () : string | undefined {
+      return this.page_data?.data[0].content.rendered
+    },
+    pageTitle () : string | undefined {
+      return this.page_data?.data[0].title.rendered
+    }
+  }
 })
-export default class Profile extends Vue {
-  page_data: Page | null = null
-
-  created () {
-    this.getPage()
-  }
-
-  async getPage () : Promise<void> {
-    this.page_data = await this.apiGetPageDetail(this.$route.name, isWpApi)
-  }
-
-  get pageContent () : string | undefined {
-    return this.page_data?.data[0].content.rendered
-  }
-
-  get pageTitle () : string | undefined {
-    return this.page_data?.data[0].title.rendered
-  }
-}
 </script>
