@@ -59,15 +59,10 @@ function pageMoveCategory (category) {
   )
 }
 
-function copyJson (value) {
-  return JSON.parse(JSON.stringify(value))
-}
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default ({ app }, inject) => {
   inject('formatCategories', formatCategories)
   inject('formatDate', formatDate)
   inject('pageMoveCategory', pageMoveCategory)
-  inject('copyJson', copyJson)
   inject('pageMovePost', pageMovePost)
 }
