@@ -26,9 +26,10 @@
       "@types/node",
       "@nuxt/types",
       "@nuxtjs/axios"
-    ]
+    ],
+    "experimentalDecorators": true,
   },
   "exclude": [
     "node_modules"
-  ]
+  ],
 }
