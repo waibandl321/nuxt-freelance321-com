@@ -1,4 +1,4 @@
-export interface Data {
+interface FixedPage {
   author: number;
   comment_status: string;
   content: {
@@ -33,9 +33,96 @@ export interface Data {
   _links: Object
 }
 
-export interface PageDataType {
+interface Post {
+  author: number;
+  categories: number[];
+  comment_status: string;
+  content: {
+    protected: boolean;
+    rendered: string;
+  };
+  date: string;
+  date_gmt: string;
+  excerpt: {
+    protected: boolean;
+    rendered: string;
+  };
+  featured_media: number;
+  format: string;
+  guid: {
+    rendered: string;
+  };
+  id: number;
+  jetpack_featured_media_url: string;
+  link: string;
+  meta: [];
+  modified: string;
+  modified_gmt: string;
+  ping_status: string;
+  slug: string;
+  status: string;
+  sticky: boolean;
+  tags: [];
+  template: string;
+  title: {
+    rendered: string
+  };
+  type: string;
+  _embedded: [];
+  _links: [];
+}
+
+interface SearchPostCategory {
+  count: number;
+  description: string;
+  filter: string;
+  name: string;
+  parent: number;
+  slug: string;
+  taxonomy: string;
+  term_group: number;
+  term_id: number;
+  term_taxonomy_id: number;
+}
+
+export interface SearchPost {
+  category: SearchPostCategory;
+  content: string;
+  date: string;
+  excerpt: string;
+  id: number;
+  modified: string;
+  post_type: string | null;
+  slug: string;
+  thumbnail: string;
+  title: string;
+}
+
+interface Tag {}
+export interface Category {
+  count: number;
+  description: string;
+  id: number;
+  name: string;
+  parent: number;
+  slug: string;
+}
+interface Meta {}
+
+interface Auther {
+  avatar_urls: {};
+  description: string;
+  id: number;
+  link: string;
+  name: string;
+  slug: string;
+  url: string
+  _links: []
+}
+
+export interface Page {
   config: Object;
-  data: Array<Data>;
+  data: Array<FixedPage>;
   headers: Object;
   request: XMLHttpRequest;
   status: 200;

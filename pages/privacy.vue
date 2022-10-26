@@ -13,11 +13,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import { isWpApi } from '@/api/api'
-import type { PageDataType } from '@/types/page'
+import type { Page } from '@/types/page'
 
 export default Vue.extend({
   layout: 'page',
-  data (): { page_data: PageDataType | null } {
+  data (): { page_data: Page | null } {
     return {
       page_data: null
     }
