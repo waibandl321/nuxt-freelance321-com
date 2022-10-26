@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { isWpApi } from '@/api/api'
+import { isWpApi } from '~/api/api'
 import type { Page } from '@/types/page'
 
 export default Vue.extend({

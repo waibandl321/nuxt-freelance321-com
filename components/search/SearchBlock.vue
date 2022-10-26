@@ -20,7 +20,7 @@
 import LoadingPageInner from '@/components/common/LoadingPageInner.vue'
 import SearchResult from '@/components/search/SearchResult.vue'
 import SearchInput from '@/components/search/SearchInput.vue'
-import { isCustomApi } from '@/api/api'
+import { isCustomApi } from '~/api/api'
 
 export default {
   components: {

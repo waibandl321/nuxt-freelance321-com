@@ -31,7 +31,7 @@
 
 <script>
 import hljs from 'highlight.js'
-import { isWpApi } from '@/api/api'
+import { isWpApi } from '~/api/api'
 import PostBreadcrumbs from '@/components/post/PostBreadcrumbs.vue'
 
 export default {

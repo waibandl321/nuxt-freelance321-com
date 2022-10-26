@@ -40,7 +40,7 @@
 
 <script>
 import { MEDIA_API_PATH } from '@/config/blog'
-import { isWpApi } from '@/api/api'
+import { isWpApi } from '~/api/api'
 
 export default {
   name: 'CategoryPostList',

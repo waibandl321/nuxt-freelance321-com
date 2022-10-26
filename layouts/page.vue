@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { isWpApi } from '@/api/api'
+import { isWpApi } from '~/api/api'
 
 export default {
   name: 'PageLayout',

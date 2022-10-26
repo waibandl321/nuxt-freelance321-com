@@ -31,7 +31,7 @@
 
 <script>
 import hljs from 'highlight.js'
-import { isWpApi } from '@/api/api'
+import { isWpApi } from '~/api/api'
 
 export default {
   name: 'PostPage',
