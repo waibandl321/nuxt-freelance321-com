@@ -15,37 +15,6 @@
   </div>
 </template>
 
-<!-- <script lang="ts">
-import Vue from 'vue'
-import { isWpApi } from '@/api/api'
-import type { Page } from '@/types/page'
-
-export default Vue.extend({
-  layout: 'page',
-  // data (): { page_data: Page | null } {
-  //   return {
-  //     page_data: null
-  //   }
-  // },
-  // async fetch () {
-  //   this.page_data = await this.apiGetPageDetail(this.$route.name, isWpApi)
-  // },
-  head () {
-    return {
-      title: 'プロフィール'
-    }
-  },
-  computed: {
-    page_content (): string | undefined {
-      return this.page_data?.data[0].content.rendered
-    },
-    page_title (): string | undefined {
-      return this.page_data?.data[0].title.rendered
-    }
-  }
-})
-</script> -->
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { isWpApi } from '~/api/api'
