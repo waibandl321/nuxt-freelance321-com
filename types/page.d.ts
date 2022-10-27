@@ -99,6 +99,7 @@ export interface SearchPost {
 }
 
 interface Tag {}
+
 export interface Category {
   count: number;
   description: string;
@@ -106,7 +107,8 @@ export interface Category {
   name: string;
   parent: number;
   slug: string;
-  posts: Post[]
+  posts: Post[],
+  sub_categories: Category[]
 }
 interface Meta {}
 

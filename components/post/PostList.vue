@@ -43,6 +43,7 @@
 <script>
 import { MEDIA_API_PATH } from '@/config/blog'
 import { isWpApi, apiGetPosts } from '~/api/api'
+// import { this.$pageMovePost } from '@/utils/utils'
 
 export default {
   name: 'PostList',

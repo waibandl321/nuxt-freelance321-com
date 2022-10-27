@@ -28,6 +28,7 @@ import { defineComponent, reactive, useMeta } from '@nuxtjs/composition-api'
 // import { apiGetSitemapPosts } from '@/api/api'
 import type { Category } from '@/types/page'
 import { categoryStore } from '@/utils/store'
+// import { formatCategories } from '@/utils/utils'
 
 type DataType = {
   categories: Category[],

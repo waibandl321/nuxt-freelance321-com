@@ -17,7 +17,7 @@
 
 <script>
 import { isWpApi, apiGetCategories } from '~/api/api'
-import { categoryStore } from '@/utils/store'
+import { formatCategories } from '@/utils/utils'
 
 export default {
   name: 'PostLayout',
@@ -32,9 +32,7 @@ export default {
         return response.data.filter(v => v.id !== 14 && v.id !== 1)
       })
 
-    const useStore = categoryStore()
-    useStore.setCategories(this.categoryList)
-    this.categoryList = this.$formatCategories(this.categoryList)
+    this.categoryList = formatCategories(this.categoryList)
   }
 }
 </script>

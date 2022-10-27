@@ -32,6 +32,7 @@
 <script>
 import hljs from 'highlight.js'
 import { isWpApi, apiGetPostDetail } from '~/api/api'
+import { formatDate } from '@/utils/utils'
 
 export default {
   name: 'PostPage',
@@ -51,7 +52,7 @@ export default {
       await apiGetPostDetail(this.$route.query.p, isWpApi)
         .then((res) => {
           this.post = res.data
-          this.post.date = this.$formatDate(this.post.date)
+          this.post.date = formatDate(this.post.date)
         })
     } catch {}
     this.loading = false
