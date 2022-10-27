@@ -31,7 +31,7 @@
 
 <script>
 import hljs from 'highlight.js'
-import { isWpApi } from '~/api/api'
+import { isWpApi, apiGetPostDetail } from '~/api/api'
 import PostBreadcrumbs from '@/components/post/PostBreadcrumbs.vue'
 
 export default {
@@ -52,7 +52,7 @@ export default {
   async fetch () {
     this.loading = true
     try {
-      await this.apiGetPostDetail(this.$route.query.p, isWpApi)
+      await apiGetPostDetail(this.$route.query.p, isWpApi)
         .then((res) => {
           this.post = res.data
           this.post.date = this.$formatDate(this.post.date)

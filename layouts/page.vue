@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import { isWpApi } from '~/api/api'
+import { isWpApi, apiGetCategories } from '~/api/api'
+import { categoryStore } from '@/utils/store'
 
 export default {
   name: 'PageLayout',
@@ -19,10 +20,13 @@ export default {
     }
   },
   async fetch () {
-    this.categoryList = await this.apiGetCategories(isWpApi)
+    this.categoryList = await apiGetCategories(isWpApi)
       .then((response) => {
         return response.data.filter(v => v.id !== 14 && v.id !== 1)
       })
+
+    const useStore = categoryStore()
+    useStore.setCategories(this.categoryList)
     this.categoryList = this.$formatCategories(this.categoryList)
   }
 }

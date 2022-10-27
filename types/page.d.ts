@@ -106,6 +106,7 @@ export interface Category {
   name: string;
   parent: number;
   slug: string;
+  posts: Post[]
 }
 interface Meta {}
 

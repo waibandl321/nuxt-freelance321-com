@@ -40,7 +40,7 @@
 
 <script>
 import { MEDIA_API_PATH } from '@/config/blog'
-import { isWpApi } from '~/api/api'
+import { isWpApi, apiGetCategoryPosts } from '~/api/api'
 
 export default {
   name: 'CategoryPostList',
@@ -64,7 +64,7 @@ export default {
   methods: {
     async initPostList () {
       this.loading = true
-      this.posts = await this.apiGetCategoryPosts(
+      this.posts = await apiGetCategoryPosts(
         this.$route.query.c,
         this.current_page,
         this.per_page,

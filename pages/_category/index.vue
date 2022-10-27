@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { isWpApi } from '~/api/api'
+import { isWpApi, apiGetCategoryDetail } from '~/api/api'
 
 export default {
   name: 'CategoryParentPage',
@@ -26,7 +26,7 @@ export default {
     }
   },
   async fetch () {
-    await this.apiGetCategoryDetail(this.$route.query.c, isWpApi)
+    await apiGetCategoryDetail(this.$route.query.c, isWpApi)
       .then((res) => {
         this.category = res.data
       })

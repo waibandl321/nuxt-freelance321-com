@@ -20,9 +20,13 @@ import Vue from 'vue'
 import { apiGetPageDetail } from '~/api/api'
 import type { Page } from '@/types/page'
 
+type DataType = {
+  page_data: Page | null
+}
+
 export default Vue.extend({
   layout: 'page',
-  data (): { page_data: Page | null } {
+  data (): DataType {
     return {
       page_data: null
     }

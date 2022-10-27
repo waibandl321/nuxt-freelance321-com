@@ -1,5 +1,4 @@
 function formatCategories (categories) {
-  this.storeSetCategories(categories)
   const items = []
   categories.forEach((item) => {
     if (item.parent === 0) {

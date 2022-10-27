@@ -42,7 +42,7 @@
 
 <script>
 import { MEDIA_API_PATH } from '@/config/blog'
-import { isWpApi } from '~/api/api'
+import { isWpApi, apiGetPosts } from '~/api/api'
 
 export default {
   name: 'PostList',
@@ -64,7 +64,7 @@ export default {
   async fetch () {
     this.loading = true
     try {
-      this.posts = await this.apiGetPosts(this.current_page, this.per_page, isWpApi)
+      this.posts = await apiGetPosts(this.current_page, this.per_page, isWpApi)
         .then((response) => {
           this.setPaginations(response)
           return response.data

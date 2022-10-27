@@ -36,7 +36,6 @@ export default {
   plugins: [
     { src: '~/plugins/persistedstate.js', ssr: false },
     '@/plugins/common.js',
-    '@/plugins/mixins/api',
     '@/plugins/mixins/store',
     '@/plugins/plugins.js'
   ],
@@ -50,7 +49,8 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/composition-api/module'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

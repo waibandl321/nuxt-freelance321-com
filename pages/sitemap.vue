@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CommonMessageViewer :message="message" />
+    <!-- <CommonMessageViewer :message="message" />
     <div
       v-for="(category, i) in categories"
       :key="i"
@@ -18,61 +18,95 @@
           <a>{{ post.title.rendered }}</a>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { isWpApi } from '@/api/api'
+// import Vue from 'vue'
+import { defineComponent, reactive, useMeta } from '@nuxtjs/composition-api'
+// import { apiGetSitemapPosts } from '@/api/api'
+import type { Category } from '@/types/page'
+import { categoryStore } from '@/utils/store'
 
-interface Caregory {
-
-}
-
-interface Data {
-  categories: Array<Caregory>;
+type DataType = {
+  categories: Category[],
   message: {
-    error: string;
+    error: string | unknown
   }
 }
 
-export default Vue.extend({
+export default defineComponent({
   layout: 'page',
-  data () {
-    return {
+  setup () {
+    const state = reactive<DataType>({
       categories: [],
       message: {
         error: ''
       }
-    } as Data
-  },
-  head () {
+    })
+    const { title } = useMeta({ title: 'サイトマップ' })
+    const useCategoryStore = categoryStore()
+    console.log(useCategoryStore.categories)
+
+    // function readCategoryPosts () {
+    //   const categories: Category[] = this.storeGetCategories()
+    //   try {
+    //     categories.forEach(async (category: Category) => {
+    //       category.posts = await apiGetSitemapPosts(category)
+    //       this.categories.push(category)
+    //     })
+    //   } catch (error) {
+    //     this.message.error = error
+    //   }
+    // }
+    // const store = categoryStore()
+    // console.log(store.categories)
+
     return {
-      title: 'サイトマップ'
+      state,
+      title
     }
   },
-  created () {
-    this.init()
-  },
-  methods: {
-    init () {
-      const categories = this.storeGetCategories()
-      try {
-        categories.forEach(async (category) => {
-          category.posts = await this.apiGetSitemapPosts(category, isWpApi)
-          this.categories.push(category)
-        })
-      } catch (error) {
-        this.message.error = error
-      }
-    },
-    clickPostLink (post) {
-      const current_category = this.categories.find(v => v.id === post.categories[0])
-      this.$pageMovePost(current_category, post, this.storeGetCategories())
-    }
-  }
+  head: {}
 })
+
+// export default Vue.extend({
+//   layout: 'page',
+//   data () {
+//     return {
+//       categories: [],
+//       message: {
+//         error: ''
+//       }
+//     } as DataType
+//   },
+//   head () {
+//     return {
+//       title: 'サイトマップ'
+//     }
+//   },
+//   created () {
+//     this.init()
+//   },
+//   methods: {
+//     init () {
+//       const categories: Category[] = this.storeGetCategories()
+//       try {
+//         categories.forEach(async (category: Category) => {
+//           category.posts = await apiGetSitemapPosts(category)
+//           this.categories.push(category)
+//         })
+//       } catch (error) {
+//         this.message.error = error
+//       }
+//     },
+//     clickPostLink (post: Post) {
+//       const current_category = this.categories.find(v => v.id === post.categories[0])
+//       this.$pageMovePost(current_category, post, this.storeGetCategories())
+//     }
+//   }
+// })
 </script>
 
 <style scoped>
