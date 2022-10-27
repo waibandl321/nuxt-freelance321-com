@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { isWpApi, apiGetCategories } from '~/api/api'
+import { isWpApi, apiGetCategories } from '~/utils/api'
 import { formatCategories } from '@/utils/utils'
 
 export default {

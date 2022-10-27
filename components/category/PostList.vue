@@ -40,7 +40,7 @@
 
 <script>
 import { MEDIA_API_PATH } from '@/config/blog'
-import { isWpApi, apiGetCategoryPosts } from '~/api/api'
+import { isWpApi, apiGetCategoryPosts } from '~/utils/api'
 // import { pageMovePost } from '@/utils/utils'
 
 export default {

@@ -31,7 +31,7 @@
 
 <script>
 import hljs from 'highlight.js'
-import { isWpApi, apiGetPostDetail } from '~/api/api'
+import { isWpApi, apiGetPostDetail } from '~/utils/api'
 import { formatDate } from '@/utils/utils'
 
 export default {

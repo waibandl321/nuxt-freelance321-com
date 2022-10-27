@@ -25,7 +25,7 @@
 <script lang="ts">
 // import Vue from 'vue'
 import { defineComponent, reactive, useMeta } from '@nuxtjs/composition-api'
-// import { apiGetSitemapPosts } from '@/api/api'
+// import { apiGetSitemapPosts } from '@/utils/api'
 import type { Category } from '@/types/page'
 import { categoryStore } from '@/utils/store'
 // import { formatCategories } from '@/utils/utils'

@@ -20,7 +20,7 @@
 import LoadingPageInner from '@/components/common/LoadingPageInner.vue'
 import SearchResult from '@/components/search/SearchResult.vue'
 import SearchInput from '@/components/search/SearchInput.vue'
-import { isCustomApi, apiGetSearchPosts } from '~/api/api'
+import { isCustomApi, apiGetSearchPosts } from '~/utils/api'
 // import { pageMovePost } from '@/utils/utils'
 
 export default {

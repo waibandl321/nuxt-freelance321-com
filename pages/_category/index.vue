@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { isWpApi, apiGetCategoryDetail } from '~/api/api'
+import { isWpApi, apiGetCategoryDetail } from '~/utils/api'
 
 export default {
   name: 'CategoryParentPage',

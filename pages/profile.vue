@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { apiGetPageDetail } from '~/api/api'
+import { apiGetPageDetail } from '~/utils/api'
 import type { Page } from '@/types/page'
 
 type DataType = {
