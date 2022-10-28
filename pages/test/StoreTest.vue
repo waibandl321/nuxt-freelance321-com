@@ -17,7 +17,6 @@ import { readCategories } from '~/utils/utils'
 // import { Category } from '@/types/page'
 
 export default defineComponent({
-  layout: 'page',
   setup () {
     const counter = useCounter()
 

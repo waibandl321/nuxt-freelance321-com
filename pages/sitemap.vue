@@ -8,7 +8,7 @@
     </v-main>
     <CommonFooter />
   </v-app>
-  <!-- <CommonMessageViewer :message="message" />
+    <!-- <CommonMessageViewer :message="message" />
     <div
       v-for="(category, i) in categories"
       :key="i"
@@ -44,7 +44,6 @@ type DataType = {
 }
 
 export default defineComponent({
-  layout: 'page',
   setup () {
     // const useCategoryStore = categoryStore()
     const categoryList = ref<Category[]>([])

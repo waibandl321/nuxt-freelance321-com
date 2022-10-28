@@ -1,13 +1,32 @@
 <!-- TOP -->
 <template>
   <div>
-    <PostList />
+    <PostList :all-category="categories" />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
-  layout: 'top'
+import { computed, defineComponent } from 'vue'
+import { useFetch } from '@nuxtjs/composition-api'
+import { useCategoryStore } from '@/utils/store'
+import { apiGetCategories } from '~/utils/api'
+
+export default defineComponent({
+  layout: 'top',
+  setup () {
+    const categoryStore = useCategoryStore()
+
+    const categories = computed(() => categoryStore.categories)
+
+    useFetch(async () => {
+      await apiGetCategories().then((response) => {
+        categoryStore.setCategories(response.data)
+      })
+    })
+
+    return {
+      categories
+    }
+  }
 })
 </script>

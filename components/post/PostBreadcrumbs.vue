@@ -16,37 +16,38 @@
 </template>
 
 <script>
-export default {
-  name: 'PostBreadcrumbs',
+import { useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref } from 'vue'
+
+export default defineComponent({
   props: {
-    post: Object
-  },
-  data () {
-    return {
-      breadcrumbs: []
+    post: {
+      type: Object
     }
   },
-  created () {
-    this.initBreadcrumb()
-  },
-  methods: {
-    initBreadcrumb () {
+  setup (props) {
+    const route = useRoute()
+    const breadcrumbs = ref([])
+
+    function initBreadcrumb () {
       const categories = this.storeGetCategories()
       const results = []
       const post = {}
       const category = {}
       const sub_category = {}
-      post.text = this.post.title.rendered
+
+      post.text = props.post.title.rendered
       post.disabled = true
-      if (this.$route.params.category) {
-        const _category = categories.find(v => v.slug === this.$route.params.category)
+
+      if (route.value.params.category) {
+        const _category = categories.find(v => v.slug === route.value.params.category)
         category.text = _category.name
         category.disabled = false
         category.obj = _category
         results.push(category)
-        if (this.$route.params.subCategory) {
+        if (route.value.params.subCategory) {
           // サブカテゴリあり
-          const _sub_category = categories.find(v => v.slug === this.$route.params.subCategory)
+          const _sub_category = categories.find(v => v.slug === route.value.params.subCategory)
           sub_category.text = _sub_category.name
           sub_category.disabled = false
           sub_category.obj = _sub_category
@@ -54,13 +55,23 @@ export default {
         }
       }
       results.push(post)
-      this.breadcrumbs = results
-    },
-    clickBreadcrumbs (item) {
+      breadcrumbs.value = results
+    }
+
+    onMounted(() => {
+      initBreadcrumb()
+    })
+
+    const clickBreadcrumbs = (item) => {
       this.$pageMoveCategory(item.obj)
     }
+
+    return {
+      breadcrumbs,
+      clickBreadcrumbs
+    }
   }
-}
+})
 </script>
 
 <style scoped>

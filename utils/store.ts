@@ -1,19 +1,12 @@
 import { reactive } from 'vue'
-import { Category } from '~/types/page'
-// import type { Category } from '@/types/page'
 
-export function categoryStore () {
-  interface State {
-    categories: Category[] | null
-  }
-
+export const useCategoryStore = () => {
   const state = reactive({
-    categories: null
-  }) as State
+    categories: []
+  })
 
-  function setCategories (categories: Category[]): void {
+  function setCategories (categories: []) {
     state.categories = categories
-    console.log('state.categories', state.categories)
   }
 
   return {
@@ -41,5 +34,5 @@ export const useCounter = () => {
     pushArr
   }
 }
-export type CategoryStore = ReturnType<typeof categoryStore>
-export type CounterStore = ReturnType<typeof useCounter>;
+export type CategoryStore = ReturnType<typeof useCategoryStore>
+export type CounterStore = ReturnType<typeof useCounter>

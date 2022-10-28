@@ -1,9 +1,6 @@
 import { useRouter } from '@nuxtjs/composition-api'
 import type { Category, Post } from '@/types/page'
-import { isWpApi, apiGetCategories } from '~/utils/api'
-import { categoryStore } from '@/utils/store'
-
-const useCategoryStore = categoryStore()
+import { apiGetCategories } from '~/utils/api'
 
 export function formatDate (data: string, format: string = 'YYYY-MM-dd'):string {
   if (!data) { return '' }
@@ -39,12 +36,10 @@ export function formatCategories (categories: Category[]): Category[] {
 }
 
 export async function readCategories (): Promise<Category[]> {
-  const results: Category[] = await apiGetCategories(isWpApi)
+  const results: Category[] = await apiGetCategories()
     .then((response) => {
       return response.data.filter((v: Category) => v.id !== 14 && v.id !== 1)
     })
-  // ストアへ保存
-  useCategoryStore.setCategories(results)
   return formatCategories(results)
 }
 

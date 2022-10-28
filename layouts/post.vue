@@ -24,7 +24,6 @@ import type { Category } from '~/types/page'
 export default defineComponent({
   setup () {
     const categoryList = ref<Category[]>([])
-    // fetch
     useFetch(async () => {
       categoryList.value = await readCategories()
     })

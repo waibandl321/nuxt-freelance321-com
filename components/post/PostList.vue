@@ -41,9 +41,9 @@
 </template>
 
 <script lang="ts">
-import { useFetch, defineComponent, reactive } from '@nuxtjs/composition-api'
+import { useFetch, defineComponent, reactive, PropType } from '@nuxtjs/composition-api'
 import { MEDIA_API_PATH } from '@/config/blog'
-import { apiGetPosts } from '~/utils/api'
+import { apiGetPosts } from '@/utils/api'
 import type { Category, Post, AxiosResponseType } from '@/types/page'
 // import { pageMovePost } from '@/utils/utils'
 
@@ -60,7 +60,13 @@ type State = {
 }
 
 export default defineComponent({
-  setup () {
+  props: {
+    allCategory: {
+      type: [] as PropType<Category[] | undefined>,
+      required: true
+    }
+  },
+  setup (props) {
     const state = reactive({
       loading: false,
       current_page: 1,
@@ -110,9 +116,8 @@ export default defineComponent({
     }
 
     const clickPostCard = (item: Post): void => {
-      const categories = this.storeGetCategories()
-      const current_category = categories.find((v: Category) => v.id === item.categories[0])
-      this.$pageMovePost(current_category, item, this.storeGetCategories())
+      const current_category = props.allCategory.find((v: Category) => v.id === item.categories[0])
+      this.$pageMovePost(current_category, item, props.allCategory)
     }
 
     return {

@@ -32,7 +32,6 @@ type DataType = {
 }
 
 export default defineComponent({
-  layout: 'page',
   setup () {
     const route = useRoute()
     const categoryList = ref<Category[]>([])

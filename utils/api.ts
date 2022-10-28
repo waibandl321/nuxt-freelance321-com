@@ -65,8 +65,8 @@ export async function apiGetPostDetail (post_id: number, api_type: string): Prom
   return await callGetApi(base_url + params)
 }
 
-export async function apiGetCategories (api_type: string): Promise<Category[]> {
-  const base_url: string = getApiBaseUrl(api_type)
+export async function apiGetCategories (): Promise<Category[]> {
+  const base_url: string = getApiBaseUrl(isWpApi)
   const params: string = 'categories?per_page=20'
   return await callGetApi(base_url + params)
 }

@@ -36,7 +36,6 @@ export default {
   plugins: [
     { src: '~/plugins/persistedstate.js', ssr: false },
     '@/plugins/common.js',
-    '@/plugins/mixins/store',
     '@/plugins/plugins.js'
   ],
 
