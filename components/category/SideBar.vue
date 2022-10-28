@@ -28,29 +28,41 @@
     </div>
   </v-list>
 </template>
-<script>
-export default {
-  name: 'CategorySideBar',
+
+<script lang="ts">
+import { useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, PropType } from 'vue'
+import { Category } from '~/types/page'
+
+export default defineComponent({
   props: {
     categoryList: {
-      type: Array
+      type: Array as PropType<Category[]>,
+      required: true
+    }
+  },
+  setup () {
+    const route = useRoute()
+
+    function judgeActive (category: Category): boolean {
+      if (route.value.query.c) {
+        return Number(category.id) === Number(route.value.query.c)
+      } else if (!route.value.params.subCategory) {
+        return route.value.params.category === category.slug
+      } else {
+        return route.value.params.subCategory === category.slug
+      }
+    }
+    return {
+      judgeActive
     }
   },
   methods: {
-    judgeActive (category) {
-      if (this.$route.query.c) {
-        return Number(category.id) === Number(this.$route.query.c)
-      } else if (!this.$route.params.subCategory) {
-        return this.$route.params.category === category.slug
-      } else {
-        return this.$route.params.subCategory === category.slug
-      }
-    },
-    clickSideMenu (category) {
+    clickSideMenu (category: Category) {
       this.$pageMoveCategory(category)
     }
   }
-}
+})
 </script>
 <style scoped>
 .side-menu {
