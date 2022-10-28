@@ -7,12 +7,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'LoadingPageInner'
-}
-</script>
-
 <style scoped>
 .loading-inner {
   position: absolute;

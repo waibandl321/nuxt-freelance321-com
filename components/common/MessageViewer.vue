@@ -19,12 +19,21 @@
     </v-alert>
   </div>
 </template>
-<script>
 
-export default {
-  name: 'MessageViewer',
-  props: {
-    message: Object
-  }
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
+
+type Message = {
+  success: string;
+  error: string;
 }
+
+export default defineComponent({
+  props: {
+    message: {
+      type: Object as PropType<Message>,
+      default: null
+    }
+  }
+})
 </script>
