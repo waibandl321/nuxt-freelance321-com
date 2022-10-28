@@ -10,6 +10,8 @@ export const isWpApi = 'wp'
 
 export const isCustomApi = 'custom'
 
+export const apiMediaPath = 'https://media.freelance321.com/uploads/'
+
 export function getApiBaseUrl (api_type: string) {
   return api_type === 'wp' ? WP_API_PATH : CUSTOM_API_PATH
 }
@@ -65,7 +67,7 @@ export async function apiGetPostDetail (post_id: number): Promise<Post> {
   return await callGetApi(base_url + params)
 }
 
-export async function apiGetCategories (): Promise<Category[]> {
+export async function apiGetCategories (): Promise<AxiosResponseType> {
   const base_url: string = getApiBaseUrl(isWpApi)
   const params: string = 'categories?per_page=20'
   return await callGetApi(base_url + params)

@@ -17,12 +17,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
-import { apiGetSearchPosts } from '~/utils/api'
+import { useRouter, defineComponent, reactive, computed, useFetch } from '@nuxtjs/composition-api'
+import { apiGetCategories, apiGetSearchPosts } from '~/utils/api'
 import { pageMovePost } from '~/utils/utils'
+import { useCategoryStore } from '@/utils/store'
 import type { Category, SearchPost, AxiosResponseType } from '@/types/page'
 
 interface StateType {
+  categories: Array<Category>,
   search_items: Array<SearchPost>,
   search_loading: boolean,
   search_error: string
@@ -30,11 +32,22 @@ interface StateType {
 
 export default defineComponent({
   setup () {
+    const router = useRouter()
     const state = reactive({
+      categories: [],
       search_items: [],
       search_loading: false,
       search_error: ''
     }) as StateType
+
+    // TODO: 状態管理効率化
+    const categoryStore = useCategoryStore()
+    state.categories = computed(() => categoryStore.categories)
+    useFetch(async () => {
+      await apiGetCategories().then((response) => {
+        categoryStore.setCategories(response.data)
+      })
+    })
 
     async function search (search_query: string): Promise<void> {
       state.search_loading = true
@@ -53,12 +66,12 @@ export default defineComponent({
       state.search_items = []
       state.search_loading = false
 
-      const categories = this.storeGetCategories()
-      const current_category = categories.find((v: Category) => {
+      const current_category = state.categories.find((v: Category) => {
         return v.id === post.category.term_id
       })
-      pageMovePost(current_category, post, categories)
+      pageMovePost(router, current_category, post, state.categories)
     }
+
     return {
       state,
       search,

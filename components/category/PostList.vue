@@ -39,9 +39,8 @@
 </template>
 
 <script lang="ts">
-import { useFetch, useRoute, defineComponent, reactive, PropType } from '@nuxtjs/composition-api'
-import { MEDIA_API_PATH } from '@/config/blog'
-import { apiGetCategoryPosts } from '@/utils/api'
+import { useFetch, useRoute, defineComponent, reactive, PropType, useRouter } from '@nuxtjs/composition-api'
+import { apiMediaPath, apiGetCategoryPosts } from '@/utils/api'
 import { pageMovePost } from '@/utils/utils'
 import type { Post, Category, AxiosResponseType } from '@/types/page'
 
@@ -66,6 +65,7 @@ export default defineComponent({
   },
   setup (props) {
     const route = useRoute()
+    const router = useRouter()
     const state = reactive({
       loading: false,
       message: {
@@ -103,7 +103,7 @@ export default defineComponent({
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
-      return MEDIA_API_PATH + '2022/08/no-image.png'
+      return apiMediaPath + '2022/08/no-image.png'
     }
 
     const changePage = (page_number: number): void => {
@@ -114,7 +114,7 @@ export default defineComponent({
 
     const clickPostCard = (item: Post): void => {
       const current_category = props.allCategory.find((v: Category) => v.id === item.categories[0])
-      pageMovePost(current_category, item, props.allCategory)
+      pageMovePost(router, current_category, item, props.allCategory)
     }
 
     return {

@@ -1,19 +1,28 @@
 import { reactive } from 'vue'
+import { Category } from '~/types/page'
+
+type State = {
+  categories: Category[]
+}
 
 export const useCategoryStore = () => {
   const state = reactive({
     categories: []
-  })
+  }) as State
 
   function setCategories (categories: []) {
     state.categories = categories
+  }
+  function getCategories () {
+    return state.categories
   }
 
   return {
     get categories () {
       return state.categories
     },
-    setCategories
+    setCategories,
+    getCategories
   }
 }
 

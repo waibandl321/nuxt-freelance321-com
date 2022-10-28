@@ -61,8 +61,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+import { PropType } from 'vue'
 import { Category } from '~/types/page'
+import { pageMoveCategory } from '@/utils/utils'
 
 export default defineComponent({
   props: {
@@ -71,9 +73,13 @@ export default defineComponent({
       required: true
     }
   },
-  methods: {
-    clickCategoryMenu (category: Category) {
-      this.$pageMoveCategory(category)
+  setup () {
+    const router = useRouter()
+    const clickCategoryMenu = (category: Category) => {
+      pageMoveCategory(router, category)
+    }
+    return {
+      clickCategoryMenu
     }
   }
 })

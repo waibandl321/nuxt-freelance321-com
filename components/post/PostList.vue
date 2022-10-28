@@ -42,11 +42,9 @@
 
 <script lang="ts">
 import { useFetch, defineComponent, reactive, PropType, useRouter } from '@nuxtjs/composition-api'
-import { MEDIA_API_PATH } from '@/config/blog'
-import { apiGetPosts } from '@/utils/api'
-// import { pageMovePost } from '@/utils/utils'
-import type { Category, Post, AxiosResponseType } from '@/types/page'
+import { apiMediaPath, apiGetPosts } from '@/utils/api'
 import { pageMovePost } from '@/utils/utils'
+import type { Category, Post, AxiosResponseType } from '@/types/page'
 
 type State = {
   loading: boolean;
@@ -108,7 +106,7 @@ export default defineComponent({
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
-      return MEDIA_API_PATH + '2022/08/no-image.png'
+      return apiMediaPath + '2022/08/no-image.png'
     }
 
     const changePage = (page_number: number): void => {

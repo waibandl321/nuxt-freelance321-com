@@ -14,10 +14,9 @@ import { apiGetCategories } from '~/utils/api'
 export default defineComponent({
   layout: 'top',
   setup () {
+    // TODO: 状態管理効率化
     const categoryStore = useCategoryStore()
-
     const categories = computed(() => categoryStore.categories)
-
     useFetch(async () => {
       await apiGetCategories().then((response) => {
         categoryStore.setCategories(response.data)

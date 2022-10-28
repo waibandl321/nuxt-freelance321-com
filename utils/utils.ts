@@ -1,11 +1,11 @@
-import { useRouter } from '@nuxtjs/composition-api'
+import VueRouter from 'vue-router'
 import type { Category, Post } from '@/types/page'
 import { apiGetCategories } from '~/utils/api'
 
 export function formatDate (data: string, format: string = 'YYYY-MM-dd'):string {
   if (!data) { return '' }
   const date_obj = new Date(data)
-  const year = date_obj.getFullYear()
+  const year = String(date_obj.getFullYear())
   const month = zeroPadding(date_obj.getMonth() + 1)
   const day = zeroPadding(date_obj.getDate())
   const hour = zeroPadding(date_obj.getHours())
@@ -25,7 +25,7 @@ export function formatDate (data: string, format: string = 'YYYY-MM-dd'):string 
 }
 
 export function formatCategories (categories: Category[]): Category[] {
-  const items: [] = []
+  const items: Category[] = []
   categories.forEach((item) => {
     if (item.parent === 0) {
       item.sub_categories = categories.filter(v => v.parent === item.id)
@@ -43,34 +43,39 @@ export async function readCategories (): Promise<Category[]> {
   return formatCategories(results)
 }
 
-export function pageMovePost (router, current_category: Category | undefined, post: Post, categories: Category[]) {
+export function pageMovePost (router: VueRouter, current_category: Category | undefined, post: Post, categories: Category[]) {
   let parent_category = null
-  if (current_category && current_category.parent !== 0) {
-    parent_category = categories.find(r => r.id === current_category.parent)
-    if (parent_category) {
-      router.push(
-        {
-          path: '/' + parent_category.slug + '/' + current_category.slug + '/' + post.slug,
-          query: { p: post.id }
-        }
-      )
-      return
+  if (current_category) {
+    // 第二カテゴリー遷移
+    if (current_category.parent !== 0) {
+      parent_category = categories.find(r => r.id === current_category.parent)
+      if (parent_category) {
+        router.push(
+          {
+            path: '/' + parent_category.slug + '/' + current_category.slug + '/' + post.slug,
+            query: { p: post.id }
+          }
+        )
+        return
+      }
     }
+    // 第一カテゴリー遷移
+    router.push(
+      {
+        path: '/' + current_category.slug + '/' + post.slug,
+        query: { p: post.id }
+      }
+    )
   }
-  router.push(
-    {
-      path: '/' + current_category.slug + '/' + post.slug,
-      query: { p: post.id }
-    }
-  )
 }
 
-export function pageMoveCategory (category: Category) {
-  const router = useRouter()
-  router.push(
-    {
-      path: '/' + category.slug,
-      query: { c: category.id }
-    }
-  )
+export function pageMoveCategory (router: VueRouter, category: Category | undefined) {
+  if (category) {
+    router.push(
+      {
+        path: '/' + category.slug,
+        query: { c: category.id }
+      }
+    )
+  }
 }

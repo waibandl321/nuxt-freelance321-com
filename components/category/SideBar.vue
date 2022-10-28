@@ -30,9 +30,10 @@
 </template>
 
 <script lang="ts">
-import { useRoute } from '@nuxtjs/composition-api'
+import { useRoute, useRouter } from '@nuxtjs/composition-api'
 import { defineComponent, PropType } from 'vue'
 import { Category } from '~/types/page'
+import { pageMoveCategory } from '@/utils/utils'
 
 export default defineComponent({
   props: {
@@ -43,6 +44,7 @@ export default defineComponent({
   },
   setup () {
     const route = useRoute()
+    const router = useRouter()
 
     function judgeActive (category: Category): boolean {
       if (route.value.query.c) {
@@ -53,13 +55,14 @@ export default defineComponent({
         return route.value.params.subCategory === category.slug
       }
     }
-    return {
-      judgeActive
+
+    function clickSideMenu (category: Category): void {
+      pageMoveCategory(router, category)
     }
-  },
-  methods: {
-    clickSideMenu (category: Category) {
-      this.$pageMoveCategory(category)
+
+    return {
+      judgeActive,
+      clickSideMenu
     }
   }
 })
