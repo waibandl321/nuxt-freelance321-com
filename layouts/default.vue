@@ -4,12 +4,6 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  name: 'DefaultLayout',
-  data () {
-    return {
-    }
-  }
-}
+<script lang="ts">
+export default {}
 </script>

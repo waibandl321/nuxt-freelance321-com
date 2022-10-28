@@ -27,7 +27,6 @@
 import { defineComponent, reactive, useMeta } from '@nuxtjs/composition-api'
 // import { apiGetSitemapPosts } from '@/utils/api'
 import type { Category } from '@/types/page'
-import { categoryStore } from '@/utils/store'
 // import { formatCategories } from '@/utils/utils'
 
 type DataType = {
@@ -47,9 +46,6 @@ export default defineComponent({
       }
     })
     const { title } = useMeta({ title: 'サイトマップ' })
-    const useCategoryStore = categoryStore()
-    console.log(useCategoryStore.categories)
-
     // function readCategoryPosts () {
     //   const categories: Category[] = this.storeGetCategories()
     //   try {

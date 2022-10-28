@@ -1,46 +1,36 @@
 <template>
   <div>
-    <v-btn @click="decrement">
-      -
-    </v-btn>
-    <span class="count">
-      {{ count }}
-    </span>
-    <v-btn @click="increment">
-      +
-    </v-btn>
+    カテゴリ
     <div>
-      <input type="text" v-model="exampleText">
-      <v-btn @click="pushArr">Submit</v-btn>
-    </div>
-    <div>
-      {{ texts }}
+      {{ arr }}
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import { computed } from '@nuxtjs/composition-api'
-import counterStore from '@/utils/store.ts'
+import { computed, defineComponent } from 'vue'
+import { useFetch } from '@nuxtjs/composition-api'
+// import { computed, useFetch } from '@nuxtjs/composition-api'
+import { useCounter } from '@/utils/store.ts'
+import { readCategories } from '~/utils/utils'
+// import { readCategories } from '@/utils/utils'
+// import { Category } from '@/types/page'
 
 export default defineComponent({
   layout: 'page',
   setup () {
-    const counter = counterStore()
-    const count = computed(() => counter.count)
+    const counter = useCounter()
 
-    const texts = computed(() => counter.arr)
+    const arr = computed(() => counter.arr)
 
-    const exampleText = ref('')
+    useFetch(async () => {
+      await readCategories().then((cats) => {
+        counter.pushArr(cats)
+      })
+    })
 
     return {
-      exampleText,
-      texts,
-      pushArr: counter.addArr,
-      count,
-      increment: counter.increment,
-      decrement: counter.decrement
+      arr
     }
   }
 })

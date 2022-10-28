@@ -1,57 +1,39 @@
-import { reactive, watch } from 'vue'
+import { reactive } from 'vue'
+// import { Category } from '~/types/page'
 // import type { Category } from '@/types/page'
 
 export function categoryStore () {
   const state = reactive({
-    categories: null
+    categories: []
   })
-
-  watch(
-    () => state.categories,
-    (categories) => {
-      state.categories = categories
-    }
-  )
 
   return {
     get categories () {
       // console.log('get categories', state.categories)
       return state.categories
     },
-    setCategories (categories) {
+    setCategories (categories): void {
       state.categories = categories
-      // console.log('set categories', state.categories)
+      console.log('set categories', state.categories)
     }
   }
 }
 
-export default function counterStore () {
+export const useCounter = () => {
   const state = reactive({
-    count: 0,
     arr: []
   })
 
+  function pushArr (arr: []) {
+    state.arr = arr
+  }
   return {
-    get count () {
-      return state.count
-    },
-
+    state,
     get arr () {
       return state.arr
     },
-
-    increment () {
-      state.count += 1
-    },
-    decrement () {
-      state.count -= 1
-    },
-    addArr () {
-      const str = 'justis!'
-      state.arr.push(str)
-    }
+    pushArr
   }
 }
-
-export type CounterStore = ReturnType<typeof counterStore>
 export type CategoryStore = ReturnType<typeof categoryStore>
+export type CounterStore = ReturnType<typeof useCounter>;

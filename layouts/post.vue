@@ -15,26 +15,25 @@
   </v-app>
 </template>
 
-<script>
-import { isWpApi, apiGetCategories } from '~/utils/api'
-import { formatCategories } from '@/utils/utils'
+<script lang="ts">
+import { useFetch } from '@nuxtjs/composition-api'
+import { defineComponent, ref } from 'vue'
+import { readCategories } from '~/utils/utils'
+import type { Category } from '~/types/page'
 
-export default {
-  name: 'PostLayout',
-  data () {
+export default defineComponent({
+  setup () {
+    const categoryList = ref<Category[]>([])
+    // fetch
+    useFetch(async () => {
+      categoryList.value = await readCategories()
+    })
+
     return {
-      categoryList: []
+      categoryList
     }
-  },
-  async fetch () {
-    this.categoryList = await apiGetCategories(isWpApi)
-      .then((response) => {
-        return response.data.filter(v => v.id !== 14 && v.id !== 1)
-      })
-
-    this.categoryList = formatCategories(this.categoryList)
   }
-}
+})
 </script>
 
 <style scoped>
