@@ -38,24 +38,23 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useFetch, useRoute, defineComponent, reactive } from '@nuxtjs/composition-api'
 import { MEDIA_API_PATH } from '@/config/blog'
 import { apiGetCategoryPosts } from '@/utils/api'
-// import type { Post } from '@/types/page'
-// import { pageMovePost } from '@/utils/utils'
+import type { Post, Category, AxiosResponseType } from '@/types/page'
 
-// type State = {
-//   loading: boolean;
-//   message: {
-//     error: string;
-//     success: String;
-//   },
-//   posts: Array<Post>,
-//   current_page: number;
-//   per_page: number;
-//   page_max: number;
-// }
+type State = {
+  loading: boolean;
+  message: {
+    error: string;
+    success: String;
+  },
+  posts: Array<Post>,
+  current_page: number;
+  per_page: number;
+  page_max: number;
+}
 
 export default defineComponent({
   setup () {
@@ -71,48 +70,45 @@ export default defineComponent({
       current_page: 1,
       per_page: 8,
       page_max: 1
+    }) as State
+
+    useFetch(() => {
+      initPostList()
     })
 
-    useFetch(async () => {
-      await initPostList()
-    })
-
-    async function initPostList () {
+    async function initPostList (): Promise<void> {
       state.loading = true
-      state.posts = await apiGetCategoryPosts(
-        route.value.query.c,
-        state.current_page,
-        state.per_page
-      ).then((response) => {
-        setPaginations(response)
-        return response.data
-      }).catch(() => {
-        state.message.error = 'データの読み込みに失敗しました。'
-      })
+      await apiGetCategoryPosts(route.value.query.c, state.current_page, state.per_page)
+        .then((response: AxiosResponseType) => {
+          state.page_max = setPaginations(response)
+          state.posts = response.data
+        }).catch(() => {
+          state.message.error = 'データの読み込みに失敗しました。'
+        })
       state.loading = false
+
+      function setPaginations (response: AxiosResponseType): number {
+        return Math.ceil(Number(response.headers['x-wp-total']) / state.per_page)
+      }
     }
 
-    function setPaginations (results) {
-      state.page_max = Math.ceil(results.headers['x-wp-total'] / state.per_page)
-    }
-
-    const getEyecatchUrl = (item) => {
+    const getEyecatchUrl = (item: Post): string => {
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
       return MEDIA_API_PATH + '2022/08/no-image.png'
     }
 
-    const changePage = async (number) => {
+    const changePage = (page_number: number): void => {
       state.posts = []
-      state.current_page = number
-      await initPostList()
+      state.current_page = page_number
+      initPostList()
     }
 
-    const clickPostCard = (post) => {
+    const clickPostCard = (item: Post): void => {
       const categories = this.storeGetCategories()
-      const current_category = categories.find(v => v.id === post.categories[0])
-      this.$pageMovePost(current_category, post, this.storeGetCategories())
+      const current_category = categories.find((v: Category) => v.id === item.categories[0])
+      this.$pageMovePost(current_category, item, this.storeGetCategories())
     }
 
     return {

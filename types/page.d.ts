@@ -98,10 +98,15 @@ export interface SearchPost {
   title: string;
 }
 
-export interface PromiseSearchPost {
+export interface AxiosResponseType {
   config: Object;
   data: [];
-  headers: Object
+  headers: {
+    'content-type': string;
+    link: string;
+    'x-wp-total': string;
+    'x-wp-totalpages': string;
+  }
   request: XMLHttpRequest;
   status: number;
   statusText: string;

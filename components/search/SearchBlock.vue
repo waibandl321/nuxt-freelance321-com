@@ -19,7 +19,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import { apiGetSearchPosts } from '~/utils/api'
-import type { Category, SearchPost, PromiseSearchPost } from '@/types/page'
+import type { Category, SearchPost, AxiosResponseType } from '@/types/page'
 
 interface StateType {
   search_items: Array<SearchPost>,
@@ -42,7 +42,7 @@ export default defineComponent({
         return
       }
       state.search_items = await apiGetSearchPosts(search_query)
-        .then((response: PromiseSearchPost) => {
+        .then((response: AxiosResponseType) => {
           return response.data
         })
       state.search_loading = false

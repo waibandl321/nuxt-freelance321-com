@@ -32,7 +32,7 @@
     >
       <v-pagination
         v-model="state.current_page"
-        :length="15"
+        :length="state.page_max"
         :total-visible="7"
         @input="changePage"
       />
@@ -40,24 +40,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useFetch, defineComponent, reactive } from '@nuxtjs/composition-api'
 import { MEDIA_API_PATH } from '@/config/blog'
 import { apiGetPosts } from '~/utils/api'
-// import type { Post } from '@/types/page'
+import type { Category, Post, AxiosResponseType } from '@/types/page'
 // import { pageMovePost } from '@/utils/utils'
 
-// type State = {
-//   loading: boolean;
-//   current_page: number;
-//   per_page: number;
-//   pagination: [];
-//   posts: Array<Post>;
-//   message: {
-//     error: string;
-//     success: String;
-//   },
-// }
+type State = {
+  loading: boolean;
+  current_page: number;
+  per_page: number;
+  page_max: number;
+  posts: Array<Post>;
+  message: {
+    error: string;
+    success: String;
+  },
+}
 
 export default defineComponent({
   setup () {
@@ -65,56 +65,54 @@ export default defineComponent({
       loading: false,
       current_page: 1,
       per_page: 8,
+      page_max: 1,
       pagination: [],
       posts: [],
       message: {
         error: '',
         success: ''
       }
-    })
+    }) as State
 
     useFetch(() => {
       readPosts()
     })
 
-    async function readPosts () {
+    async function readPosts (): Promise<void> {
       state.loading = true
       try {
-        state.posts = await apiGetPosts(state.current_page, state.per_page)
-          .then((response) => {
-            setPaginations(response)
-            return response.data
+        await apiGetPosts(state.current_page, state.per_page)
+          .then((response: AxiosResponseType) => {
+            state.page_max = setPaginations(response)
+            state.posts = response.data
           })
       } catch {
         state.message.error = 'データの読み込みに失敗しました。'
       }
       state.loading = false
-    }
 
-    function setPaginations (posts) {
-      const total_page_num = Math.ceil(posts.headers['x-wp-total'] / state.per_page)
-      for (let i = 1; i < total_page_num; i++) {
-        state.pagination.push(total_page_num[i])
+      function setPaginations (response_data: AxiosResponseType): number {
+        return Math.ceil(Number(response_data.headers['x-wp-total']) / state.per_page)
       }
     }
 
-    const imagePath = (item) => {
+    const imagePath = (item: Post): string => {
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
       return MEDIA_API_PATH + '2022/08/no-image.png'
     }
 
-    const changePage = (number) => {
+    const changePage = (page_number: number): void => {
       state.posts = []
-      state.current_page = number
+      state.current_page = page_number
       readPosts()
     }
 
-    const clickPostCard = (post) => {
+    const clickPostCard = (item: Post): void => {
       const categories = this.storeGetCategories()
-      const current_category = categories.find(v => v.id === post.categories[0])
-      this.$pageMovePost(current_category, post, this.storeGetCategories())
+      const current_category = categories.find((v: Category) => v.id === item.categories[0])
+      this.$pageMovePost(current_category, item, this.storeGetCategories())
     }
 
     return {

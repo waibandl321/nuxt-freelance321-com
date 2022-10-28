@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import { WP_API_PATH, CUSTOM_API_PATH } from '@/config/blog'
-import type { Page, Post, PromiseSearchPost, Category } from '@/types/page'
+import type { Page, Post, AxiosResponseType, Category } from '@/types/page'
 
 Vue.use(VueAxios, axios)
 
@@ -35,19 +35,19 @@ export async function apiGetSitemapPosts (category: Category): Promise<Post[]> {
   return await callGetApi(base_url + params)
 }
 
-export async function apiGetPosts (current_page: number, per_page: number): Promise<Post[]> {
+export async function apiGetPosts (current_page: number, per_page: number): Promise<AxiosResponseType> {
   const base_url: string = getApiBaseUrl(isWpApi)
   const params: string = 'posts?_embed' + '&page=' + current_page + '&per_page=' + per_page
   return await callGetApi(base_url + params)
 }
 
-export async function apiGetCategoryPosts (category_id: number, current_page: number, per_page: number): Promise<Post[]> {
+export async function apiGetCategoryPosts (route_category_id: string | (string | null)[], current_page: number, per_page: number): Promise<AxiosResponseType> {
   const base_url: string = getApiBaseUrl(isWpApi)
-  const params: string = 'posts?categories=' + category_id + '&_embed' + '&page=' + current_page + '&per_page=' + per_page
+  const params: string = 'posts?categories=' + route_category_id + '&_embed' + '&page=' + current_page + '&per_page=' + per_page
   return await callGetApi(base_url + params)
 }
 
-export async function apiGetSearchPosts (search_query: string): Promise<PromiseSearchPost> {
+export async function apiGetSearchPosts (search_query: string): Promise<AxiosResponseType> {
   const base_url: string = getApiBaseUrl(isCustomApi)
   const params: string = 'search/' + search_query
   return await callGetApi(base_url + params)
