@@ -1,95 +1,66 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <div>
-    <CommonLoadingPageInner v-if="loading" />
+    <CommonLoadingPageInner v-if="state.loading" />
     <v-row v-else>
       <v-col cols="12" sm="9">
-        <!-- パンくず -->
-        <PostBreadcrumbs :post="post" />
-        <!-- 投稿詳細 -->
+        <!-- <PostBreadcrumbs :post="state.post" /> -->
         <div class="post-wrap">
           <v-card-text class="pa-0">
-            投稿日： {{ post.date }}
+            投稿日： {{ state.post.date }}
           </v-card-text>
           <v-card-title
             class="px-0 font-weight-bold"
           >
-            {{ post.title.rendered || post.title }}
+            {{ state.post.title.rendered }}
           </v-card-title>
           <div
             class="post-content"
-            v-html="render_html"
+            v-html="createHtml()"
           />
         </div>
       </v-col>
       <v-col cols="3" class="d-none d-sm-block">
-        <PostTableOfContents :content="post.content.rendered || post.content" />
+        <PostTableOfContents :content="state.post.content.rendered" />
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import { defineComponent, useFetch, reactive, useRoute } from '@nuxtjs/composition-api'
 import hljs from 'highlight.js'
-import { isWpApi, apiGetPostDetail } from '~/utils/api'
+import { apiGetPostDetail } from '@/utils/api'
 import { formatDate } from '@/utils/utils'
 
-export default {
-  name: 'PostPage',
+export default defineComponent({
   layout: 'post',
-  data () {
-    return {
+  setup () {
+    const state = reactive({
       loading: false,
       post: {},
       meta: {
         title: ''
       }
-    }
-  },
-  async fetch () {
-    this.loading = true
-    try {
-      await apiGetPostDetail(this.$route.query.p, isWpApi)
-        .then((res) => {
-          this.post = res.data
-          this.post.date = formatDate(this.post.date)
+    })
+    const route = useRoute()
+
+    useFetch(async () => {
+      state.loading = true
+      try {
+        await apiGetPostDetail(route.value.query.p).then((res) => {
+          state.post = res.data
+          state.post.date = formatDate(state.post.date)
         })
-    } catch {}
-    this.loading = false
-  },
-  head () {
-    return {
-      // 構造化データ
-      __dangerouslyDisableSanitizers: ['script'],
-      script: [{
-        innerHTML: `{
-          "@context": "http://schema.org",
-          "@type": "Article",
-          "author": "${this.post.author === 1 ? 'Jumpei Onishi' : 'user'}",
-          "name": "${this.meta.title}"
-          "datePublished": "${this.post.date}"
-        }`,
-        type: 'application/ld+json'
-      }],
-      title: this.meta.title
-    }
-  },
-  computed: {
-    render_html () {
-      return this.createHtml()
-    }
-  },
-  watch: {
-    // MEMO: 非同期処理で投稿取得するため、取得状況を監視してmeta titleに割り当てる
-    post (newValue) {
-      this.meta.title = newValue.title.rendered
-    }
-  },
-  methods: {
-    createHtml () {
+      } catch (error) {
+        console.log(error)
+      }
+      state.loading = false
+    })
+
+    const createHtml = () => {
       const dom = document.createElement('div')
-      const post = this.post.content.rendered || this.post.content
-      dom.innerHTML = post
+      dom.innerHTML = state.post.content.rendered
       try {
         dom.querySelectorAll('.hcb_wrap pre').forEach((element) => {
           const r = hljs.highlightAuto(element.textContent)
@@ -110,6 +81,12 @@ export default {
       } catch {}
       return dom.outerHTML
     }
+
+    return {
+      createHtml,
+      state,
+      route
+    }
   }
-}
+})
 </script>

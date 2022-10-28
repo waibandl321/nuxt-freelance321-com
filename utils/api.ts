@@ -53,15 +53,15 @@ export async function apiGetSearchPosts (search_query: string): Promise<AxiosRes
   return await callGetApi(base_url + params)
 }
 
-export async function apiGetCategoryDetail (category_id: number, api_type: string): Promise<Category> {
-  const base_url: string = getApiBaseUrl(api_type)
+export async function apiGetCategoryDetail (category_id: string | (string | null)[]): Promise<AxiosResponseType> {
+  const base_url: string = getApiBaseUrl(isWpApi)
   const params: string = 'categories/' + category_id
   return await callGetApi(base_url + params)
 }
 
-export async function apiGetPostDetail (post_id: number, api_type: string): Promise<Post> {
+export async function apiGetPostDetail (post_id: number): Promise<Post> {
   const params: string = 'posts/' + post_id + '?_embed'
-  const base_url: string = getApiBaseUrl(api_type)
+  const base_url: string = getApiBaseUrl(isWpApi)
   return await callGetApi(base_url + params)
 }
 

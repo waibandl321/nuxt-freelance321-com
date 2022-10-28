@@ -43,10 +43,9 @@ export async function readCategories (): Promise<Category[]> {
   return formatCategories(results)
 }
 
-export function pageMovePost (current_category: Category, post: Post, categories: Category[]) {
-  const router = useRouter()
+export function pageMovePost (router, current_category: Category | undefined, post: Post, categories: Category[]) {
   let parent_category = null
-  if (current_category.parent !== 0) {
+  if (current_category && current_category.parent !== 0) {
     parent_category = categories.find(r => r.id === current_category.parent)
     if (parent_category) {
       router.push(

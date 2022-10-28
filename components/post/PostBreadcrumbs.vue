@@ -17,7 +17,8 @@
 
 <script>
 import { useRoute } from '@nuxtjs/composition-api'
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, computed } from 'vue'
+import { useCategoryStore } from '@/utils/store'
 
 export default defineComponent({
   props: {
@@ -27,14 +28,18 @@ export default defineComponent({
   },
   setup (props) {
     const route = useRoute()
+    const categoryStore = useCategoryStore()
     const breadcrumbs = ref([])
 
+    const categories = computed(() => categoryStore.categories)
+
     function initBreadcrumb () {
-      const categories = this.storeGetCategories()
       const results = []
       const post = {}
       const category = {}
       const sub_category = {}
+
+      console.log(props.post)
 
       post.text = props.post.title.rendered
       post.disabled = true

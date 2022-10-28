@@ -19,6 +19,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import { apiGetSearchPosts } from '~/utils/api'
+import { pageMovePost } from '~/utils/utils'
 import type { Category, SearchPost, AxiosResponseType } from '@/types/page'
 
 interface StateType {
@@ -56,7 +57,7 @@ export default defineComponent({
       const current_category = categories.find((v: Category) => {
         return v.id === post.category.term_id
       })
-      this.$pageMovePost(current_category, post, categories)
+      pageMovePost(current_category, post, categories)
     }
     return {
       state,

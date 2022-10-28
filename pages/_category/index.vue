@@ -2,48 +2,46 @@
 <template>
   <div>
     <v-card-title class="px-0 pt-0">
-      カテゴリー：{{ category.name }}
+      カテゴリー：{{ state.category.name }}
     </v-card-title>
     <v-card-subtitle class="px-0">
-      記事数：{{ category.count }}
+      記事数：{{ state.category.count }}
     </v-card-subtitle>
     <CategoryPostList />
   </div>
 </template>
 
-<script>
-import { isWpApi, apiGetCategoryDetail } from '~/utils/api'
+<script lang="ts">
+import { useFetch, useMeta, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, reactive } from 'vue'
+import { apiGetCategoryDetail } from '~/utils/api'
+import type { Category } from '@/types/page'
 
-export default {
-  name: 'CategoryParentPage',
-  layout: 'post',
-  data () {
-    return {
-      category: {},
-      meta: {
-        title: ''
-      }
-    }
-  },
-  async fetch () {
-    await apiGetCategoryDetail(this.$route.query.c, isWpApi)
-      .then((res) => {
-        this.category = res.data
-      })
-  },
-  head () {
-    return {
-      title: this.meta.title,
-      meta: [
-        { hid: 'robots', name: 'robots', content: 'noindex' }
-      ]
-    }
-  },
-  watch: {
-    // MEMO: 非同期処理で投稿取得するため、取得状況を監視してmeta titleに割り当てる
-    category (newValue) {
-      this.meta.title = newValue.name
-    }
-  }
+type State = {
+  category: Category | {}
 }
+
+export default defineComponent({
+  layout: 'post',
+  setup () {
+    const route = useRoute()
+    const state = reactive<State>({
+      category: {}
+    })
+    useFetch(async () => {
+      await apiGetCategoryDetail(route.value.query.c)
+        .then((res) => {
+          state.category = res.data
+        })
+    })
+
+    const { title } = useMeta({ title: state.category.name })
+
+    return {
+      state,
+      title
+    }
+  },
+  head: {}
+})
 </script>
