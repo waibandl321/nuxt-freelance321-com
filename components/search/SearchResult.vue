@@ -23,7 +23,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     searchItems: {
       type: Array
@@ -32,5 +34,5 @@ export default {
       type: Function
     }
   }
-}
+})
 </script>

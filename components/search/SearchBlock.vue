@@ -3,13 +3,13 @@
     <SearchInput :search="search" />
     <!-- 検索結果？ -->
     <div
-      v-if="search_items.length > 0"
+      v-if="state.search_items.length > 0"
       class="search-result"
     >
-      <LoadingPageInner v-if="search_loading" />
+      <LoadingPageInner v-if="state.search_loading" />
       <SearchResult
         v-else
-        :search-items="search_items"
+        :search-items="state.search_items"
         :click-search-item="clickSearchItem"
       />
     </div>
@@ -17,41 +17,29 @@
 </template>
 
 <script>
-import LoadingPageInner from '@/components/common/LoadingPageInner.vue'
-import SearchResult from '@/components/search/SearchResult.vue'
-import SearchInput from '@/components/search/SearchInput.vue'
+import { defineComponent, reactive } from 'vue'
 import { isCustomApi, apiGetSearchPosts } from '~/utils/api'
-// import { pageMovePost } from '@/utils/utils'
 
-export default {
-  components: {
-    SearchResult,
-    LoadingPageInner,
-    SearchInput
-  },
-  data () {
-    return {
+export default defineComponent({
+  setup () {
+    const state = reactive({
       search_items: [],
       search_loading: false,
       search_error: ''
-    }
-  },
-  methods: {
-    async search (search_query) {
-      this.search_loading = true
+    })
+    async function search (search_query) {
+      state.search_loading = true
       if (!search_query) {
-        this.search_items = []
+        state.search_items = []
         return
       }
-      this.search_items = await apiGetSearchPosts(search_query, isCustomApi)
-        .then((response) => {
-          return response.data
-        })
-      this.search_loading = false
-    },
-    clickSearchItem (post) {
-      this.search_items = []
-      this.search_loading = false
+      state.search_items = await apiGetSearchPosts(search_query, isCustomApi)
+        .then(response => response.data)
+      state.search_loading = false
+    }
+    function clickSearchItem (post) {
+      state.search_items = []
+      state.search_loading = false
 
       const categories = this.storeGetCategories()
       const current_category = categories.find((v) => {
@@ -59,8 +47,13 @@ export default {
       })
       this.$pageMovePost(current_category, post, categories)
     }
+    return {
+      state,
+      search,
+      clickSearchItem
+    }
   }
-}
+})
 </script>
 
 <style scoped>

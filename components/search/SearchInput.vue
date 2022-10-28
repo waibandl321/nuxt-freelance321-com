@@ -15,19 +15,25 @@
 </template>
 
 <script>
-export default {
+import { defineComponent, ref } from 'vue'
+
+export default defineComponent({
   props: {
-    search: Function
-  },
-  data () {
-    return {
-      search_query: ''
+    search: {
+      type: Function
     }
   },
-  methods: {
-    handleInput () {
-      this.search(this.search_query)
+  setup (props) {
+    const search_query = ref('')
+
+    function handleInput () {
+      props.search(search_query.value)
+    }
+
+    return {
+      search_query,
+      handleInput
     }
   }
-}
+})
 </script>
