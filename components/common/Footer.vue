@@ -1,11 +1,9 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <v-footer
-    app
-    inset
-  >
+  <v-footer app inset>
     <v-container class="px-0">
       <v-btn
-        v-for="(link, idx) in footer_links.common"
+        v-for="(link, idx) in footer_links"
         :key="idx"
         :to="link.to"
         text
@@ -16,33 +14,28 @@
     </v-container>
   </v-footer>
 </template>
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-export default {
-  name: 'FooterComponent',
-  data: () => ({
-    footer_links: {
-      common: [
-        {
-          text: 'プライバシーポリシー',
-          to: '/privacy'
-        },
-        {
-          text: 'サイトマップ',
-          to: '/sitemap'
-        },
-        {
-          text: 'プロフィール',
-          to: '/profile'
-        }
-      ]
+export default defineComponent({
+  setup () {
+    const footer_links = [
+      {
+        text: 'プライバシーポリシー',
+        to: '/privacy'
+      },
+      {
+        text: 'サイトマップ',
+        to: '/sitemap'
+      },
+      {
+        text: 'プロフィール',
+        to: '/profile'
+      }
+    ]
+    return {
+      footer_links
     }
-  })
-}
+  }
+})
 </script>
-
-<style scoped>
-/* .v-footer--fixed {
-  position: sticky;
-} */
-</style>
