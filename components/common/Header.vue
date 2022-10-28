@@ -1,4 +1,4 @@
-<!-- eslint-disable eqeqeq -->
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <v-app-bar app flat>
     <v-container class="fill-height pa-0">
@@ -59,33 +59,27 @@
     </v-container>
   </v-app-bar>
 </template>
-<script>
-import SearchBlock from '../search/SearchBlock.vue'
 
-export default {
-  name: 'HeaderComponent',
-  components: {
-    SearchBlock
-  },
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
+import { Category } from '~/types/page'
+
+export default defineComponent({
   props: {
     categoryList: {
-      type: Array
+      type: Array as PropType<Category[]>,
+      required: true
     }
   },
-  data: () => ({
-    header_links: {
-      categories: []
-    }
-  }),
   methods: {
-    clickCategoryMenu (category) {
+    clickCategoryMenu (category: Category) {
       this.$pageMoveCategory(category)
     }
   }
-}
+})
 </script>
+
 <style scoped>
-/* stylelint-disable */
 .p-relative {
   position: relative;
 }
