@@ -98,6 +98,15 @@ export interface SearchPost {
   title: string;
 }
 
+export interface PromiseSearchPost {
+  config: Object;
+  data: [];
+  headers: Object
+  request: XMLHttpRequest;
+  status: number;
+  statusText: string;
+}
+
 interface Tag {}
 
 export interface Category {

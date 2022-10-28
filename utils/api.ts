@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import { WP_API_PATH, CUSTOM_API_PATH } from '@/config/blog'
-import type { Page, Post, SearchPost, Category } from '@/types/page'
+import type { Page, Post, PromiseSearchPost, Category } from '@/types/page'
 
 Vue.use(VueAxios, axios)
 
@@ -47,8 +47,8 @@ export async function apiGetCategoryPosts (category_id: number, current_page: nu
   return await callGetApi(base_url + params)
 }
 
-export async function apiGetSearchPosts (search_query: string, api_type: string): Promise<SearchPost[]> {
-  const base_url: string = getApiBaseUrl(api_type)
+export async function apiGetSearchPosts (search_query: string): Promise<PromiseSearchPost> {
+  const base_url: string = getApiBaseUrl(isCustomApi)
   const params: string = 'search/' + search_query
   return await callGetApi(base_url + params)
 }

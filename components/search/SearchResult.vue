@@ -22,16 +22,19 @@
   </v-list>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
+import type { SearchPost } from '@/types/page'
 
 export default defineComponent({
   props: {
     searchItems: {
-      type: Array
+      type: Array as PropType<SearchPost[]>,
+      required: true
     },
     clickSearchItem: {
-      type: Function
+      type: Function,
+      required: true
     }
   }
 })

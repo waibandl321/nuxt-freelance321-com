@@ -14,19 +14,20 @@
   </v-responsive>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   props: {
     search: {
-      type: Function
+      type: Function,
+      required: true
     }
   },
   setup (props) {
-    const search_query = ref('')
+    const search_query = ref<string>('')
 
-    function handleInput () {
+    function handleInput (): void {
       props.search(search_query.value)
     }
 

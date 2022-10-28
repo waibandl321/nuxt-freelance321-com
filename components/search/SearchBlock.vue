@@ -16,9 +16,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import { isCustomApi, apiGetSearchPosts } from '~/utils/api'
+import { apiGetSearchPosts } from '~/utils/api'
+import type { Category, SearchPost, PromiseSearchPost } from '@/types/page'
+
+interface StateType {
+  search_items: Array<SearchPost>,
+  search_loading: boolean,
+  search_error: string
+}
 
 export default defineComponent({
   setup () {
@@ -26,23 +33,27 @@ export default defineComponent({
       search_items: [],
       search_loading: false,
       search_error: ''
-    })
-    async function search (search_query) {
+    }) as StateType
+
+    async function search (search_query: string): Promise<void> {
       state.search_loading = true
       if (!search_query) {
         state.search_items = []
         return
       }
-      state.search_items = await apiGetSearchPosts(search_query, isCustomApi)
-        .then(response => response.data)
+      state.search_items = await apiGetSearchPosts(search_query)
+        .then((response: PromiseSearchPost) => {
+          return response.data
+        })
       state.search_loading = false
     }
-    function clickSearchItem (post) {
+
+    function clickSearchItem (post: SearchPost) {
       state.search_items = []
       state.search_loading = false
 
       const categories = this.storeGetCategories()
-      const current_category = categories.find((v) => {
+      const current_category = categories.find((v: Category) => {
         return v.id === post.category.term_id
       })
       this.$pageMovePost(current_category, post, categories)
