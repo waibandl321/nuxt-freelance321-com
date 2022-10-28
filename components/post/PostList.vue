@@ -1,10 +1,10 @@
 <template>
   <div>
-    <CommonMessageViewer :message="message" />
-    <CommonLoadingPageInner v-if="loading" />
-    <v-row v-if="!loading">
+    <CommonMessageViewer :message="state.message" />
+    <CommonLoadingPageInner v-if="state.loading" />
+    <v-row v-if="!state.loading">
       <v-col
-        v-for="(item, idx) in posts"
+        v-for="(item, idx) in state.posts"
         :key="idx"
         lg="3"
         md="4"
@@ -27,78 +27,104 @@
       </v-col>
     </v-row>
     <div
-      v-if="!loading"
+      v-if="!state.loading"
       class="text-center mt-10 pagination"
     >
       <v-pagination
-        v-model="current_page"
+        v-model="state.current_page"
         :length="15"
         :total-visible="7"
-        @input="$fetch"
+        @input="changePage"
       />
     </div>
   </div>
 </template>
 
 <script>
+import { useFetch, defineComponent, reactive } from '@nuxtjs/composition-api'
 import { MEDIA_API_PATH } from '@/config/blog'
-import { isWpApi, apiGetPosts } from '~/utils/api'
+import { apiGetPosts } from '~/utils/api'
+// import type { Post } from '@/types/page'
+// import { pageMovePost } from '@/utils/utils'
 
-export default {
-  name: 'PostList',
-  data () {
-    return {
+// type State = {
+//   loading: boolean;
+//   current_page: number;
+//   per_page: number;
+//   pagination: [];
+//   posts: Array<Post>;
+//   message: {
+//     error: string;
+//     success: String;
+//   },
+// }
+
+export default defineComponent({
+  setup () {
+    const state = reactive({
+      loading: false,
       current_page: 1,
       per_page: 8,
       pagination: [],
-
       posts: [],
-
-      loading: false,
       message: {
         error: '',
         success: ''
       }
+    })
+
+    useFetch(() => {
+      readPosts()
+    })
+
+    async function readPosts () {
+      state.loading = true
+      try {
+        state.posts = await apiGetPosts(state.current_page, state.per_page)
+          .then((response) => {
+            setPaginations(response)
+            return response.data
+          })
+      } catch {
+        state.message.error = 'データの読み込みに失敗しました。'
+      }
+      state.loading = false
     }
-  },
-  async fetch () {
-    this.loading = true
-    try {
-      this.posts = await apiGetPosts(this.current_page, this.per_page, isWpApi)
-        .then((response) => {
-          this.setPaginations(response)
-          return response.data
-        })
-    } catch {
-      this.message.error = 'データの読み込みに失敗しました。'
+
+    function setPaginations (posts) {
+      const total_page_num = Math.ceil(posts.headers['x-wp-total'] / state.per_page)
+      for (let i = 1; i < total_page_num; i++) {
+        state.pagination.push(total_page_num[i])
+      }
     }
-    this.loading = false
-  },
-  methods: {
-    imagePath (item) {
+
+    const imagePath = (item) => {
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
       return MEDIA_API_PATH + '2022/08/no-image.png'
-    },
-    setPaginations (results) {
-      const total_page_num = Math.ceil(results.headers['x-wp-total'] / this.per_page)
-      for (let i = 1; i < total_page_num; i++) {
-        this.pagination.push(total_page_num[i])
-      }
-    },
-    clickPostCard (post) {
+    }
+
+    const changePage = (number) => {
+      state.posts = []
+      state.current_page = number
+      readPosts()
+    }
+
+    const clickPostCard = (post) => {
       const categories = this.storeGetCategories()
       const current_category = categories.find(v => v.id === post.categories[0])
       this.$pageMovePost(current_category, post, this.storeGetCategories())
-    },
-    changePage (number) {
-      this.posts = []
-      this.current_page = number
-      this.$fetch()
+    }
+
+    return {
+      state,
+      imagePath,
+      clickPostCard,
+      changePage
     }
   }
-}
+})
 </script>
 
 <style scoped>

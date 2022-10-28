@@ -35,14 +35,14 @@ export async function apiGetSitemapPosts (category: Category): Promise<Post[]> {
   return await callGetApi(base_url + params)
 }
 
-export async function apiGetPosts (current_page: number, per_page: number, api_type: string): Promise<Post[]> {
-  const base_url: string = getApiBaseUrl(api_type)
+export async function apiGetPosts (current_page: number, per_page: number): Promise<Post[]> {
+  const base_url: string = getApiBaseUrl(isWpApi)
   const params: string = 'posts?_embed' + '&page=' + current_page + '&per_page=' + per_page
   return await callGetApi(base_url + params)
 }
 
-export async function apiGetCategoryPosts (category_id: number, current_page: number, per_page: number, api_type: string): Promise<Post[]> {
-  const base_url: string = getApiBaseUrl(api_type)
+export async function apiGetCategoryPosts (category_id: number, current_page: number, per_page: number): Promise<Post[]> {
+  const base_url: string = getApiBaseUrl(isWpApi)
   const params: string = 'posts?categories=' + category_id + '&_embed' + '&page=' + current_page + '&per_page=' + per_page
   return await callGetApi(base_url + params)
 }

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <CommonMessageViewer :message="message" />
-    <CommonLoadingPageInner v-if="loading" />
+    <CommonMessageViewer :message="state.message" />
+    <CommonLoadingPageInner v-if="state.loading" />
     <v-row v-else>
       <v-col
-        v-for="(item, idx) in posts"
+        v-for="(item, idx) in state.posts"
         :key="idx"
         md="4"
         sm="6"
@@ -26,12 +26,12 @@
       </v-col>
     </v-row>
     <div
-      v-if="!loading"
+      v-if="!state.loading"
       class="text-center mt-10 pagination"
     >
       <v-pagination
-        v-model="current_page"
-        :length="page_max"
+        v-model="state.current_page"
+        :length="state.page_max"
         @input="changePage"
       />
     </div>
@@ -39,14 +39,28 @@
 </template>
 
 <script>
+import { useFetch, useRoute, defineComponent, reactive } from '@nuxtjs/composition-api'
 import { MEDIA_API_PATH } from '@/config/blog'
-import { isWpApi, apiGetCategoryPosts } from '~/utils/api'
+import { apiGetCategoryPosts } from '@/utils/api'
+// import type { Post } from '@/types/page'
 // import { pageMovePost } from '@/utils/utils'
 
-export default {
-  name: 'CategoryPostList',
-  data () {
-    return {
+// type State = {
+//   loading: boolean;
+//   message: {
+//     error: string;
+//     success: String;
+//   },
+//   posts: Array<Post>,
+//   current_page: number;
+//   per_page: number;
+//   page_max: number;
+// }
+
+export default defineComponent({
+  setup () {
+    const route = useRoute()
+    const state = reactive({
       loading: false,
       message: {
         error: '',
@@ -57,48 +71,58 @@ export default {
       current_page: 1,
       per_page: 8,
       page_max: 1
-    }
-  },
-  async fetch () {
-    await this.initPostList()
-  },
-  methods: {
-    async initPostList () {
-      this.loading = true
-      this.posts = await apiGetCategoryPosts(
-        this.$route.query.c,
-        this.current_page,
-        this.per_page,
-        isWpApi
+    })
+
+    useFetch(async () => {
+      await initPostList()
+    })
+
+    async function initPostList () {
+      state.loading = true
+      state.posts = await apiGetCategoryPosts(
+        route.value.query.c,
+        state.current_page,
+        state.per_page
       ).then((response) => {
-        this.setPaginations(response)
+        setPaginations(response)
         return response.data
       }).catch(() => {
-        this.message.error = 'データの読み込みに失敗しました。'
+        state.message.error = 'データの読み込みに失敗しました。'
       })
-      this.loading = false
-    },
-    getEyecatchUrl (item) {
+      state.loading = false
+    }
+
+    function setPaginations (results) {
+      state.page_max = Math.ceil(results.headers['x-wp-total'] / state.per_page)
+    }
+
+    const getEyecatchUrl = (item) => {
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
       return MEDIA_API_PATH + '2022/08/no-image.png'
-    },
-    setPaginations (results) {
-      this.page_max = Math.ceil(results.headers['x-wp-total'] / this.per_page)
-    },
-    clickPostCard (post) {
+    }
+
+    const changePage = async (number) => {
+      state.posts = []
+      state.current_page = number
+      await initPostList()
+    }
+
+    const clickPostCard = (post) => {
       const categories = this.storeGetCategories()
       const current_category = categories.find(v => v.id === post.categories[0])
       this.$pageMovePost(current_category, post, this.storeGetCategories())
-    },
-    changePage (number) {
-      this.posts = []
-      this.current_page = number
-      this.$fetch()
+    }
+
+    return {
+      state,
+      getEyecatchUrl,
+      clickPostCard,
+      changePage
     }
   }
-}
+})
 </script>
 <style scoped>
 .p-relative {
