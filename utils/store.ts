@@ -1,21 +1,26 @@
 import { reactive } from 'vue'
-// import { Category } from '~/types/page'
+import { Category } from '~/types/page'
 // import type { Category } from '@/types/page'
 
 export function categoryStore () {
+  interface State {
+    categories: Category[] | null
+  }
+
   const state = reactive({
-    categories: []
-  })
+    categories: null
+  }) as State
+
+  function setCategories (categories: Category[]): void {
+    state.categories = categories
+    console.log('state.categories', state.categories)
+  }
 
   return {
     get categories () {
-      // console.log('get categories', state.categories)
       return state.categories
     },
-    setCategories (categories): void {
-      state.categories = categories
-      console.log('set categories', state.categories)
-    }
+    setCategories
   }
 }
 
@@ -27,6 +32,7 @@ export const useCounter = () => {
   function pushArr (arr: []) {
     state.arr = arr
   }
+
   return {
     state,
     get arr () {

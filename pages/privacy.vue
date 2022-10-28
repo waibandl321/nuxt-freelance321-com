@@ -1,42 +1,63 @@
 <template>
-  <div>
-    <CommonLoadingPageInner v-if="!page_data" />
-    <div
-      v-else
-      class="post-content"
-      v-html="page_content"
-    />
-  </div>
+  <v-app>
+    <CommonHeader :category-list="categoryList" />
+    <v-main>
+      <v-container>
+        <CommonLoadingPageInner v-if="!state.page_data" />
+        <div v-else>
+          <v-card-title
+            class="px-0 font-weight-bold"
+          >
+            {{ pageTitle }}
+          </v-card-title>
+          <div
+            class="post-content"
+            v-html="pageContent"
+          />
+        </div>
+      </v-container>
+    </v-main>
+    <CommonFooter />
+  </v-app>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { useFetch, useMeta, useRoute, computed, defineComponent, reactive, ref } from '@nuxtjs/composition-api'
 import { apiGetPageDetail } from '~/utils/api'
-import type { Page } from '@/types/page'
+import { readCategories } from '~/utils/utils'
+import type { Category, Page } from '@/types/page'
 
 type DataType = {
   page_data: Page | null
 }
 
-export default Vue.extend({
+export default defineComponent({
   layout: 'page',
-  data (): DataType {
-    return {
+  setup () {
+    const route = useRoute()
+    const categoryList = ref<Category[]>([])
+    const state = reactive({
       page_data: null
-    }
-  },
-  async fetch () {
-    this.page_data = await apiGetPageDetail(this.$route.name)
-  },
-  head () {
+    }) as DataType
+
+    useFetch(async () => {
+      categoryList.value = await readCategories()
+      state.page_data = await apiGetPageDetail(route.value.name)
+    })
+
+    const pageContent = computed(() => state.page_data?.data[0].content.rendered)
+    const pageTitle = computed(() => state.page_data?.data[0].title.rendered)
+
+    const { title } = useMeta({ title: 'プライバシーポリシー' })
+
     return {
-      title: 'プライバシーポリシー'
+      state,
+      pageContent,
+      pageTitle,
+      categoryList,
+      title
     }
   },
-  computed: {
-    page_content (): string | undefined {
-      return this.page_data?.data[0].content.rendered
-    }
-  }
+  head: {}
 })
 </script>

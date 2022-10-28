@@ -14,7 +14,7 @@ export function getApiBaseUrl (api_type: string) {
   return api_type === 'wp' ? WP_API_PATH : CUSTOM_API_PATH
 }
 
-export async function apiGetPageDetail (slug: string): Promise<Page> {
+export async function apiGetPageDetail (slug: string | null | undefined): Promise<Page> {
   const params: string = 'pages?slug=' + slug
   const base_url: string = getApiBaseUrl(isWpApi)
   return await callGetApi(base_url + params)

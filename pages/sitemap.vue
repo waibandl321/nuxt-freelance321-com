@@ -1,6 +1,14 @@
 <template>
-  <div>
-    <!-- <CommonMessageViewer :message="message" />
+  <v-app>
+    <CommonHeader :category-list="categoryList" />
+    <v-main>
+      <v-container>
+        {{ state.categories }}
+      </v-container>
+    </v-main>
+    <CommonFooter />
+  </v-app>
+  <!-- <CommonMessageViewer :message="message" />
     <div
       v-for="(category, i) in categories"
       :key="i"
@@ -19,15 +27,14 @@
         </li>
       </ul>
     </div> -->
-  </div>
 </template>
 
 <script lang="ts">
-// import Vue from 'vue'
-import { defineComponent, reactive, useMeta } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref, useFetch, useMeta } from '@nuxtjs/composition-api'
 // import { apiGetSitemapPosts } from '@/utils/api'
+// import { categoryStore } from '@/utils/store'
+import { readCategories } from '~/utils/utils'
 import type { Category } from '@/types/page'
-// import { formatCategories } from '@/utils/utils'
 
 type DataType = {
   categories: Category[],
@@ -39,13 +46,18 @@ type DataType = {
 export default defineComponent({
   layout: 'page',
   setup () {
+    // const useCategoryStore = categoryStore()
+    const categoryList = ref<Category[]>([])
     const state = reactive<DataType>({
       categories: [],
       message: {
         error: ''
       }
     })
-    const { title } = useMeta({ title: 'サイトマップ' })
+    useFetch(async () => {
+      categoryList.value = await readCategories()
+    })
+
     // function readCategoryPosts () {
     //   const categories: Category[] = this.storeGetCategories()
     //   try {
@@ -59,51 +71,15 @@ export default defineComponent({
     // }
     // const store = categoryStore()
     // console.log(store.categories)
-
+    const { title } = useMeta({ title: 'サイトマップ' })
     return {
       state,
-      title
+      title,
+      categoryList
     }
   },
   head: {}
 })
-
-// export default Vue.extend({
-//   layout: 'page',
-//   data () {
-//     return {
-//       categories: [],
-//       message: {
-//         error: ''
-//       }
-//     } as DataType
-//   },
-//   head () {
-//     return {
-//       title: 'サイトマップ'
-//     }
-//   },
-//   created () {
-//     this.init()
-//   },
-//   methods: {
-//     init () {
-//       const categories: Category[] = this.storeGetCategories()
-//       try {
-//         categories.forEach(async (category: Category) => {
-//           category.posts = await apiGetSitemapPosts(category)
-//           this.categories.push(category)
-//         })
-//       } catch (error) {
-//         this.message.error = error
-//       }
-//     },
-//     clickPostLink (post: Post) {
-//       const current_category = this.categories.find(v => v.id === post.categories[0])
-//       this.$pageMovePost(current_category, post, this.storeGetCategories())
-//     }
-//   }
-// })
 </script>
 
 <style scoped>

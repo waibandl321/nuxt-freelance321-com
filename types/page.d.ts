@@ -131,3 +131,11 @@ export interface Page {
   status: 200;
   statusText: string;
 }
+
+export type GoogleFormData = {
+  'entry.247993782': string;
+  'entry.2089866053': string;
+  'entry.666391459': string;
+  'entry.682995808': string;
+  'entry.1849326221_sentinel': boolean;
+}

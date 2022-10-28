@@ -1,51 +1,65 @@
 <template>
-  <div>
-    <CommonLoadingPageInner v-if="!page_data" />
-    <div v-else>
-      <v-card-title
-        class="px-0 font-weight-bold"
-      >
-        {{ pageTitle }}
-      </v-card-title>
-      <div
-        class="post-content"
-        v-html="pageContent"
-      />
-    </div>
-  </div>
+  <v-app>
+    <CommonHeader
+      :category-list="categoryList"
+    />
+    <v-main>
+      <v-container>
+        <CommonLoadingPageInner v-if="!state.page_data" />
+        <div v-else>
+          <v-card-title
+            class="px-0 font-weight-bold"
+          >
+            {{ pageTitle }}
+          </v-card-title>
+          <div
+            class="post-content"
+            v-html="pageContent"
+          />
+        </div>
+      </v-container>
+    </v-main>
+    <CommonFooter />
+  </v-app>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { useFetch, useMeta, useRoute, reactive, ref, computed, defineComponent } from '@nuxtjs/composition-api'
 import { apiGetPageDetail } from '~/utils/api'
-import type { Page } from '@/types/page'
+import { readCategories } from '~/utils/utils'
+import type { Category, Page } from '@/types/page'
 
 type DataType = {
   page_data: Page | null
 }
 
-export default Vue.extend({
+export default defineComponent({
   layout: 'page',
-  data (): DataType {
-    return {
+  setup () {
+    const route = useRoute()
+    const categoryList = ref<Category[]>([])
+    const state = reactive({
       page_data: null
-    }
-  },
-  async fetch () {
-    this.page_data = await apiGetPageDetail(this.$route.name)
-  },
-  head () {
+    }) as DataType
+
+    useFetch(async () => {
+      categoryList.value = await readCategories()
+      state.page_data = await apiGetPageDetail(route.value.name)
+    })
+
+    const pageContent = computed(() => state.page_data?.data[0].content.rendered)
+    const pageTitle = computed(() => state.page_data?.data[0].title.rendered)
+
+    const { title } = useMeta({ title: 'プロフィール' })
+
     return {
-      title: 'プロフィール'
+      state,
+      pageContent,
+      pageTitle,
+      categoryList,
+      title
     }
   },
-  computed: {
-    pageContent () : string | undefined {
-      return this.page_data?.data[0].content.rendered
-    },
-    pageTitle () : string | undefined {
-      return this.page_data?.data[0].title.rendered
-    }
-  }
+  head: {}
 })
 </script>
