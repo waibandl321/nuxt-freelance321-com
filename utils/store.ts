@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive } from '@nuxtjs/composition-api'
 import { Category } from '~/types/page'
 
 type State = {
@@ -13,16 +13,12 @@ export const useCategoryStore = () => {
   function setCategories (categories: []) {
     state.categories = categories
   }
-  function getCategories () {
-    return state.categories
-  }
 
   return {
     get categories () {
       return state.categories
     },
-    setCategories,
-    getCategories
+    setCategories
   }
 }
 

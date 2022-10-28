@@ -2,6 +2,7 @@
   <div>
     <CommonMessageViewer :message="state.message" />
     <CommonLoadingPageInner v-if="state.loading" />
+    {{ cats }}
     <v-row v-if="!state.loading">
       <v-col
         v-for="(item, idx) in state.posts"
@@ -41,9 +42,10 @@
 </template>
 
 <script lang="ts">
-import { useFetch, defineComponent, reactive, PropType, useRouter } from '@nuxtjs/composition-api'
+import { useFetch, defineComponent, reactive, PropType, useRouter, inject, computed } from '@nuxtjs/composition-api'
 import { apiMediaPath, apiGetPosts } from '@/utils/api'
 import { pageMovePost } from '@/utils/utils'
+import CategoryStoreKey from '@/utils/counter-key'
 import type { Category, Post, AxiosResponseType } from '@/types/page'
 
 type State = {
@@ -66,6 +68,9 @@ export default defineComponent({
     }
   },
   setup (props) {
+    const categoryStore = inject(CategoryStoreKey)
+    const cats = computed(() => categoryStore?.categories)
+
     const router = useRouter()
     const state = reactive({
       loading: false,
@@ -116,15 +121,16 @@ export default defineComponent({
     }
 
     const clickPostCard = (item: Post): void => {
-      const current_category = props.allCategory.find((v: Category) => v.id === item.categories[0])
-      pageMovePost(router, current_category, item, props.allCategory)
+      const current_category = props.allCategory!.find((v: Category) => v.id === item.categories[0])
+      pageMovePost(router, current_category, item)
     }
 
     return {
       state,
       imagePath,
       clickPostCard,
-      changePage
+      changePage,
+      cats
     }
   }
 })

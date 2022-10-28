@@ -69,7 +69,7 @@ export default defineComponent({
       const current_category = state.categories.find((v: Category) => {
         return v.id === post.category.term_id
       })
-      pageMovePost(router, current_category, post, state.categories)
+      pageMovePost(router, current_category, post)
     }
 
     return {

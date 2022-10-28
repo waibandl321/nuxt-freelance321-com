@@ -8,7 +8,7 @@
     </v-main>
     <CommonFooter />
   </v-app>
-    <!-- <CommonMessageViewer :message="message" />
+  <!-- <CommonMessageViewer :message="message" />
     <div
       v-for="(category, i) in categories"
       :key="i"

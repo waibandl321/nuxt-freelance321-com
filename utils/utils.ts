@@ -43,23 +43,8 @@ export async function readCategories (): Promise<Category[]> {
   return formatCategories(results)
 }
 
-export function pageMovePost (router: VueRouter, current_category: Category | undefined, post: Post, categories: Category[]) {
-  let parent_category = null
+export function pageMovePost (router: VueRouter, current_category: Category | undefined, post: Post) {
   if (current_category) {
-    // 第二カテゴリー遷移
-    if (current_category.parent !== 0) {
-      parent_category = categories.find(r => r.id === current_category.parent)
-      if (parent_category) {
-        router.push(
-          {
-            path: '/' + parent_category.slug + '/' + current_category.slug + '/' + post.slug,
-            query: { p: post.id }
-          }
-        )
-        return
-      }
-    }
-    // 第一カテゴリー遷移
     router.push(
       {
         path: '/' + current_category.slug + '/' + post.slug,

@@ -6,14 +6,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, provide } from 'vue'
 import { useFetch } from '@nuxtjs/composition-api'
 import { useCategoryStore } from '@/utils/store'
+import CategoryStoreKey from '@/utils/counter-key'
 import { apiGetCategories } from '~/utils/api'
 
 export default defineComponent({
   layout: 'top',
   setup () {
+    provide(CategoryStoreKey, useCategoryStore())
     // TODO: 状態管理効率化
     const categoryStore = useCategoryStore()
     const categories = computed(() => categoryStore.categories)

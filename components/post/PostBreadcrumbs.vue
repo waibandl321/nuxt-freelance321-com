@@ -39,8 +39,6 @@ export default defineComponent({
       const category = {}
       const sub_category = {}
 
-      console.log(props.post)
-
       post.text = props.post.title.rendered
       post.disabled = true
 
