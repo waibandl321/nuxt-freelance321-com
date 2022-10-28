@@ -16,6 +16,7 @@ export const useCategoryStore = () => {
 
   return {
     get categories () {
+      console.log('getter', state.categories)
       return state.categories
     },
     setCategories

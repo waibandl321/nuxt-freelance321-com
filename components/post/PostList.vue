@@ -45,7 +45,7 @@
 import { useFetch, defineComponent, reactive, PropType, useRouter, inject, computed } from '@nuxtjs/composition-api'
 import { apiMediaPath, apiGetPosts } from '@/utils/api'
 import { pageMovePost } from '@/utils/utils'
-import CategoryStoreKey from '@/utils/counter-key'
+import CategoryStoreKey from '@/utils/category-key'
 import type { Category, Post, AxiosResponseType } from '@/types/page'
 
 type State = {

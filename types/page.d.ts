@@ -72,6 +72,17 @@ interface Post {
   _links: [];
 }
 
+export interface Category {
+  count: number;
+  description: string;
+  id: number;
+  name: string;
+  parent: number;
+  slug: string;
+  posts: Post[],
+  sub_categories: Category[]
+}
+
 interface SearchPostCategory {
   count: number;
   description: string;
@@ -112,18 +123,22 @@ export interface AxiosResponseType {
   statusText: string;
 }
 
+export interface AxiosResponseCategoryDataObjectType {
+  config: Object;
+  data: Category;
+  headers: {
+    'content-type': string;
+    link: string;
+    'x-wp-total': string;
+    'x-wp-totalpages': string;
+  }
+  request: XMLHttpRequest;
+  status: number;
+  statusText: string;
+}
+
 interface Tag {}
 
-export interface Category {
-  count: number;
-  description: string;
-  id: number;
-  name: string;
-  parent: number;
-  slug: string;
-  posts: Post[],
-  sub_categories: Category[]
-}
 interface Meta {}
 
 interface Auther {

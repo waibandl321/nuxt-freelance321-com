@@ -34,7 +34,7 @@ export default defineComponent({
     })
     // TODO: 状態管理効率化
     const categoryStore = useCategoryStore()
-    const categories = computed(() => categoryStore.getCategories())
+    const categories = computed(() => categoryStore.categories)
     useFetch(async () => {
       await apiGetCategories().then((response) => {
         categoryStore.setCategories(response.data)
