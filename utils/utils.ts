@@ -43,6 +43,10 @@ export async function readCategories (): Promise<Category[]> {
   return formatCategories(results)
 }
 
+export function redirectNotFount (router: VueRouter) {
+  router.push('/404NotFound')
+}
+
 export function pageMovePost (router: VueRouter, current_category: Category | undefined, post: Post) {
   if (current_category) {
     router.push(

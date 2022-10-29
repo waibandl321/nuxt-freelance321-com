@@ -98,7 +98,7 @@ export default {
       routes.push({
         name: 'custom',
         path: '*',
-        component: resolve(__dirname, 'pages/errors/404.vue')
+        component: resolve(__dirname, 'pages/404NotFound.vue')
       })
     }
   },

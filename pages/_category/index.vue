@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts">
-import { useFetch, useMeta, useRoute } from '@nuxtjs/composition-api'
-import { computed, defineComponent, reactive } from 'vue'
+import { useFetch, useMeta, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref } from 'vue'
 import { apiGetCategories, apiGetCategoryDetail } from '@/utils/api'
-import { useCategoryStore } from '@/utils/store'
+import { redirectNotFount } from '@/utils/utils'
 import type { Category } from '@/types/page'
 
 type State = {
@@ -29,19 +29,35 @@ export default defineComponent({
   layout: 'post',
   setup () {
     const route = useRoute()
+    const router = useRouter()
     const state = reactive<State>({
       category: null
     })
     // TODO: 状態管理効率化
-    const categoryStore = useCategoryStore()
-    const categories = computed(() => categoryStore.categories)
+    const categories = ref<Category[]>([])
+
     useFetch(async () => {
-      await apiGetCategories().then((response) => {
-        categoryStore.setCategories(response.data)
-      })
+      if (!route.value.query.c) {
+        return redirectNotFount(router)
+      }
+
+      categories.value = await apiGetCategories()
+        .then(response => response.data)
+        .catch((err) => {
+          console.log(err)
+          return []
+        })
+
       await apiGetCategoryDetail(route.value.query.c)
         .then((res) => {
           state.category = res.data
+        })
+        .catch((err: unknown) => {
+          if (err instanceof Error) {
+            if (err.message.includes('404')) {
+              redirectNotFount(router)
+            }
+          }
         })
     })
 
