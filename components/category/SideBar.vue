@@ -30,8 +30,7 @@
 </template>
 
 <script lang="ts">
-import { useRoute, useRouter } from '@nuxtjs/composition-api'
-import { defineComponent, PropType } from 'vue'
+import { useRoute, useRouter, defineComponent, PropType } from '@nuxtjs/composition-api'
 import { Category } from '~/types/page'
 import { pageMoveCategory } from '@/utils/utils'
 

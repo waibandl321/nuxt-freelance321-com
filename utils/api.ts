@@ -1,19 +1,19 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import { WP_API_PATH, CUSTOM_API_PATH } from '@/config/blog'
 import type { Page, Post, AxiosResponseType, AxiosResponseCategoryDataObjectType, Category } from '@/types/page'
 
 Vue.use(VueAxios, axios)
 
-export const isWpApi = 'wp'
-
-export const isCustomApi = 'custom'
+const isWpApi = 'wp'
+const isCustomApi = 'custom'
+const apiWpAdminPath = 'https://admin.freelance321.com/wp-json/wp/v2/'
+const apiCustomAdminPath = 'https://admin.freelance321.com/wp-json/wp/api/'
 
 export const apiMediaPath = 'https://media.freelance321.com/uploads/'
 
 export function getApiBaseUrl (api_type: string) {
-  return api_type === 'wp' ? WP_API_PATH : CUSTOM_API_PATH
+  return api_type === 'wp' ? apiWpAdminPath : apiCustomAdminPath
 }
 
 export async function apiGetPageDetail (slug: string | null | undefined): Promise<Page> {

@@ -1,61 +1,98 @@
 <template>
   <div class="search d-none d-sm-block">
-    <SearchInput :search="search" />
+    <v-responsive max-width="260">
+      <v-text-field
+        v-model.trim="state.search_query"
+        dense
+        flat
+        hide-details
+        rounded
+        solo
+        placeholder="記事検索"
+        append-icon="mdi-magnify"
+        @input="handleInput"
+        @focus="handleInput"
+      />
+    </v-responsive>
     <!-- 検索結果？ -->
     <div
       v-if="state.search_items.length > 0"
       class="search-result"
     >
       <LoadingPageInner v-if="state.search_loading" />
-      <SearchResult
-        v-else
-        :search-items="state.search_items"
-        :click-search-item="clickSearchItem"
-      />
+      <v-list v-else>
+        <v-list-item
+          v-for="(post, index) in state.search_items"
+          :key="index"
+          dense
+          link
+          nuxt
+          @click="clickSearchItem(post)"
+        >
+          <v-list-item-content>
+            <v-list-item-title>
+              <div class="d-inline-block">
+                {{ post.title }}
+              </div>
+              <v-list-item-subtitle>
+                {{ post.category.name }}
+              </v-list-item-subtitle>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { useRouter, defineComponent, reactive, computed, useFetch } from '@nuxtjs/composition-api'
+import { useRouter, defineComponent, reactive, useFetch, ref } from '@nuxtjs/composition-api'
+import LoadingPageInner from '../common/LoadingPageInner.vue'
 import { apiGetCategories, apiGetSearchPosts } from '~/utils/api'
 import { pageMovePost } from '~/utils/utils'
-import { useCategoryStore } from '@/utils/store'
 import type { Category, SearchPost, AxiosResponseType } from '@/types/page'
 
 interface StateType {
-  categories: Array<Category>,
+  search_query: string;
   search_items: Array<SearchPost>,
   search_loading: boolean,
   search_error: string
 }
 
 export default defineComponent({
+  components: { LoadingPageInner },
   setup () {
     const router = useRouter()
-    const state = reactive({
-      categories: [],
+    const state: StateType = reactive({
+      search_query: '',
       search_items: [],
       search_loading: false,
       search_error: ''
-    }) as StateType
-
-    // TODO: 状態管理効率化
-    const categoryStore = useCategoryStore()
-    state.categories = computed(() => categoryStore.categories)
-    useFetch(async () => {
-      await apiGetCategories().then((response) => {
-        categoryStore.setCategories(response.data)
-      })
     })
 
-    async function search (search_query: string): Promise<void> {
-      state.search_loading = true
-      if (!search_query) {
+    const categories = ref([])
+    useFetch(async () => {
+      try {
+        await apiGetCategories().then((response) => {
+          categories.value = response.data
+        })
+      } catch (error) {
+        categories.value = []
+      }
+    })
+
+    function handleInput (): void {
+      if (!state.search_query) {
+        state.search_loading = false
         state.search_items = []
         return
       }
-      state.search_items = await apiGetSearchPosts(search_query)
+      search()
+    }
+
+    async function search (): Promise<void> {
+      state.search_loading = true
+      state.search_items = await apiGetSearchPosts(state.search_query)
         .then((response: AxiosResponseType) => {
           return response.data
         })
@@ -65,17 +102,19 @@ export default defineComponent({
     function clickSearchItem (post: SearchPost) {
       state.search_items = []
       state.search_loading = false
-
-      const current_category = state.categories.find((v: Category) => {
+      const current_category: Category | undefined = categories.value.find((v: Category) => {
         return v.id === post.category.term_id
       })
-      pageMovePost(router, current_category, post)
+      if (current_category) {
+        pageMovePost(router, current_category, post)
+      }
     }
 
     return {
       state,
       search,
-      clickSearchItem
+      clickSearchItem,
+      handleInput
     }
   }
 })

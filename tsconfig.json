@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
+    "target": "ES6",
     "module": "ESNext",
     "moduleResolution": "Node",
     "lib": [
@@ -12,6 +12,7 @@
     "allowJs": true,
     "sourceMap": true,
     "strict": true,
+    "noImplicitThis": true,
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
