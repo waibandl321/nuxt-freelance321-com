@@ -1,4 +1,3 @@
-<!-- TOP -->
 <template>
   <div>
     <LoadingPageInner v-if="state.loading" />

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <v-app>
     <CommonLoadingPageInner v-if="!state.page_data" />

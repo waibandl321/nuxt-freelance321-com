@@ -31,7 +31,7 @@ export async function callGetApi (buildPath: string): Promise<any> {
   })
 }
 
-export async function apiGetSitemapPosts (category: Category): Promise<Post[]> {
+export async function apiGetSitemapPosts (category: Category): Promise<AxiosResponseType> {
   const params: string = 'posts?categories=' + category.id + '&per_page=100'
   const base_url: string = getApiBaseUrl(isWpApi)
   return await callGetApi(base_url + params)

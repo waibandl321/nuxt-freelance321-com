@@ -1,33 +1,36 @@
 <template>
   <v-app>
     <v-container>
-      {{ state.categories }}
+      <CommonMessageViewer :message="state.message" />
+      <template v-if="state.categories.length > 0">
+        <div
+          v-for="(category, i) in state.categories"
+          :key="i"
+          class="mb-10"
+        >
+          <div class="sitemap-category">
+            {{ category.name }}
+          </div>
+          <ul class="post-list">
+            <li
+              v-for="(post, idx2) in category.posts"
+              :key="idx2"
+              @click="clickPostLink(post)"
+            >
+              <a>{{ post.title.rendered }}</a>
+            </li>
+          </ul>
+        </div>
+      </template>
     </v-container>
   </v-app>
-  <!-- <CommonMessageViewer :message="message" />
-    <div
-      v-for="(category, i) in categories"
-      :key="i"
-      class="mb-10"
-    >
-      <div class="sitemap-category">
-        {{ category.name }}
-      </div>
-      <ul class="post-list">
-        <li
-          v-for="(post, idx2) in category.posts.data"
-          :key="idx2"
-          @click="clickPostLink(post)"
-        >
-          <a>{{ post.title.rendered }}</a>
-        </li>
-      </ul>
-    </div> -->
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, useMeta } from '@nuxtjs/composition-api'
-import type { Category } from '@/types/'
+import { defineComponent, reactive, useFetch, useMeta, useRouter } from '@nuxtjs/composition-api'
+import { apiGetCategories, apiGetSitemapPosts } from '~/utils/api'
+import { pageMovePost } from '~/utils/utils'
+import type { Category, Post, AxiosResponseType } from '@/types/'
 
 type DataType = {
   categories: Category[],
@@ -39,6 +42,7 @@ type DataType = {
 export default defineComponent({
   layout: 'page',
   setup () {
+    const router = useRouter()
     const state = reactive<DataType>({
       categories: [],
       message: {
@@ -46,23 +50,42 @@ export default defineComponent({
       }
     })
 
-    // function readCategoryPosts () {
-    //   const categories: Category[] = this.storeGetCategories()
-    //   try {
-    //     categories.forEach(async (category: Category) => {
-    //       category.posts = await apiGetSitemapPosts(category)
-    //       this.categories.push(category)
-    //     })
-    //   } catch (error) {
-    //     this.message.error = error
-    //   }
-    // }
-    // const store = categoryStore()
-    // console.log(store.categories)
+    useFetch(async () => {
+      await apiGetCategories()
+        .then((res: AxiosResponseType) => {
+          return res.data
+        })
+        .then((categories) => {
+          readCategoryPosts(categories)
+        })
+    })
+
+    function readCategoryPosts (categories: Category[]) {
+      try {
+        categories.filter((v: Category) => v.id !== 1)
+          .forEach(async (category: Category) => {
+            await apiGetSitemapPosts(category).then((res: AxiosResponseType) => {
+              category.posts = res.data
+            })
+            state.categories.push(category)
+          })
+      } catch (error) {
+        state.message.error = error
+      }
+    }
+
+    const clickPostLink = (item: Post) => {
+      const current_category = state.categories.find((v: Category) => v.id === item.categories[0])
+      if (current_category) {
+        pageMovePost(router, current_category, item)
+      }
+    }
+
     const { title } = useMeta({ title: 'サイトマップ' })
     return {
       state,
-      title
+      title,
+      clickPostLink
     }
   },
   head: {}
