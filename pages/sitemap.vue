@@ -1,12 +1,8 @@
 <template>
   <v-app>
-    <CommonHeader :category-list="categoryList" />
-    <v-main>
-      <v-container>
-        {{ state.categories }}
-      </v-container>
-    </v-main>
-    <CommonFooter />
+    <v-container>
+      {{ state.categories }}
+    </v-container>
   </v-app>
   <!-- <CommonMessageViewer :message="message" />
     <div
@@ -30,8 +26,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, useFetch, useMeta } from '@nuxtjs/composition-api'
-import { readCategories } from '~/utils/utils'
+import { defineComponent, reactive, useMeta } from '@nuxtjs/composition-api'
 import type { Category } from '@/types/'
 
 type DataType = {
@@ -42,16 +37,13 @@ type DataType = {
 }
 
 export default defineComponent({
+  layout: 'page',
   setup () {
-    const categoryList = ref<Category[]>([])
     const state = reactive<DataType>({
       categories: [],
       message: {
         error: ''
       }
-    })
-    useFetch(async () => {
-      categoryList.value = await readCategories()
     })
 
     // function readCategoryPosts () {
@@ -70,8 +62,7 @@ export default defineComponent({
     const { title } = useMeta({ title: 'サイトマップ' })
     return {
       state,
-      title,
-      categoryList
+      title
     }
   },
   head: {}

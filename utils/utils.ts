@@ -35,7 +35,7 @@ export function formatCategories (categories: Category[]): Category[] {
   return items.filter(v => v.parent === 0)
 }
 
-export async function readCategories (): Promise<Category[]> {
+export async function readNavCategories (): Promise<Category[]> {
   const results: Category[] = await apiGetCategories()
     .then((response) => {
       return response.data.filter((v: Category) => v.id !== 14 && v.id !== 1)

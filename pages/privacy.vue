@@ -1,46 +1,38 @@
 <template>
   <v-app>
-    <CommonHeader :category-list="categoryList" />
-    <v-main>
-      <v-container>
-        <CommonLoadingPageInner v-if="!state.page_data" />
-        <div v-else>
-          <v-card-title
-            class="px-0 font-weight-bold"
-          >
-            {{ pageTitle }}
-          </v-card-title>
-          <div
-            class="post-content"
-            v-html="pageContent"
-          />
-        </div>
-      </v-container>
-    </v-main>
-    <CommonFooter />
+    <CommonLoadingPageInner v-if="!state.page_data" />
+    <div v-else>
+      <v-card-title
+        class="px-0 font-weight-bold"
+      >
+        {{ pageTitle }}
+      </v-card-title>
+      <div
+        class="post-content"
+        v-html="pageContent"
+      />
+    </div>
   </v-app>
 </template>
 
 <script lang="ts">
-import { useFetch, useMeta, useRoute, computed, defineComponent, reactive, ref } from '@nuxtjs/composition-api'
+import { useFetch, useMeta, useRoute, computed, defineComponent, reactive } from '@nuxtjs/composition-api'
 import { apiGetPageDetail } from '~/utils/api'
-import { readCategories } from '~/utils/utils'
-import type { Category, Page } from '~/types'
+import type { Page } from '~/types'
 
 type DataType = {
   page_data: Page | null
 }
 
 export default defineComponent({
+  layout: 'page',
   setup () {
     const route = useRoute()
-    const categoryList = ref<Category[]>([])
     const state = reactive({
       page_data: null
     }) as DataType
 
     useFetch(async () => {
-      categoryList.value = await readCategories()
       state.page_data = await apiGetPageDetail(route.value.name)
     })
 
@@ -53,7 +45,6 @@ export default defineComponent({
       state,
       pageContent,
       pageTitle,
-      categoryList,
       title
     }
   },

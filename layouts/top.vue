@@ -11,14 +11,14 @@
 <script lang="ts">
 import { useFetch, defineComponent, ref } from '@nuxtjs/composition-api'
 import type { Category } from '@/types/'
-import { readCategories } from '@/utils/utils'
+import { readNavCategories } from '@/utils/utils'
 
 export default defineComponent({
   setup () {
     const categoryList = ref<Category[]>([])
     // fetch
     useFetch(async () => {
-      categoryList.value = await readCategories()
+      categoryList.value = await readNavCategories()
     })
 
     return {

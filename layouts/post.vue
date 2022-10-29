@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <CommonHeader :category-list="categoryList" />
+    <CommonHeader :category-list="navCategoryList" />
     <v-container>
       <v-row>
         <v-col cols="3" class="d-none d-sm-block">
-          <CategorySideBar :category-list="categoryList" />
+          <CategorySideBar :category-list="navCategoryList" />
         </v-col>
         <v-col cols="12" sm="9">
           <Nuxt />
@@ -17,18 +17,18 @@
 
 <script lang="ts">
 import { defineComponent, ref, useFetch } from '@nuxtjs/composition-api'
-import { readCategories } from '~/utils/utils'
+import { readNavCategories } from '~/utils/utils'
 import type { Category } from '~/types/'
 
 export default defineComponent({
   setup () {
-    const categoryList = ref<Category[]>([])
+    const navCategoryList = ref<Category[]>([])
     useFetch(async () => {
-      categoryList.value = await readCategories()
+      navCategoryList.value = await readNavCategories()
     })
 
     return {
-      categoryList
+      navCategoryList
     }
   }
 })
