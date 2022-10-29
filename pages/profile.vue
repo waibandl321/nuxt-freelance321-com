@@ -27,7 +27,7 @@
 import { useFetch, useMeta, useRoute, reactive, ref, computed, defineComponent } from '@nuxtjs/composition-api'
 import { apiGetPageDetail } from '~/utils/api'
 import { readCategories } from '~/utils/utils'
-import type { Category, Page } from '@/types/page'
+import type { Category, Page } from '~/types'
 
 type DataType = {
   page_data: Page | null

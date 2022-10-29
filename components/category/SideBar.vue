@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { useRoute, useRouter, defineComponent, PropType } from '@nuxtjs/composition-api'
-import { Category } from '~/types/page'
+import { Category } from '~/types'
 import { pageMoveCategory } from '@/utils/utils'
 
 export default defineComponent({

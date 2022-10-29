@@ -42,7 +42,7 @@
 import { useFetch, useRoute, defineComponent, reactive, PropType, useRouter } from '@nuxtjs/composition-api'
 import { apiMediaPath, apiGetCategoryPosts } from '@/utils/api'
 import { pageMovePost } from '@/utils/utils'
-import type { Post, Category, AxiosResponseType } from '@/types/page'
+import type { Post, Category, AxiosResponseType } from '~/types'
 
 type State = {
   loading: boolean;

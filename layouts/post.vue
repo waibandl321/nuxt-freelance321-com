@@ -16,10 +16,9 @@
 </template>
 
 <script lang="ts">
-import { useFetch } from '@nuxtjs/composition-api'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, useFetch } from '@nuxtjs/composition-api'
 import { readCategories } from '~/utils/utils'
-import type { Category } from '~/types/page'
+import type { Category } from '~/types/'
 
 export default defineComponent({
   setup () {

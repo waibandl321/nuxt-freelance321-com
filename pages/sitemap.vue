@@ -31,10 +31,8 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, useFetch, useMeta } from '@nuxtjs/composition-api'
-// import { apiGetSitemapPosts } from '@/utils/api'
-// import { categoryStore } from '@/utils/store'
 import { readCategories } from '~/utils/utils'
-import type { Category } from '@/types/page'
+import type { Category } from '@/types/'
 
 type DataType = {
   categories: Category[],
@@ -45,7 +43,6 @@ type DataType = {
 
 export default defineComponent({
   setup () {
-    // const useCategoryStore = categoryStore()
     const categoryList = ref<Category[]>([])
     const state = reactive<DataType>({
       categories: [],

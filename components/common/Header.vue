@@ -63,7 +63,7 @@
 <script lang="ts">
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import { PropType } from 'vue'
-import { Category } from '~/types/page'
+import { Category } from '~/types'
 import { pageMoveCategory } from '@/utils/utils'
 
 export default defineComponent({

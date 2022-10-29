@@ -50,7 +50,7 @@ import { useRouter, defineComponent, reactive, useFetch, ref } from '@nuxtjs/com
 import LoadingPageInner from '../common/LoadingPageInner.vue'
 import { apiGetCategories, apiGetSearchPosts } from '~/utils/api'
 import { pageMovePost } from '~/utils/utils'
-import type { Category, SearchPost, AxiosResponseType } from '@/types/page'
+import type { Category, SearchPost, AxiosResponseType } from '~/types'
 
 interface StateType {
   search_query: string;

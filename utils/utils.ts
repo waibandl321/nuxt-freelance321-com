@@ -1,5 +1,5 @@
 import VueRouter from 'vue-router'
-import type { Category, Post } from '@/types/page'
+import type { Category, Post } from '@/types/'
 import { apiGetCategories } from '~/utils/api'
 
 export function formatDate (data: string, format: string = 'YYYY-MM-dd'):string {

@@ -10,10 +10,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, provide, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { useFetch } from '@nuxtjs/composition-api'
-import { useCategoryStore } from '@/utils/store'
-import CategoryStoreKey from '@/utils/category-key'
 import { apiGetCategories } from '~/utils/api'
 import LoadingPageInner from '~/components/common/LoadingPageInner.vue'
 
@@ -28,17 +26,15 @@ export default defineComponent({
     const state = reactive({
       loading: false
     }) as State
-    provide(CategoryStoreKey, useCategoryStore())
-    // TODO: 状態管理効率化
-    const categoryStore = useCategoryStore()
-    const categories = computed(() => categoryStore.categories)
+
+    const categories = ref([])
+
     useFetch(async () => {
       state.loading = true
       try {
-        await apiGetCategories().then((response) => {
-          categoryStore.setCategories(response.data)
-        })
+        categories.value = await apiGetCategories().then(response => response.data)
       } catch (error) {
+        categories.value = []
         console.log(error)
       }
       state.loading = false

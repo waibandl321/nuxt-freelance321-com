@@ -19,7 +19,7 @@ import { useFetch, useMeta, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { defineComponent, reactive, ref } from 'vue'
 import { apiGetCategories, apiGetCategoryDetail } from '@/utils/api'
 import { redirectNotFount } from '@/utils/utils'
-import type { Category } from '@/types/page'
+import type { Category } from '~/types'
 
 type State = {
   category: Category | null
