@@ -99,14 +99,15 @@ export default defineComponent({
       state.search_loading = false
     }
 
-    function clickSearchItem (post: SearchPost) {
+    // TODO: 引数item: 型エラー修正
+    const clickSearchItem = (item: any): void => {
       state.search_items = []
       state.search_loading = false
       const current_category: Category | undefined = categories.value.find((v: Category) => {
-        return v.id === post.category.term_id
+        return v.id === item.category.term_id
       })
       if (current_category) {
-        pageMovePost(router, current_category, post)
+        pageMovePost(router, current_category, item)
       }
     }
 

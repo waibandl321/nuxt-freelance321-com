@@ -113,7 +113,7 @@ export default defineComponent({
     }
 
     const clickPostCard = (item: Post): void => {
-      const current_category = props.allCategory.find((v: Category) => v.id === item.categories[0])
+      const current_category = props.allCategory?.find((v: Category) => v.id === item.categories[0])
       pageMovePost(router, current_category, item)
     }
 

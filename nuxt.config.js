@@ -34,7 +34,6 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/persistedstate.js', ssr: false },
     '@/plugins/plugins.js'
   ],
 
@@ -53,21 +52,8 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/sitemap',
-    '@nuxtjs/axios',
-    ['@nuxtjs/google-gtag', {
-      id: 'G-HFB5R1ZBG2',
-      debug: false
-    }]
-    // ['@nuxtjs/google-adsense', {
-    //   id: 'ca-pub-9512438052623099'
-    // }]
+    '@nuxtjs/axios'
   ],
-  sitemap: {
-    path: '/sitemap.xml',
-    hostname: 'http://freelance321.com/'
-  },
-
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308

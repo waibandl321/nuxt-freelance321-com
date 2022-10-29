@@ -52,7 +52,7 @@ export function pageMovePost (router: VueRouter, current_category: Category | un
     router.push(
       {
         path: '/' + current_category.slug + '/' + post.slug,
-        query: { p: post.id }
+        query: { p: String(post.id) }
       }
     )
   }
@@ -63,7 +63,7 @@ export function pageMoveCategory (router: VueRouter, category: Category | undefi
     router.push(
       {
         path: '/' + category.slug,
-        query: { c: category.id }
+        query: { c: String(category.id) }
       }
     )
   }
