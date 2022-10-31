@@ -30,8 +30,8 @@
 <script>
 import { defineComponent, useFetch, reactive, useRoute } from '@nuxtjs/composition-api'
 import hljs from 'highlight.js'
-import { apiGetPostDetail } from '@/utils/api'
-import { formatDate } from '@/utils/utils'
+import { useFetchPost } from '@/utils/api'
+import { useFormatDate } from '@/utils/utils'
 
 export default defineComponent({
   layout: 'post',
@@ -48,9 +48,9 @@ export default defineComponent({
     useFetch(async () => {
       state.loading = true
       try {
-        await apiGetPostDetail(route.value.query.p).then((res) => {
+        await useFetchPost(route.value.query.p).then((res) => {
           state.post = res.data
-          state.post.date = formatDate(state.post.date)
+          state.post.date = useFormatDate(state.post.date)
         })
       } catch (error) {
         console.log(error)

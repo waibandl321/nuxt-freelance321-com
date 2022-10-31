@@ -26,7 +26,7 @@
               v-for="(category, index) in categoryList"
               :key="index"
               class="menu-item p-relative"
-              @click.stop="clickCategoryMenu(category)"
+              @click.stop="handleClickCategory(category)"
             >
               <div class="d-flex justify-space-between">
                 <span>{{ category.name }}</span>
@@ -44,7 +44,7 @@
                   v-for="(sub, index) in category.sub_categories"
                   :key="index"
                   class="menu-item p-relative"
-                  @click.stop="clickCategoryMenu(sub)"
+                  @click.stop="handleClickCategory(sub)"
                 >
                   {{ sub.name }}
                 </div>
@@ -64,7 +64,7 @@
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import { PropType } from 'vue'
 import { Category } from '~/types'
-import { pageMoveCategory } from '@/utils/utils'
+import { useMoveCategory } from '@/utils/utils'
 
 export default defineComponent({
   props: {
@@ -75,11 +75,11 @@ export default defineComponent({
   },
   setup () {
     const router = useRouter()
-    const clickCategoryMenu = (category: Category) => {
-      pageMoveCategory(router, category)
+    const handleClickCategory = (category: Category) => {
+      useMoveCategory(router, category)
     }
     return {
-      clickCategoryMenu
+      handleClickCategory
     }
   }
 })

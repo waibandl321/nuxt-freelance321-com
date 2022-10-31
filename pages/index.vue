@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
 import { useFetch } from '@nuxtjs/composition-api'
-import { apiGetCategories } from '~/utils/api'
+import { useFetchCategories } from '~/utils/api'
 import LoadingPageInner from '~/components/common/LoadingPageInner.vue'
 
 type State = {
@@ -31,7 +31,7 @@ export default defineComponent({
     useFetch(async () => {
       state.loading = true
       try {
-        categories.value = await apiGetCategories().then(response => response.data)
+        categories.value = await useFetchCategories().then(response => response.data)
       } catch (error) {
         categories.value = []
         console.log(error)

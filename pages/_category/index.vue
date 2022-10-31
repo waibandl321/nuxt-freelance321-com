@@ -17,8 +17,8 @@
 <script lang="ts">
 import { useFetch, useMeta, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { defineComponent, reactive, ref } from 'vue'
-import { apiGetCategories, apiGetCategoryDetail } from '@/utils/api'
-import { redirectNotFount } from '@/utils/utils'
+import { useFetchCategories, useFetchCategory } from '@/utils/api'
+import { useRedirectNotFount } from '@/utils/utils'
 import type { Category } from '~/types'
 
 type State = {
@@ -38,24 +38,24 @@ export default defineComponent({
 
     useFetch(async () => {
       if (!route.value.query.c) {
-        return redirectNotFount(router)
+        return useRedirectNotFount(router)
       }
 
-      categories.value = await apiGetCategories()
+      categories.value = await useFetchCategories()
         .then(response => response.data)
         .catch((err) => {
           console.log(err)
           return []
         })
 
-      await apiGetCategoryDetail(route.value.query.c)
+      await useFetchCategory(route.value.query.c)
         .then((res) => {
           state.category = res.data
         })
         .catch((err: unknown) => {
           if (err instanceof Error) {
             if (err.message.includes('404')) {
-              redirectNotFount(router)
+              useRedirectNotFount(router)
             }
           }
         })

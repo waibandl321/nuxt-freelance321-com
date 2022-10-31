@@ -15,7 +15,7 @@
             <li
               v-for="(post, idx2) in category.posts"
               :key="idx2"
-              @click="clickPostLink(post)"
+              @click="handleClickPost(post)"
             >
               <a>{{ post.title.rendered }}</a>
             </li>
@@ -28,8 +28,8 @@
 
 <script lang="ts">
 import { defineComponent, reactive, useFetch, useMeta, useRouter } from '@nuxtjs/composition-api'
-import { apiGetCategories, apiGetSitemapPosts } from '~/utils/api'
-import { pageMovePost } from '~/utils/utils'
+import { useFetchCategories, useFetchSitemapPosts } from '~/utils/api'
+import { usePageMovePost } from '~/utils/utils'
 import type { Category, Post, AxiosResponseType } from '@/types/'
 
 type DataType = {
@@ -51,20 +51,20 @@ export default defineComponent({
     })
 
     useFetch(async () => {
-      await apiGetCategories()
+      await useFetchCategories()
         .then((res: AxiosResponseType) => {
-          return res.data
+          readCategoryPosts(res.data)
         })
-        .then((categories) => {
-          readCategoryPosts(categories)
+        .catch((err) => {
+          state.message.error = err
         })
     })
 
     function readCategoryPosts (categories: Category[]) {
       try {
-        categories.filter((v: Category) => v.id !== 1)
+        categories.filter((r: Category) => r.id !== 1)
           .forEach(async (category: Category) => {
-            await apiGetSitemapPosts(category).then((res: AxiosResponseType) => {
+            await useFetchSitemapPosts(category).then((res: AxiosResponseType) => {
               category.posts = res.data
             })
             state.categories.push(category)
@@ -74,10 +74,10 @@ export default defineComponent({
       }
     }
 
-    const clickPostLink = (item: Post) => {
+    const handleClickPost = (item: Post) => {
       const current_category = state.categories.find((v: Category) => v.id === item.categories[0])
       if (current_category) {
-        pageMovePost(router, current_category, item)
+        usePageMovePost(router, current_category, item)
       }
     }
 
@@ -85,7 +85,7 @@ export default defineComponent({
     return {
       state,
       title,
-      clickPostLink
+      handleClickPost
     }
   },
   head: {}

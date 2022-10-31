@@ -1,8 +1,8 @@
 import VueRouter from 'vue-router'
 import type { Category, Post } from '@/types/'
-import { apiGetCategories } from '~/utils/api'
+import { useFetchCategories } from '~/utils/api'
 
-export function formatDate (data: string, format: string = 'YYYY-MM-dd'):string {
+export function useFormatDate (data: string, format: string = 'YYYY-MM-dd'):string {
   if (!data) { return '' }
   const date_obj = new Date(data)
   const year = String(date_obj.getFullYear())
@@ -24,7 +24,15 @@ export function formatDate (data: string, format: string = 'YYYY-MM-dd'):string 
     .replace('ss', seconds)
 }
 
-export function formatCategories (categories: Category[]): Category[] {
+export async function readNavCategories (): Promise<Category[]> {
+  const results: Category[] = await useFetchCategories()
+    .then((response) => {
+      return response.data.filter((v: Category) => v.id !== 14 && v.id !== 1)
+    })
+  return formatCategories(results)
+}
+
+function formatCategories (categories: Category[]): Category[] {
   const items: Category[] = []
   categories.forEach((item) => {
     if (item.parent === 0) {
@@ -35,19 +43,11 @@ export function formatCategories (categories: Category[]): Category[] {
   return items.filter(v => v.parent === 0)
 }
 
-export async function readNavCategories (): Promise<Category[]> {
-  const results: Category[] = await apiGetCategories()
-    .then((response) => {
-      return response.data.filter((v: Category) => v.id !== 14 && v.id !== 1)
-    })
-  return formatCategories(results)
-}
-
-export function redirectNotFount (router: VueRouter) {
+export function useRedirectNotFount (router: VueRouter) {
   router.push('/404NotFound')
 }
 
-export function pageMovePost (router: VueRouter, current_category: Category | undefined, post: Post) {
+export function usePageMovePost (router: VueRouter, current_category: Category | undefined, post: Post) {
   if (current_category) {
     router.push(
       {
@@ -58,7 +58,7 @@ export function pageMovePost (router: VueRouter, current_category: Category | un
   }
 }
 
-export function pageMoveCategory (router: VueRouter, category: Category | undefined) {
+export function useMoveCategory (router: VueRouter, category: Category | undefined) {
   if (category) {
     router.push(
       {

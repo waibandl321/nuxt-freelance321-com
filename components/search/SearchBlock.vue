@@ -48,8 +48,8 @@
 <script lang="ts">
 import { useRouter, defineComponent, reactive, useFetch, ref } from '@nuxtjs/composition-api'
 import LoadingPageInner from '../common/LoadingPageInner.vue'
-import { apiGetCategories, apiGetSearchPosts } from '~/utils/api'
-import { pageMovePost } from '~/utils/utils'
+import { useFetchCategories, useFetchSearchPosts } from '~/utils/api'
+import { usePageMovePost } from '~/utils/utils'
 import type { Category, SearchPost, AxiosResponseType } from '~/types'
 
 interface StateType {
@@ -73,7 +73,7 @@ export default defineComponent({
     const categories = ref([])
     useFetch(async () => {
       try {
-        await apiGetCategories().then((response) => {
+        await useFetchCategories().then((response) => {
           categories.value = response.data
         })
       } catch (error) {
@@ -92,7 +92,7 @@ export default defineComponent({
 
     async function search (): Promise<void> {
       state.search_loading = true
-      state.search_items = await apiGetSearchPosts(state.search_query)
+      state.search_items = await useFetchSearchPosts(state.search_query)
         .then((response: AxiosResponseType) => {
           return response.data
         })
@@ -107,7 +107,7 @@ export default defineComponent({
         return v.id === item.category.term_id
       })
       if (current_category) {
-        pageMovePost(router, current_category, item)
+        usePageMovePost(router, current_category, item)
       }
     }
 
