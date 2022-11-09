@@ -73,9 +73,8 @@ export default defineComponent({
     const categories = ref([])
     useFetch(async () => {
       try {
-        await useFetchCategories().then((response) => {
-          categories.value = response.data
-        })
+        const response: AxiosResponseType = await useFetchCategories()
+        categories.value = response.data
       } catch (error) {
         categories.value = []
       }
@@ -92,10 +91,8 @@ export default defineComponent({
 
     async function search (): Promise<void> {
       state.search_loading = true
-      state.search_items = await useFetchSearchPosts(state.search_query)
-        .then((response: AxiosResponseType) => {
-          return response.data
-        })
+      const response: AxiosResponseType = await useFetchSearchPosts(state.search_query)
+      state.search_items = response.data
       state.search_loading = false
     }
 
