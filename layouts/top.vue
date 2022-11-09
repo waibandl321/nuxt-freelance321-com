@@ -18,7 +18,11 @@ export default defineComponent({
     const categoryList = ref<Category[]>([])
     // fetch
     useFetch(async () => {
-      categoryList.value = await readNavCategories()
+      try {
+        categoryList.value = await readNavCategories()
+      } catch (error) {
+        console.log(error)
+      }
     })
 
     return {

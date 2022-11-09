@@ -3,10 +3,8 @@ import type { Category, Post } from '@/types/'
 import { useFetchCategories } from '~/utils/api'
 
 export async function readNavCategories (): Promise<Category[]> {
-  const results: Category[] = await useFetchCategories()
-    .then((response) => {
-      return response.data.filter((v: Category) => v.id !== 14 && v.id !== 1)
-    })
+  const response = await useFetchCategories()
+  const results: Category[] = response.data.filter((v: Category) => v.id !== 14 && v.id !== 1)
   return formatCategories(results)
 }
 
