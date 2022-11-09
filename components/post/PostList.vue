@@ -90,11 +90,9 @@ export default defineComponent({
     async function readPosts (): Promise<void> {
       state.loading = true
       try {
-        await useFetchPosts(state.current_page, state.per_page)
-          .then((response: AxiosResponseTypeArray) => {
-            state.page_max = setPaginations(response)
-            state.posts = response.data
-          })
+        const response: AxiosResponseTypeArray = await useFetchPosts(state.current_page, state.per_page)
+        state.page_max = setPaginations(response)
+        state.posts = response.data
       } catch {
         state.message.error = 'データの読み込みに失敗しました。'
       }
