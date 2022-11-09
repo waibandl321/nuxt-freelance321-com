@@ -51,22 +51,20 @@ export default defineComponent({
     })
 
     useFetch(async () => {
-      await useFetchCategories()
-        .then((res: AxiosResponseTypeArray) => {
-          readCategoryPosts(res.data)
-        })
-        .catch((err) => {
-          state.message.error = err
-        })
+      try {
+        const response: AxiosResponseTypeArray = await useFetchCategories()
+        readCategoryPosts(response.data)
+      } catch (error) {
+        state.message.error = error
+      }
     })
 
     function readCategoryPosts (categories: Category[]) {
       try {
         categories.filter((r: Category) => r.id !== 1)
           .forEach(async (category: Category) => {
-            await useFetchSitemapPosts(category).then((res: AxiosResponseTypeArray) => {
-              category.posts = res.data
-            })
+            const response: AxiosResponseTypeArray = await useFetchSitemapPosts(category)
+            category.posts = response.data
             state.categories.push(category)
           })
       } catch (error) {
