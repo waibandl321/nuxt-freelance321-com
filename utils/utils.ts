@@ -11,14 +11,16 @@ export async function readNavCategories (): Promise<Category[]> {
 }
 
 function formatCategories (categories: Category[]): Category[] {
-  const items: Category[] = []
-  categories.forEach((item) => {
+  // 引数を変数に置き換え
+  const _categories = categories
+  const results: Category[] = []
+  _categories.forEach((item: Category) => {
     if (item.parent === 0) {
-      item.sub_categories = categories.filter(v => v.parent === item.id)
+      item.sub_categories = _categories.filter((v: Category) => v.parent === item.id)
     }
-    items.push(item)
+    results.push(item)
   })
-  return items.filter(v => v.parent === 0)
+  return results.filter(v => v.parent === 0)
 }
 
 export function useRedirectNotFount (router: VueRouter) {
