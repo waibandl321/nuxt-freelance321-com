@@ -20,7 +20,10 @@
             aspect-ratio="1.7"
             style="background-color: #f8f5f5"
           />
-          <v-card-subtitle>
+          <v-card-text class="py-2">
+            {{ $dayjs(item.date).format('YYYY/MM/DD') }}
+          </v-card-text>
+          <v-card-subtitle class="pt-0">
             {{ item.title.rendered }}
           </v-card-subtitle>
         </v-card>

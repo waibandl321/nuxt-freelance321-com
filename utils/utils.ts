@@ -2,28 +2,6 @@ import VueRouter from 'vue-router'
 import type { Category, Post } from '@/types/'
 import { useFetchCategories } from '~/utils/api'
 
-export function useFormatDate (data: string, format: string = 'YYYY-MM-dd'):string {
-  if (!data) { return '' }
-  const date_obj = new Date(data)
-  const year = String(date_obj.getFullYear())
-  const month = zeroPadding(date_obj.getMonth() + 1)
-  const day = zeroPadding(date_obj.getDate())
-  const hour = zeroPadding(date_obj.getHours())
-  const minutes = zeroPadding(date_obj.getMinutes())
-  const seconds = zeroPadding(date_obj.getSeconds())
-
-  function zeroPadding (value: number) {
-    return ('0' + value).slice(-2)
-  }
-
-  return format.replace('YYYY', year)
-    .replace('MM', month)
-    .replace('dd', day)
-    .replace('hh', hour)
-    .replace('mm', minutes)
-    .replace('ss', seconds)
-}
-
 export async function readNavCategories (): Promise<Category[]> {
   const results: Category[] = await useFetchCategories()
     .then((response) => {

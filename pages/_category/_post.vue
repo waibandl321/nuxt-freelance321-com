@@ -7,7 +7,7 @@
         <!-- <PostBreadcrumbs :post="state.post" /> -->
         <div class="post-wrap">
           <v-card-text class="pa-0">
-            投稿日： {{ state.post.date }}
+            投稿日： {{ $dayjs(state.post.date).format('YYYY/MM/DD') }}
           </v-card-text>
           <v-card-title
             class="px-0 font-weight-bold"
@@ -31,7 +31,6 @@
 import { defineComponent, useFetch, reactive, useRoute } from '@nuxtjs/composition-api'
 import hljs from 'highlight.js'
 import { useFetchPost } from '@/utils/api'
-import { useFormatDate } from '@/utils/utils'
 
 export default defineComponent({
   layout: 'post',
@@ -50,7 +49,6 @@ export default defineComponent({
       try {
         await useFetchPost(route.value.query.p).then((res) => {
           state.post = res.data
-          state.post.date = useFormatDate(state.post.date)
         })
       } catch (error) {
         console.log(error)
