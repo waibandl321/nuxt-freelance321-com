@@ -85,13 +85,13 @@ export default defineComponent({
 
     async function initPostList (): Promise<void> {
       state.loading = true
-      await useFetchCategoryPosts(route.value.query.c, state.current_page, state.per_page)
-        .then((response: AxiosResponseTypeArray) => {
-          state.page_max = setPaginations(response)
-          state.posts = response.data
-        }).catch(() => {
-          state.message.error = 'データの読み込みに失敗しました。'
-        })
+      try {
+        const response: AxiosResponseTypeArray = await useFetchCategoryPosts(route.value.query.c, state.current_page, state.per_page)
+        state.page_max = setPaginations(response)
+        state.posts = response.data
+      } catch {
+        state.message.error = 'データの読み込みに失敗しました。'
+      }
       state.loading = false
 
       function setPaginations (response: AxiosResponseTypeArray): number {
