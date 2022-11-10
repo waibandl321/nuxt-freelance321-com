@@ -22,9 +22,7 @@ export default defineComponent({
 
     useFetch(async () => {
       try {
-        await readNavCategories().then((res) => {
-          headerCategories.value = res
-        })
+        headerCategories.value = await readNavCategories()
       } catch (error) {
         console.log(error)
       }

@@ -47,7 +47,7 @@
 import { useFetch, defineComponent, reactive, PropType, useRouter } from '@nuxtjs/composition-api'
 import { MediaBasePath, useFetchPosts } from '@/utils/api'
 import { usePageMovePost } from '@/utils/utils'
-import type { Category, Post, AxiosResponseType } from '@/types/'
+import type { Category, Post, AxiosResponseTypeArray } from '@/types/'
 
 type State = {
   loading: boolean;
@@ -90,17 +90,15 @@ export default defineComponent({
     async function readPosts (): Promise<void> {
       state.loading = true
       try {
-        await useFetchPosts(state.current_page, state.per_page)
-          .then((response: AxiosResponseType) => {
-            state.page_max = setPaginations(response)
-            state.posts = response.data
-          })
+        const response: AxiosResponseTypeArray = await useFetchPosts(state.current_page, state.per_page)
+        state.page_max = setPaginations(response)
+        state.posts = response.data
       } catch {
         state.message.error = 'データの読み込みに失敗しました。'
       }
       state.loading = false
 
-      function setPaginations (response_data: AxiosResponseType): number {
+      function setPaginations (response_data: AxiosResponseTypeArray): number {
         return Math.ceil(Number(response_data.headers['x-wp-total']) / state.per_page)
       }
     }

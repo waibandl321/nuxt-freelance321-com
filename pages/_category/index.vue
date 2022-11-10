@@ -19,7 +19,7 @@ import { useFetch, useMeta, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { defineComponent, reactive, ref } from 'vue'
 import { useFetchCategories, useFetchCategory } from '@/utils/api'
 import { useRedirectNotFount } from '@/utils/utils'
-import type { Category } from '~/types'
+import type { AxiosResponseTypeArray, Category } from '~/types'
 
 type State = {
   category: Category | null
@@ -41,12 +41,8 @@ export default defineComponent({
         return useRedirectNotFount(router)
       }
 
-      categories.value = await useFetchCategories()
-        .then(response => response.data)
-        .catch((err) => {
-          console.log(err)
-          return []
-        })
+      const responseCategories: AxiosResponseTypeArray = await useFetchCategories()
+      categories.value = responseCategories.data
 
       await useFetchCategory(route.value.query.c)
         .then((res) => {

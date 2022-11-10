@@ -27,15 +27,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, useFetch, reactive, useRoute } from '@nuxtjs/composition-api'
 import hljs from 'highlight.js'
 import { useFetchPost } from '@/utils/api'
+import type { Post, AxiosResponsePostObject } from '@/types'
+
+interface StateType {
+  loading: boolean,
+  post: {} | Post,
+  meta: {
+    title: string
+  }
+}
 
 export default defineComponent({
   layout: 'post',
   setup () {
-    const state = reactive({
+    const state = reactive<StateType>({
       loading: false,
       post: {},
       meta: {
@@ -47,9 +56,10 @@ export default defineComponent({
     useFetch(async () => {
       state.loading = true
       try {
-        await useFetchPost(route.value.query.p).then((res) => {
-          state.post = res.data
-        })
+        if (route.value.query.p) {
+          const response: AxiosResponsePostObject = await useFetchPost(route.value.query.p)
+          state.post = response.data
+        }
       } catch (error) {
         console.log(error)
       }

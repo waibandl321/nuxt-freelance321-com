@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import type { Page, Post, AxiosResponseType, AxiosResponseCategoryDataObjectType, Category } from '@/types/'
+import type { Page, AxiosResponsePostObject, AxiosResponseTypeArray, AxiosResponseCategoryDataObjectType, Category } from '@/types/'
 
 Vue.use(VueAxios, axios)
 
@@ -17,25 +17,25 @@ export async function useFetchPage (slug: string): Promise<Page> {
   return await callGetApi(base_url + params)
 }
 
-export async function useFetchSitemapPosts (category: Category): Promise<AxiosResponseType> {
+export async function useFetchSitemapPosts (category: Category): Promise<AxiosResponseTypeArray> {
   const params: string = 'posts?categories=' + category.id + '&per_page=100'
   const base_url: string = getApiBaseUrl(WpApi)
   return await callGetApi(base_url + params)
 }
 
-export async function useFetchPosts (current_page: number, per_page: number): Promise<AxiosResponseType> {
+export async function useFetchPosts (current_page: number, per_page: number): Promise<AxiosResponseTypeArray> {
   const base_url: string = getApiBaseUrl(WpApi)
   const params: string = 'posts?_embed' + '&page=' + current_page + '&per_page=' + per_page
   return await callGetApi(base_url + params)
 }
 
-export async function useFetchCategoryPosts (route_category_id: string | (string | null)[], current_page: number, per_page: number): Promise<AxiosResponseType> {
+export async function useFetchCategoryPosts (route_category_id: string | (string | null)[], current_page: number, per_page: number): Promise<AxiosResponseTypeArray> {
   const base_url: string = getApiBaseUrl(WpApi)
   const params: string = 'posts?categories=' + route_category_id + '&_embed' + '&page=' + current_page + '&per_page=' + per_page
   return await callGetApi(base_url + params)
 }
 
-export async function useFetchSearchPosts (search_query: string): Promise<AxiosResponseType> {
+export async function useFetchSearchPosts (search_query: string): Promise<AxiosResponseTypeArray> {
   const base_url: string = getApiBaseUrl(CustomApi)
   const params: string = 'search/' + encodeURIComponent(search_query)
   return await callGetApi(base_url + params)
@@ -47,13 +47,13 @@ export async function useFetchCategory (category_id: string | (string | null)[])
   return await callGetApi(base_url + params)
 }
 
-export async function useFetchPost (post_id: string): Promise<Post> {
+export async function useFetchPost (post_id: string): Promise<AxiosResponsePostObject> {
   const params: string = 'posts/' + encodeURIComponent(post_id) + '?_embed'
   const base_url: string = getApiBaseUrl(WpApi)
   return await callGetApi(base_url + params)
 }
 
-export async function useFetchCategories (): Promise<AxiosResponseType> {
+export async function useFetchCategories (): Promise<AxiosResponseTypeArray> {
   const base_url: string = getApiBaseUrl(WpApi)
   const params: string = 'categories?per_page=20'
   return await callGetApi(base_url + params)
