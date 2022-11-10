@@ -34,7 +34,9 @@ export default defineComponent({
     }) as DataType
 
     useFetch(async () => {
-      state.page_data = await useFetchPage(route.value.name)
+      if (route.value.name) {
+        state.page_data = await useFetchPage(route.value.name)
+      }
     })
 
     const pageContent = computed(() => state.page_data?.data[0].content.rendered)

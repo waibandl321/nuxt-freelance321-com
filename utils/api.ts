@@ -11,7 +11,7 @@ const WpAPIPath = 'https://admin.freelance321.com/wp-json/wp/v2/'
 const CustomAPIPath = 'https://admin.freelance321.com/wp-json/wp/api/'
 export const MediaBasePath = 'https://media.freelance321.com/uploads/'
 
-export async function useFetchPage (slug: string | null | undefined): Promise<Page> {
+export async function useFetchPage (slug: string): Promise<Page> {
   const params: string = 'pages?slug=' + slug
   const base_url: string = getApiBaseUrl(WpApi)
   return await callGetApi(base_url + params)
@@ -47,7 +47,7 @@ export async function useFetchCategory (category_id: string | (string | null)[])
   return await callGetApi(base_url + params)
 }
 
-export async function useFetchPost (post_id: number): Promise<Post> {
+export async function useFetchPost (post_id: string): Promise<Post> {
   const params: string = 'posts/' + post_id + '?_embed'
   const base_url: string = getApiBaseUrl(WpApi)
   return await callGetApi(base_url + params)
@@ -64,8 +64,8 @@ function getApiBaseUrl (api_type: string) {
 }
 
 async function callGetApi (buildPath: string): Promise<any> {
-  console.log('call api:' + buildPath)
-  return await Vue.axios.get(buildPath, {
+  console.log('call api:' + encodeURIComponent(buildPath))
+  return await Vue.axios.get(encodeURIComponent(buildPath), {
     headers: {
       'Content-Type': 'application/json'
     }
