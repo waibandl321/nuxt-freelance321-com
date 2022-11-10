@@ -31,13 +31,13 @@ export async function useFetchPosts (current_page: number, per_page: number): Pr
 
 export async function useFetchCategoryPosts (route_category_id: string | (string | null)[], current_page: number, per_page: number): Promise<AxiosResponseTypeArray> {
   const base_url: string = getApiBaseUrl(WpApi)
-  const params: string = 'posts?categories=' + route_category_id + '&_embed' + '&page=' + current_page + '&per_page=' + per_page
+  const params: string = 'posts?categories=' + encodeURIComponent(String(route_category_id)) + '&_embed' + '&page=' + current_page + '&per_page=' + per_page
   return await callGetApi(base_url + params)
 }
 
 export async function useFetchSearchPosts (search_query: string): Promise<AxiosResponseTypeArray> {
   const base_url: string = getApiBaseUrl(CustomApi)
-  const params: string = 'search/' + encodeURIComponent(search_query)
+  const params: string = 'search/' + search_query
   return await callGetApi(base_url + params)
 }
 
@@ -47,8 +47,8 @@ export async function useFetchCategory (category_id: string | (string | null)[])
   return await callGetApi(base_url + params)
 }
 
-export async function useFetchPost (post_id: string): Promise<AxiosResponsePostObject> {
-  const params: string = 'posts/' + encodeURIComponent(post_id) + '?_embed'
+export async function useFetchPost (post_id: string | (string | null)[]): Promise<AxiosResponsePostObject> {
+  const params: string = 'posts/' + encodeURIComponent(String(post_id)) + '?_embed'
   const base_url: string = getApiBaseUrl(WpApi)
   return await callGetApi(base_url + params)
 }
