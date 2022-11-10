@@ -43,7 +43,7 @@ export async function useFetchSearchPosts (search_query: string): Promise<AxiosR
 
 export async function useFetchCategory (category_id: string | (string | null)[]): Promise<AxiosResponseCategoryDataObjectType> {
   const base_url: string = getApiBaseUrl(WpApi)
-  const params: string = 'categories/' + category_id
+  const params: string = 'categories/' + encodeURIComponent(String(category_id))
   return await callGetApi(base_url + params)
 }
 
