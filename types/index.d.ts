@@ -109,9 +109,22 @@ export interface SearchPost {
   title: string;
 }
 
-export interface AxiosResponseType {
+export interface AxiosResponseTypeArray {
   config: Object;
   data: [];
+  headers: {
+    'content-type': string;
+    link: string;
+    'x-wp-total': string;
+    'x-wp-totalpages': string;
+  }
+  request: XMLHttpRequest;
+  status: number;
+  statusText: string;
+}
+export interface AxiosResponsePostObject {
+  config: Object;
+  data: Post;
   headers: {
     'content-type': string;
     link: string;

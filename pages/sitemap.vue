@@ -30,7 +30,7 @@
 import { defineComponent, reactive, useFetch, useMeta, useRouter } from '@nuxtjs/composition-api'
 import { useFetchCategories, useFetchSitemapPosts } from '~/utils/api'
 import { usePageMovePost } from '~/utils/utils'
-import type { Category, Post, AxiosResponseType } from '@/types/'
+import type { Category, Post, AxiosResponseTypeArray } from '@/types/'
 
 type DataType = {
   categories: Category[],
@@ -51,20 +51,19 @@ export default defineComponent({
     })
 
     useFetch(async () => {
-      await useFetchCategories()
-        .then((res: AxiosResponseType) => {
-          readCategoryPosts(res.data)
-        })
-        .catch((err) => {
-          state.message.error = err
-        })
+      try {
+        const response: AxiosResponseTypeArray = await useFetchCategories()
+        readCategoryPosts(response.data)
+      } catch (error) {
+        state.message.error = error
+      }
     })
 
     async function readCategoryPosts (categories: Category[]) {
       try {
         const filtered: Category[] = categories.filter((r: Category) => r.id !== 1)
         for (const category of filtered) {
-          const response: AxiosResponseType = await useFetchSitemapPosts(category)
+          const response: AxiosResponseTypeArray = await useFetchSitemapPosts(category)
           category.posts = response.data
           state.categories.push(category)
         }

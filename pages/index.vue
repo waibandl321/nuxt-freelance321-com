@@ -13,7 +13,7 @@ import { defineComponent, Ref, ref } from 'vue'
 import { useFetch } from '@nuxtjs/composition-api'
 import { useFetchCategories } from '~/utils/api'
 import LoadingPageInner from '~/components/common/LoadingPageInner.vue'
-import { Category } from '~/types'
+import { AxiosResponseTypeArray, Category } from '~/types'
 
 export default defineComponent({
   components: { LoadingPageInner },
@@ -25,7 +25,8 @@ export default defineComponent({
     useFetch(async () => {
       loading.value = true
       try {
-        categories.value = await useFetchCategories().then(response => response.data)
+        const response: AxiosResponseTypeArray = await useFetchCategories()
+        categories.value = response.data
       } catch (error) {
         categories.value = []
         console.log(error)
