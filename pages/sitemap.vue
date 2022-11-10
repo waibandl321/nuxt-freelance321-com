@@ -59,14 +59,14 @@ export default defineComponent({
       }
     })
 
-    function readCategoryPosts (categories: Category[]) {
+    async function readCategoryPosts (categories: Category[]) {
       try {
-        categories.filter((r: Category) => r.id !== 1)
-          .forEach(async (category: Category) => {
-            const response: AxiosResponseTypeArray = await useFetchSitemapPosts(category)
-            category.posts = response.data
-            state.categories.push(category)
-          })
+        const filtered: Category[] = categories.filter((r: Category) => r.id !== 1)
+        for (const category of filtered) {
+          const response: AxiosResponseTypeArray = await useFetchSitemapPosts(category)
+          category.posts = response.data
+          state.categories.push(category)
+        }
       } catch (error) {
         state.message.error = error
       }
