@@ -12,7 +12,7 @@ const CustomAPIPath = 'https://admin.freelance321.com/wp-json/wp/api/'
 export const MediaBasePath = 'https://media.freelance321.com/uploads/'
 
 export async function useFetchPage (slug: string): Promise<Page> {
-  const params: string = 'pages?slug=' + slug
+  const params: string = 'pages?slug=' + encodeURIComponent(slug)
   const base_url: string = getApiBaseUrl(WpApi)
   return await callGetApi(base_url + params)
 }
@@ -37,7 +37,7 @@ export async function useFetchCategoryPosts (route_category_id: string | (string
 
 export async function useFetchSearchPosts (search_query: string): Promise<AxiosResponseType> {
   const base_url: string = getApiBaseUrl(CustomApi)
-  const params: string = 'search/' + search_query
+  const params: string = 'search/' + encodeURIComponent(search_query)
   return await callGetApi(base_url + params)
 }
 
@@ -48,7 +48,7 @@ export async function useFetchCategory (category_id: string | (string | null)[])
 }
 
 export async function useFetchPost (post_id: string): Promise<Post> {
-  const params: string = 'posts/' + post_id + '?_embed'
+  const params: string = 'posts/' + encodeURIComponent(post_id) + '?_embed'
   const base_url: string = getApiBaseUrl(WpApi)
   return await callGetApi(base_url + params)
 }
@@ -64,8 +64,8 @@ function getApiBaseUrl (api_type: string) {
 }
 
 async function callGetApi (buildPath: string): Promise<any> {
-  console.log('call api:' + encodeURIComponent(buildPath))
-  return await Vue.axios.get(encodeURIComponent(buildPath), {
+  console.log('call api:' + buildPath)
+  return await Vue.axios.get(buildPath, {
     headers: {
       'Content-Type': 'application/json'
     }
