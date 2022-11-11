@@ -80,7 +80,7 @@ export interface Category {
   parent: number;
   slug: string;
   posts: Post[],
-  sub_categories: Category[]
+  sub_categories?: Category[]
 }
 
 interface SearchPostCategory {
