@@ -1,5 +1,5 @@
 import VueRouter from 'vue-router'
-import _cloneDeep from 'lodash/cloneDeep'
+// import _cloneDeep from 'lodash/cloneDeep'
 import { useFetchCategories } from '@/utils/api'
 import type { Category, Post } from '@/types/'
 
@@ -10,16 +10,10 @@ export async function readNavCategories (): Promise<Category[]> {
 }
 
 function formatCategories (categories: Category[]): Category[] {
-  // 引数を変数に置き換え
-  const _categories = _cloneDeep(categories)
-  const results: Category[] = []
-  _categories.forEach((item: Category) => {
-    if (item.parent === 0) {
-      item.sub_categories = _categories.filter((v: Category) => v.parent === item.id)
-    }
-    results.push(item)
-  })
-  return results.filter(v => v.parent === 0)
+  return categories.filter(v => v.parent === 0).map<Category>(item => ({
+    sub_categories: categories.filter((v: Category) => v.parent === item.id),
+    ...item
+  }))
 }
 
 export function useRedirectNotFount (router: VueRouter) {
