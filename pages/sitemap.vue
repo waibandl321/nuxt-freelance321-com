@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, useFetch, useMeta, useRouter } from '@nuxtjs/composition-api'
-import { useFetchCategories, useFetchSitemapPosts } from '~/utils/api'
+import { useFetchCategories, useFetchSitemapPosts } from '@/utils/api'
 import { usePageMovePost } from '~/utils/utils'
 import type { Category, Post, AxiosResponseTypeArray } from '@/types/'
 

@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router'
 import _cloneDeep from 'lodash/cloneDeep'
+import { useFetchCategories } from '@/utils/api'
 import type { Category, Post } from '@/types/'
-import { useFetchCategories } from '~/utils/api'
 
 export async function readNavCategories (): Promise<Category[]> {
   const response = await useFetchCategories()

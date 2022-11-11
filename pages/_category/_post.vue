@@ -30,8 +30,8 @@
 <script lang="ts">
 import { defineComponent, useFetch, reactive, useRoute } from '@nuxtjs/composition-api'
 import hljs from 'highlight.js'
-import type { Post, AxiosResponsePostObject } from '@/types'
 import { useFetchPost } from '@/utils/api'
+import type { Post, AxiosResponsePostObject } from '@/types'
 
 interface StateType {
   loading: boolean,
