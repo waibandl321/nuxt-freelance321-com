@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LoadingPageInner v-if="state.loading" />
+    <LoadingPageInner v-if="loading" />
     <PostList
       v-else
       :all-category="categories"
@@ -9,37 +9,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, Ref, ref } from 'vue'
 import { useFetch } from '@nuxtjs/composition-api'
-import { apiGetCategories } from '~/utils/api'
+import { useFetchCategories } from '~/utils/api'
 import LoadingPageInner from '~/components/common/LoadingPageInner.vue'
-
-type State = {
-  loading: boolean
-}
+import { AxiosResponseTypeArray, Category } from '~/types'
 
 export default defineComponent({
   components: { LoadingPageInner },
   layout: 'top',
   setup () {
-    const state = reactive({
-      loading: false
-    }) as State
-
-    const categories = ref([])
+    const loading = ref(false)
+    const categories: Ref<Category[]> = ref([])
 
     useFetch(async () => {
-      state.loading = true
+      loading.value = true
       try {
-        categories.value = await apiGetCategories().then(response => response.data)
+        const response: AxiosResponseTypeArray = await useFetchCategories()
+        categories.value = response.data
       } catch (error) {
         categories.value = []
         console.log(error)
       }
-      state.loading = false
+      loading.value = false
     })
     return {
-      state,
+      loading,
       categories
     }
   }

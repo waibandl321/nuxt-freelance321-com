@@ -15,7 +15,7 @@
             <li
               v-for="(post, idx2) in category.posts"
               :key="idx2"
-              @click="clickPostLink(post)"
+              @click="handleClickPost(post)"
             >
               <a>{{ post.title.rendered }}</a>
             </li>
@@ -28,9 +28,9 @@
 
 <script lang="ts">
 import { defineComponent, reactive, useFetch, useMeta, useRouter } from '@nuxtjs/composition-api'
-import { apiGetCategories, apiGetSitemapPosts } from '~/utils/api'
-import { pageMovePost } from '~/utils/utils'
-import type { Category, Post, AxiosResponseType } from '@/types/'
+import { useFetchCategories, useFetchSitemapPosts } from '@/utils/api'
+import { usePageMovePost } from '~/utils/utils'
+import type { Category, Post, AxiosResponseTypeArray } from '@/types/'
 
 type DataType = {
   categories: Category[],
@@ -51,33 +51,31 @@ export default defineComponent({
     })
 
     useFetch(async () => {
-      await apiGetCategories()
-        .then((res: AxiosResponseType) => {
-          return res.data
-        })
-        .then((categories) => {
-          readCategoryPosts(categories)
-        })
+      try {
+        const response: AxiosResponseTypeArray = await useFetchCategories()
+        readCategoryPosts(response.data)
+      } catch (error) {
+        state.message.error = error
+      }
     })
 
-    function readCategoryPosts (categories: Category[]) {
+    async function readCategoryPosts (categories: Category[]) {
       try {
-        categories.filter((v: Category) => v.id !== 1)
-          .forEach(async (category: Category) => {
-            await apiGetSitemapPosts(category).then((res: AxiosResponseType) => {
-              category.posts = res.data
-            })
-            state.categories.push(category)
-          })
+        const filtered: Category[] = categories.filter((r: Category) => r.id !== 1)
+        for (const category of filtered) {
+          const response: AxiosResponseTypeArray = await useFetchSitemapPosts(category)
+          category.posts = response.data
+          state.categories.push(category)
+        }
       } catch (error) {
         state.message.error = error
       }
     }
 
-    const clickPostLink = (item: Post) => {
+    const handleClickPost = (item: Post) => {
       const current_category = state.categories.find((v: Category) => v.id === item.categories[0])
       if (current_category) {
-        pageMovePost(router, current_category, item)
+        usePageMovePost(router, current_category, item)
       }
     }
 
@@ -85,7 +83,7 @@ export default defineComponent({
     return {
       state,
       title,
-      clickPostLink
+      handleClickPost
     }
   },
   head: {}

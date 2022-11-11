@@ -62,7 +62,7 @@ export default defineComponent({
     })
 
     const clickBreadcrumbs = (item) => {
-      this.$pageMoveCategory(item.obj)
+      this.$useMoveCategory(item.obj)
     }
 
     return {

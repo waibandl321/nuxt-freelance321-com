@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { useFetch, useMeta, useRoute, reactive, computed, defineComponent } from '@nuxtjs/composition-api'
-import { apiGetPageDetail } from '~/utils/api'
+import { useFetchPage } from '~/utils/api'
 import type { Page } from '~/types'
 
 type DataType = {
@@ -29,12 +29,14 @@ export default defineComponent({
   layout: 'page',
   setup () {
     const route = useRoute()
-    const state = reactive({
+    const state = reactive<DataType>({
       page_data: null
-    }) as DataType
+    })
 
     useFetch(async () => {
-      state.page_data = await apiGetPageDetail(route.value.name)
+      if (route.value.name) {
+        state.page_data = await useFetchPage(route.value.name)
+      }
     })
 
     const pageContent = computed(() => state.page_data?.data[0].content.rendered)

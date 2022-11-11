@@ -12,7 +12,7 @@
       >
         <v-card
           hover
-          @click="clickPostCard(item)"
+          @click="handleClickPost(item)"
         >
           <v-img
             :src="getEyecatchUrl(item)"
@@ -40,9 +40,9 @@
 
 <script lang="ts">
 import { useFetch, useRoute, defineComponent, reactive, PropType, useRouter } from '@nuxtjs/composition-api'
-import { apiMediaPath, apiGetCategoryPosts } from '@/utils/api'
-import { pageMovePost } from '@/utils/utils'
-import type { Post, Category, AxiosResponseType } from '~/types'
+import { MediaBasePath, useFetchCategoryPosts } from '@/utils/api'
+import { usePageMovePost } from '@/utils/utils'
+import type { Post, Category, AxiosResponseTypeArray } from '~/types'
 
 type State = {
   loading: boolean;
@@ -85,16 +85,16 @@ export default defineComponent({
 
     async function initPostList (): Promise<void> {
       state.loading = true
-      await apiGetCategoryPosts(route.value.query.c, state.current_page, state.per_page)
-        .then((response: AxiosResponseType) => {
-          state.page_max = setPaginations(response)
-          state.posts = response.data
-        }).catch(() => {
-          state.message.error = 'データの読み込みに失敗しました。'
-        })
+      try {
+        const response: AxiosResponseTypeArray = await useFetchCategoryPosts(route.value.query.c, state.current_page, state.per_page)
+        state.page_max = setPaginations(response)
+        state.posts = response.data
+      } catch {
+        state.message.error = 'データの読み込みに失敗しました。'
+      }
       state.loading = false
 
-      function setPaginations (response: AxiosResponseType): number {
+      function setPaginations (response: AxiosResponseTypeArray): number {
         return Math.ceil(Number(response.headers['x-wp-total']) / state.per_page)
       }
     }
@@ -103,7 +103,7 @@ export default defineComponent({
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
-      return apiMediaPath + '2022/08/no-image.png'
+      return MediaBasePath + '2022/08/no-image.png'
     }
 
     const changePage = (page_number: number): void => {
@@ -112,15 +112,15 @@ export default defineComponent({
       initPostList()
     }
 
-    const clickPostCard = (item: Post): void => {
+    const handleClickPost = (item: Post): void => {
       const current_category = props.allCategory?.find((v: Category) => v.id === item.categories[0])
-      pageMovePost(router, current_category, item)
+      usePageMovePost(router, current_category, item)
     }
 
     return {
       state,
       getEyecatchUrl,
-      clickPostCard,
+      handleClickPost,
       changePage
     }
   }

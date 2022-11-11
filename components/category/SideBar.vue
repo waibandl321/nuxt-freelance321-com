@@ -7,7 +7,7 @@
       <v-list-item
         dense
         :class="{ 'blue lighten-4': judgeActive(category) }"
-        @click="clickSideMenu(category)"
+        @click="handleClickCategory(category)"
       >
         <v-list-item-title>{{ category.name }}</v-list-item-title>
       </v-list-item>
@@ -20,7 +20,7 @@
           :key="idx2"
           dense
           :class="{ 'blue lighten-4': judgeActive(sub) }"
-          @click="clickSideMenu(sub)"
+          @click="handleClickCategory(sub)"
         >
           <v-list-item-title>{{ sub.name }}</v-list-item-title>
         </v-list-item>
@@ -32,7 +32,7 @@
 <script lang="ts">
 import { useRoute, useRouter, defineComponent, PropType } from '@nuxtjs/composition-api'
 import { Category } from '~/types'
-import { pageMoveCategory } from '@/utils/utils'
+import { useMoveCategory } from '@/utils/utils'
 
 export default defineComponent({
   props: {
@@ -55,13 +55,13 @@ export default defineComponent({
       }
     }
 
-    function clickSideMenu (category: Category): void {
-      pageMoveCategory(router, category)
+    function handleClickCategory (category: Category): void {
+      useMoveCategory(router, category)
     }
 
     return {
       judgeActive,
-      clickSideMenu
+      handleClickCategory
     }
   }
 })

@@ -13,14 +13,17 @@
       >
         <v-card
           hover
-          @click="clickPostCard(item)"
+          @click="handleClickPost(item)"
         >
           <v-img
             :src="imagePath(item)"
             aspect-ratio="1.7"
             style="background-color: #f8f5f5"
           />
-          <v-card-subtitle>
+          <v-card-text class="py-2">
+            {{ $dayjs(item.date).format('YYYY/MM/DD') }}
+          </v-card-text>
+          <v-card-subtitle class="pt-0">
             {{ item.title.rendered }}
           </v-card-subtitle>
         </v-card>
@@ -42,9 +45,9 @@
 
 <script lang="ts">
 import { useFetch, defineComponent, reactive, PropType, useRouter } from '@nuxtjs/composition-api'
-import { apiMediaPath, apiGetPosts } from '@/utils/api'
-import { pageMovePost } from '@/utils/utils'
-import type { Category, Post, AxiosResponseType } from '@/types/'
+import { MediaBasePath, useFetchPosts } from '@/utils/api'
+import { usePageMovePost } from '@/utils/utils'
+import type { Category, Post, AxiosResponseTypeArray } from '@/types/'
 
 type State = {
   loading: boolean;
@@ -87,17 +90,15 @@ export default defineComponent({
     async function readPosts (): Promise<void> {
       state.loading = true
       try {
-        await apiGetPosts(state.current_page, state.per_page)
-          .then((response: AxiosResponseType) => {
-            state.page_max = setPaginations(response)
-            state.posts = response.data
-          })
+        const response: AxiosResponseTypeArray = await useFetchPosts(state.current_page, state.per_page)
+        state.page_max = setPaginations(response)
+        state.posts = response.data
       } catch {
         state.message.error = 'データの読み込みに失敗しました。'
       }
       state.loading = false
 
-      function setPaginations (response_data: AxiosResponseType): number {
+      function setPaginations (response_data: AxiosResponseTypeArray): number {
         return Math.ceil(Number(response_data.headers['x-wp-total']) / state.per_page)
       }
     }
@@ -106,7 +107,7 @@ export default defineComponent({
       if (item.jetpack_featured_media_url) {
         return item.jetpack_featured_media_url
       }
-      return apiMediaPath + '2022/08/no-image.png'
+      return MediaBasePath + '2022/08/no-image.png'
     }
 
     const changePage = (page_number: number): void => {
@@ -115,17 +116,17 @@ export default defineComponent({
       readPosts()
     }
 
-    const clickPostCard = (item: Post): void => {
+    const handleClickPost = (item: Post): void => {
       const current_category = props.allCategory?.find((v: Category) => v.id === item.categories[0])
       if (current_category) {
-        pageMovePost(router, current_category, item)
+        usePageMovePost(router, current_category, item)
       }
     }
 
     return {
       state,
       imagePath,
-      clickPostCard,
+      handleClickPost,
       changePage
     }
   }

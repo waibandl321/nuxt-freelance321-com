@@ -24,7 +24,11 @@ export default defineComponent({
   setup () {
     const navCategoryList = ref<Category[]>([])
     useFetch(async () => {
-      navCategoryList.value = await readNavCategories()
+      try {
+        navCategoryList.value = await readNavCategories()
+      } catch (error) {
+        console.log(error)
+      }
     })
 
     return {
