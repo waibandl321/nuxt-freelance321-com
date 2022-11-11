@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router'
+import _cloneDeep from 'lodash/cloneDeep'
 import type { Category, Post } from '@/types/'
 import { useFetchCategories } from '~/utils/api'
 
@@ -12,7 +13,7 @@ export async function readNavCategories (): Promise<Category[]> {
 
 function formatCategories (categories: Category[]): Category[] {
   // 引数を変数に置き換え
-  const _categories = categories
+  const _categories = _cloneDeep(categories)
   const results: Category[] = []
   _categories.forEach((item: Category) => {
     if (item.parent === 0) {
