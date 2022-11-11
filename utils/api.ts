@@ -49,6 +49,7 @@ export async function useFetchCategory (category_id: string | (string | null)[])
 
 export async function useFetchPost (post_id: string | (string | null)[]): Promise<AxiosResponsePostObject> {
   const params: string = 'posts/' + encodeURIComponent(String(post_id)) + '?_embed'
+  // const params: string = 'posts/' + post_id + '?_embed'
   const base_url: string = getApiBaseUrl(WpApi)
   return await callGetApi(base_url + params)
 }
