@@ -7,6 +7,7 @@
           <CategorySideBar :category-list="navCategoryList" />
         </v-col>
         <v-col cols="12" sm="9">
+          <CommonMessageViewer :message="state.message" />
           <Nuxt />
         </v-col>
       </v-row>
@@ -16,29 +17,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, ref, useFetch } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref, useFetch } from '@nuxtjs/composition-api'
 import { readNavCategories } from '~/utils/utils'
-import { useFetchCategories } from '~/utils/api'
-import type { AxiosResponseTypeArray, Category } from '~/types/'
+import type { Category } from '~/types/'
 
 export default defineComponent({
   setup () {
     const navCategoryList = ref<Category[]>([])
-    const allCategory = ref<Category[]>([])
+    const state = reactive({
+      message: {
+        error: '' as string
+      }
+    })
     useFetch(async () => {
       try {
         navCategoryList.value = await readNavCategories()
-        const response: AxiosResponseTypeArray = await useFetchCategories()
-        allCategory.value = response.data
-      } catch (error) {
-        console.log(error)
+      } catch (err) {
+        state.message.error = 'データの読み込みに失敗しました。'
       }
     })
-    provide('allCategory', allCategory)
 
     return {
-      navCategoryList,
-      allCategory
+      state,
+      navCategoryList
     }
   }
 })
