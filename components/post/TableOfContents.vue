@@ -1,86 +1,83 @@
 <template>
   <v-list class="first">
     <div
-      v-for="(item, idx) in items"
+      v-for="(h2Element, idx) in items"
       :key="idx"
     >
       <v-list-item
-        v-scroll-to="'#' + item.id"
+        v-scroll-to="'#' + h2Element.h2.id"
         debse
         nuxt
         href="#"
       >
         <v-list-item-content>
-          {{ item.name }}
+          {{ h2Element.h2.name }}
         </v-list-item-content>
       </v-list-item>
       <div
-        v-show="item.sub.length > 0"
         class="second"
       >
         <v-list-item
-          v-for="(sub, idx2) in item.sub"
+          v-for="(item, idx2) in h2Element.h2.sub"
           :key="idx2"
-          v-scroll-to="'#' + sub.id"
+          v-scroll-to="'#' + item.h3.id"
           dense
           nuxt
           href="#"
         >
           <v-list-item-content>
-            {{ sub.name }}
+            {{ item.h3.name }}
           </v-list-item-content>
         </v-list-item>
       </div>
     </div>
   </v-list>
 </template>
-<script>
 
-export default {
-  name: 'TableOfContents',
+<script lang="ts">
+import { defineComponent, onMounted, ref } from 'vue'
+
+export default defineComponent({
   props: {
-    content: String
+    content: {
+      type: String,
+      required: true
+    }
   },
-  data: () => ({
-    items: []
-  }),
-  mounted () {
-    this.createTableOfContents()
-  },
-  methods: {
-    createTableOfContents () {
-      const tmpElmt = document.createElement('div')
-      tmpElmt.innerHTML = this.content
-      const result = []
-      try {
-        const h2_elements = tmpElmt.querySelectorAll('h2')
-        h2_elements.forEach((h2, idx2) => {
-          h2.id = 'outline__' + Number(idx2 + 1)
-          h2.name = h2.textContent
-          h2.sub = []
-          const h3s = tmpElmt.querySelectorAll('h3')
-          h3s.forEach((h3) => {
-            if (h3.getAttribute('id')) {
-              if (h3.getAttribute('id').includes(h2.id + '_')) {
-                h2.sub.push(
-                  {
-                    id: h2.id + '_' + h3.getAttribute('id').slice(-1),
-                    name: h3.textContent
-                  }
-                )
-              }
-            }
-          })
-          result.push(h2)
-        })
-        this.items = result
-      } catch (error) {
-        console.log('例外発生')
-        console.log(error)
-      }
+  setup (props) {
+    const items = ref()
+
+    onMounted(() => {
+      createTableOfContents()
+    })
+
+    function createTableOfContents () {
+      const divElement = document.createElement('div')
+      divElement.innerHTML = props.content
+      const h2Elements: NodeListOf<HTMLHeadingElement> = divElement.querySelectorAll('h2')
+      const h3Elements: NodeListOf<HTMLHeadingElement> = divElement.querySelectorAll('h3')
+
+      items.value = Array.from(h2Elements).map<HTMLHeadingElement>(item => ({
+        h2: {
+          id: item.id,
+          name: item.textContent,
+          sub: Array.from(h3Elements).filter(v => v.getAttribute('id')?.includes(item.id + '_')).map<HTMLHeadingElement>(item => ({
+            h3: {
+              id: item.id,
+              name: item.textContent
+            },
+            ...item
+          }))
+        },
+        ...item
+      }))
+    }
+
+    return {
+      items
     }
   }
-}
+})
 </script>
 
 <style scoped>
