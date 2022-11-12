@@ -1,40 +1,40 @@
 <template>
   <v-list class="first">
     <div
-      v-for="(item, idx) in items"
+      v-for="(h2Element, idx) in items"
       :key="idx"
     >
       <v-list-item
-        v-scroll-to="'#' + item.id"
+        v-scroll-to="'#' + h2Element.h2.id"
         debse
         nuxt
         href="#"
       >
         <v-list-item-content>
-          {{ item.name }}
+          {{ h2Element.h2.name }}
         </v-list-item-content>
       </v-list-item>
       <div
-        v-show="item.sub.length > 0"
         class="second"
       >
         <v-list-item
-          v-for="(sub, idx2) in item.sub"
+          v-for="(item, idx2) in h2Element.h2.sub"
           :key="idx2"
-          v-scroll-to="'#' + sub.id"
+          v-scroll-to="'#' + item.h3.id"
           dense
           nuxt
           href="#"
         >
           <v-list-item-content>
-            {{ sub.name }}
+            {{ item.h3.name }}
           </v-list-item-content>
         </v-list-item>
       </div>
     </div>
   </v-list>
 </template>
-<script>
+
+<script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 
 export default defineComponent({
@@ -45,7 +45,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const items = ref([])
+    const items = ref()
 
     onMounted(() => {
       createTableOfContents()
@@ -54,25 +54,23 @@ export default defineComponent({
     function createTableOfContents () {
       const divElement = document.createElement('div')
       divElement.innerHTML = props.content
-      const result = []
-      const h2_elements = divElement.querySelectorAll('h2')
-      const h3_elements = divElement.querySelectorAll('h3')
-      h2_elements.forEach((H2, idx2) => {
-        H2.id = 'outline__' + Number(idx2 + 1)
-        H2.name = H2.textContent
-        H2.sub = []
-        h3_elements.forEach((H3) => {
-          if (H3.getAttribute('id') && H3.getAttribute('id').includes(H2.id + '_')) {
-            const obj = {
-              id: H2.id + '_' + H3.getAttribute('id').slice(-1),
-              name: H3.textContent
-            }
-            H2.sub.push(obj)
-          }
-        })
-        result.push(H2)
-      })
-      items.value = result
+      const h2Elements: NodeListOf<HTMLHeadingElement> = divElement.querySelectorAll('h2')
+      const h3Elements: NodeListOf<HTMLHeadingElement> = divElement.querySelectorAll('h3')
+
+      items.value = Array.from(h2Elements).map<HTMLHeadingElement>(item => ({
+        h2: {
+          id: item.id,
+          name: item.textContent,
+          sub: Array.from(h3Elements).filter(v => v.getAttribute('id')?.includes(item.id + '_')).map<HTMLHeadingElement>(item => ({
+            h3: {
+              id: item.id,
+              name: item.textContent
+            },
+            ...item
+          }))
+        },
+        ...item
+      }))
     }
 
     return {
