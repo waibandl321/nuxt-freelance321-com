@@ -35,52 +35,50 @@
   </v-list>
 </template>
 <script>
+import { defineComponent, onMounted, ref } from 'vue'
 
-export default {
-  name: 'TableOfContents',
+export default defineComponent({
   props: {
-    content: String
+    content: {
+      type: String
+    }
   },
-  data: () => ({
-    items: []
-  }),
-  mounted () {
-    this.createTableOfContents()
-  },
-  methods: {
-    createTableOfContents () {
-      const tmpElmt = document.createElement('div')
-      tmpElmt.innerHTML = this.content
+  setup (props) {
+    const items = ref([])
+
+    onMounted(() => {
+      createTableOfContents()
+    })
+
+    function createTableOfContents () {
+      const divElement = document.createElement('div')
+      divElement.innerHTML = props.content
       const result = []
-      try {
-        const h2_elements = tmpElmt.querySelectorAll('h2')
-        h2_elements.forEach((h2, idx2) => {
-          h2.id = 'outline__' + Number(idx2 + 1)
-          h2.name = h2.textContent
-          h2.sub = []
-          const h3s = tmpElmt.querySelectorAll('h3')
-          h3s.forEach((h3) => {
-            if (h3.getAttribute('id')) {
-              if (h3.getAttribute('id').includes(h2.id + '_')) {
-                h2.sub.push(
-                  {
-                    id: h2.id + '_' + h3.getAttribute('id').slice(-1),
-                    name: h3.textContent
-                  }
-                )
-              }
+      const h2_elements = divElement.querySelectorAll('h2')
+      const h3_elements = divElement.querySelectorAll('h3')
+      h2_elements.forEach((H2, idx2) => {
+        H2.id = 'outline__' + Number(idx2 + 1)
+        H2.name = H2.textContent
+        H2.sub = []
+        h3_elements.forEach((H3) => {
+          if (H3.getAttribute('id') && H3.getAttribute('id').includes(H2.id + '_')) {
+            const obj = {
+              id: H2.id + '_' + H3.getAttribute('id').slice(-1),
+              name: H3.textContent
             }
-          })
-          result.push(h2)
+            H2.sub.push(obj)
+          }
         })
-        this.items = result
-      } catch (error) {
-        console.log('例外発生')
-        console.log(error)
-      }
+        result.push(H2)
+      })
+      items.value = result
+    }
+
+    return {
+      items
     }
   }
-}
+})
 </script>
 
 <style scoped>
