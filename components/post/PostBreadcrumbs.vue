@@ -1,72 +1,79 @@
 <template>
-  <v-breadcrumbs
-    :items="breadcrumbs"
-    class="px-0 pt-0"
-  >
-    <template #item="{ item }">
+  <div>
+    <v-breadcrumbs class="px-0 pt-0">
       <v-breadcrumbs-item
         class="post-breadcrumb-item primary--text"
-        :disabled="item.disabled"
-        @click="clickBreadcrumbs(item)"
+        :disabled="false"
+        @click="clickBreadcrumbs(breadcrumb.category)"
       >
-        {{ item.text }}
+        {{ breadcrumb.category.name }}
       </v-breadcrumbs-item>
-    </template>
-  </v-breadcrumbs>
+      <span class="mx-3">/</span>
+      <v-breadcrumbs-item
+        class="post-breadcrumb-item primary--text"
+        :disabled="true"
+      >
+        {{ breadcrumb.post.title }}
+      </v-breadcrumbs-item>
+    </v-breadcrumbs>
+  </div>
 </template>
 
-<script>
-import { useRoute } from '@nuxtjs/composition-api'
-import { defineComponent, onMounted, ref } from 'vue'
+<script lang="ts">
+import { useFetch, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref, watch } from 'vue'
+import { useFetchCategories } from '~/utils/api'
+import { useMoveCategory } from '~/utils/utils'
+import type { AxiosResponseTypeArray, Category } from '~/types/'
 
 export default defineComponent({
   props: {
     post: {
-      type: Object
+      type: Object,
+      required: true
     }
   },
   setup (props) {
     const route = useRoute()
-    const breadcrumbs = ref([])
-
-    function initBreadcrumb () {
-      const results = []
-      const post = {}
-      const category = {}
-      const sub_category = {}
-
-      post.text = props.post.title.rendered
-      post.disabled = true
-
-      if (route.value.params.category) {
-        const _category = categories.find(v => v.slug === route.value.params.category)
-        category.text = _category.name
-        category.disabled = false
-        category.obj = _category
-        results.push(category)
-        if (route.value.params.subCategory) {
-          // サブカテゴリあり
-          const _sub_category = categories.find(v => v.slug === route.value.params.subCategory)
-          sub_category.text = _sub_category.name
-          sub_category.disabled = false
-          sub_category.obj = _sub_category
-          results.push(sub_category)
-        }
+    const router = useRouter()
+    const breadcrumb = reactive({
+      category: {} as Category,
+      post: {} as {
+        title: string
       }
-      results.push(post)
-      breadcrumbs.value = results
-    }
+    })
+    const categories = ref<Category[]>([])
 
-    onMounted(() => {
-      initBreadcrumb()
+    useFetch(async () => {
+      const response: AxiosResponseTypeArray = await useFetchCategories()
+      categories.value = response.data
     })
 
-    const clickBreadcrumbs = (item) => {
-      this.$useMoveCategory(item.obj)
+    watch(
+      () => categories.value,
+      (_categories) => {
+        categories.value = _categories
+        initBreadcrumb()
+      },
+      { deep: true }
+    )
+
+    function initBreadcrumb (): void {
+      const category: Category | undefined = categories.value.find(v => v.slug === route.value.params.category)
+      if (category) {
+        breadcrumb.category = category
+      }
+      breadcrumb.post = {
+        title: props.post.title.rendered
+      }
+    }
+
+    function clickBreadcrumbs (item: Category) {
+      useMoveCategory(router, item)
     }
 
     return {
-      breadcrumbs,
+      breadcrumb,
       clickBreadcrumbs
     }
   }

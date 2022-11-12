@@ -4,7 +4,9 @@
     <CommonLoadingPageInner v-if="state.loading" />
     <v-row v-else>
       <v-col cols="12" sm="9">
-        <!-- <PostBreadcrumbs :post="state.post" /> -->
+        <PostBreadcrumbs
+          :post="state.post"
+        />
         <div class="post-wrap">
           <v-card-text class="pa-0">
             投稿日： {{ $dayjs(state.post.date).format('YYYY/MM/DD') }}
