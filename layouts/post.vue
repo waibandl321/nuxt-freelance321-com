@@ -16,23 +16,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useFetch } from '@nuxtjs/composition-api'
+import { defineComponent, provide, ref, useFetch } from '@nuxtjs/composition-api'
 import { readNavCategories } from '~/utils/utils'
-import type { Category } from '~/types/'
+import { useFetchCategories } from '~/utils/api'
+import type { AxiosResponseTypeArray, Category } from '~/types/'
 
 export default defineComponent({
   setup () {
     const navCategoryList = ref<Category[]>([])
+    const allCategory = ref<Category[]>([])
     useFetch(async () => {
       try {
         navCategoryList.value = await readNavCategories()
+        const response: AxiosResponseTypeArray = await useFetchCategories()
+        allCategory.value = response.data
       } catch (error) {
         console.log(error)
       }
     })
+    provide('allCategory', allCategory)
 
     return {
-      navCategoryList
+      navCategoryList,
+      allCategory
     }
   }
 })

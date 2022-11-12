@@ -114,7 +114,9 @@ export default defineComponent({
 
     const handleClickPost = (item: Post): void => {
       const current_category = props.allCategory?.find((v: Category) => v.id === item.categories[0])
-      usePageMovePost(router, current_category, item)
+      if (current_category) {
+        usePageMovePost(router, current_category, item)
+      }
     }
 
     return {

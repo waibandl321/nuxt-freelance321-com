@@ -15,54 +15,64 @@
   </v-breadcrumbs>
 </template>
 
-<script>
-import { useRoute } from '@nuxtjs/composition-api'
-import { defineComponent, onMounted, ref } from 'vue'
+<script lang="ts">
+import { useFetch, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, ref, watch } from 'vue'
+import { useFetchCategories } from '~/utils/api'
+import { useMoveCategory } from '~/utils/utils'
+import type { AxiosResponseTypeArray, Category } from '~/types/'
 
 export default defineComponent({
   props: {
     post: {
-      type: Object
+      type: Object,
+      required: true
     }
   },
   setup (props) {
     const route = useRoute()
+    const router = useRouter()
     const breadcrumbs = ref([])
+    const categories = ref<Category[]>([])
 
-    function initBreadcrumb () {
+    useFetch(async () => {
+      const response: AxiosResponseTypeArray = await useFetchCategories()
+      categories.value = response.data
+    })
+
+    watch(
+      () => categories.value,
+      (_categories) => {
+        categories.value = _categories
+        initBreadcrumb()
+      },
+      { deep: true }
+    )
+
+    function initBreadcrumb (): void {
       const results = []
-      const post = {}
-      const category = {}
-      const sub_category = {}
+      const post = {
+        text: props.post.title.rendered,
+        disabled: true
+      }
+      const category = {
+        text: '',
+        disabled: false,
+        obj: {} as Category
+      }
 
-      post.text = props.post.title.rendered
-      post.disabled = true
-
-      if (route.value.params.category) {
-        const _category = categories.find(v => v.slug === route.value.params.category)
+      const _category: Category | undefined = categories.value.find(v => v.slug === route.value.params.category)
+      if (_category) {
         category.text = _category.name
-        category.disabled = false
         category.obj = _category
         results.push(category)
-        if (route.value.params.subCategory) {
-          // サブカテゴリあり
-          const _sub_category = categories.find(v => v.slug === route.value.params.subCategory)
-          sub_category.text = _sub_category.name
-          sub_category.disabled = false
-          sub_category.obj = _sub_category
-          results.push(sub_category)
-        }
       }
       results.push(post)
       breadcrumbs.value = results
     }
 
-    onMounted(() => {
-      initBreadcrumb()
-    })
-
-    const clickBreadcrumbs = (item) => {
-      this.$useMoveCategory(item.obj)
+    function clickBreadcrumbs (item) {
+      useMoveCategory(router, item.obj)
     }
 
     return {
