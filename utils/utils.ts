@@ -20,24 +20,20 @@ export function useRedirectNotFount (router: VueRouter) {
   router.push('/404NotFound')
 }
 
-export function usePageMovePost (router: VueRouter, current_category: Category | undefined, post: Post) {
-  if (current_category) {
-    router.push(
-      {
-        path: '/' + current_category.slug + '/' + post.slug,
-        query: { p: String(post.id) }
-      }
-    )
-  }
+export function usePageMovePost (router: VueRouter, current_category: Category, post: Post) {
+  router.push(
+    {
+      path: '/' + current_category.slug + '/' + post.slug,
+      query: { p: String(post.id) }
+    }
+  )
 }
 
-export function useMoveCategory (router: VueRouter, category: Category | undefined) {
-  if (category) {
-    router.push(
-      {
-        path: '/' + category.slug,
-        query: { c: String(category.id) }
-      }
-    )
-  }
+export function useMoveCategory (router: VueRouter, category: Category) {
+  router.push(
+    {
+      path: '/' + category.slug,
+      query: { c: String(category.id) }
+    }
+  )
 }
