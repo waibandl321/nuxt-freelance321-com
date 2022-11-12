@@ -40,7 +40,8 @@ import { defineComponent, onMounted, ref } from 'vue'
 export default defineComponent({
   props: {
     content: {
-      type: String
+      type: String,
+      required: true
     }
   },
   setup (props) {
