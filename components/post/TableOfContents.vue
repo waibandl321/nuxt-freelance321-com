@@ -46,7 +46,6 @@ export default defineComponent({
   },
   setup (props) {
     const items = ref()
-
     onMounted(() => {
       createTableOfContents()
     })

@@ -31,13 +31,13 @@
               <div class="d-flex justify-space-between">
                 <span>{{ category.name }}</span>
                 <v-icon
-                  v-show="category.sub_categories.length > 0"
+                  v-if="category.sub_categories && category.sub_categories.length > 0"
                 >
                   mdi-chevron-right
                 </v-icon>
               </div>
               <div
-                v-show="category.sub_categories.length > 0"
+                v-if="category.sub_categories && category.sub_categories.length > 0"
                 class="third"
               >
                 <div

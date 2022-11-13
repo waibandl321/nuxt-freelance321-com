@@ -1,7 +1,8 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <div>
-    <CommonLoadingPageInner v-if="state.loading" />
+    <CommonMessageViewer :message="state.message" />
+    <CommonLoadingPageInner v-if="!state.post" />
     <v-row v-else>
       <v-col cols="12" sm="9">
         <PostBreadcrumbs
@@ -18,7 +19,7 @@
           </v-card-title>
           <div
             class="post-content"
-            v-html="createHtml()"
+            v-html="state.htmlContent"
           />
         </div>
       </v-col>
@@ -36,64 +37,59 @@ import { useFetchPost } from '@/utils/api'
 import type { Post, AxiosResponsePostObject } from '@/types'
 
 interface StateType {
-  loading: boolean,
-  post: {} | Post,
+  post: Post | undefined,
   meta: {
     title: string
-  }
+  },
+  message: {
+    error: string
+  },
+  htmlContent: string
 }
 
 export default defineComponent({
   layout: 'post',
   setup () {
+    const route = useRoute()
     const state = reactive<StateType>({
-      loading: false,
-      post: {},
+      post: undefined,
       meta: {
         title: ''
-      }
+      },
+      message: {
+        error: ''
+      },
+      htmlContent: ''
     })
-    const route = useRoute()
 
     useFetch(async () => {
-      state.loading = true
-      try {
-        if (route.value.query.p) {
-          const response: AxiosResponsePostObject = await useFetchPost(route.value.query.p)
-          state.post = response.data
-        }
-      } catch (error) {
-        console.log(error)
-      }
-      state.loading = false
+      await useFetchPost(route.value.query.p).then((response: AxiosResponsePostObject) => {
+        state.post = response.data
+        state.htmlContent = shapingHtml(response.data)
+      }).catch((err) => {
+        state.message.error = '投稿データ取得エラー: ' + err
+      })
     })
 
-    const createHtml = () => {
-      const dom = document.createElement('div')
-      dom.innerHTML = state.post.content.rendered
-      try {
-        dom.querySelectorAll('.hcb_wrap pre').forEach((element) => {
-          const r = hljs.highlightAuto(element.textContent)
-          const lang = element.getAttribute('data-lang')
-          const code = element.querySelector('code')
-          code.innerHTML = r.value
-          code.classList.add('hljs', lang, 'language-' + lang)
-          // 邪魔な属性を削除する
-          const arrs = element.attributes
-          const arr_obj = []
-          for (const objAttrib of arrs) {
-            arr_obj.push(objAttrib.name)
-          }
-          arr_obj.forEach((a) => {
-            element.removeAttribute(a)
-          })
-        })
-      } catch {}
+    function shapingHtml (post: Post): string {
+      const dom: HTMLDivElement = document.createElement('div')
+      dom.innerHTML = post.content.rendered
+      const hcb_elements: NodeListOf<Element> = dom.querySelectorAll('.hcb_wrap pre')
+
+      for (const element of Array.from(hcb_elements)) {
+        const code: (HTMLElement | null) = element.querySelector('code')
+        const lang: (string | null) = element.getAttribute('data-lang')
+        if (!lang || !code || !element.textContent) {
+          return dom.outerHTML
+        }
+        const result = hljs.highlightAuto(element.textContent)
+        code.innerHTML = result.value
+        code.classList.add('hljs', lang, 'language-' + lang)
+      }
       return dom.outerHTML
     }
 
     return {
-      createHtml,
       state,
       route
     }

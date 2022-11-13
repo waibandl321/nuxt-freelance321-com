@@ -22,7 +22,7 @@ export default {
       default: null
     }
   },
-  data () {
+  setup () {
     return {
       pageNotFound: '404 Not Found',
       otherError: 'エラーが発生しました。指定されたページは存在しない可能性があります。'
