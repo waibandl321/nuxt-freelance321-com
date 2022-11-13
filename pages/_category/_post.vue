@@ -3,7 +3,7 @@
   <div>
     <CommonMessageViewer :message="state.message" />
     <CommonLoadingPageInner v-if="state.loading" />
-    <v-row v-else>
+    <v-row v-if="!state.loading && state.post">
       <v-col cols="12" sm="9">
         <!-- <PostBreadcrumbs :post="state.post" /> -->
         <div class="post-wrap">
@@ -16,9 +16,9 @@
             {{ state.post.title.rendered }}
           </v-card-title>
           <div
-            v-if="htmlContent"
+            v-if="state.htmlContent"
             class="post-content"
-            v-html="htmlContent"
+            v-html="state.htmlContent"
           />
         </div>
       </v-col>
@@ -30,20 +30,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, useFetch, reactive, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, useFetch, reactive, useRoute, watch } from '@nuxtjs/composition-api'
 import hljs from 'highlight.js'
 import { useFetchPost } from '@/utils/api'
 import type { Post, AxiosResponsePostObject } from '@/types'
 
 interface StateType {
   loading: boolean,
-  post: Post,
+  post: Post | undefined,
   meta: {
     title: string
   },
   message: {
     error: string
-  }
+  },
+  htmlContent: string
 }
 
 export default defineComponent({
@@ -52,13 +53,14 @@ export default defineComponent({
     const route = useRoute()
     const state = reactive<StateType>({
       loading: false,
-      post: {},
+      post: undefined,
       meta: {
         title: ''
       },
       message: {
         error: ''
-      }
+      },
+      htmlContent: ''
     })
 
     useFetch(async () => {
@@ -72,10 +74,18 @@ export default defineComponent({
       state.loading = false
     })
 
-    // エディタ整形
-    const htmlContent = computed<string | undefined>(() => {
+    watch(
+      () => state.post,
+      (newPost) => {
+        if (newPost) {
+          shapingHtml(newPost)
+        }
+      }
+    )
+
+    function shapingHtml (post: Post): void {
       const dom: HTMLDivElement = document.createElement('div')
-      dom.innerHTML = state.post.content.rendered
+      dom.innerHTML = post.content.rendered
       const hcb_elements: NodeListOf<Element> = dom.querySelectorAll('.hcb_wrap pre')
 
       for (const element of Array.from(hcb_elements)) {
@@ -88,11 +98,10 @@ export default defineComponent({
         code.innerHTML = result.value
         code.classList.add('hljs', lang, 'language-' + lang)
       }
-      return dom.outerHTML
-    })
+      state.htmlContent = dom.outerHTML
+    }
 
     return {
-      htmlContent,
       state,
       route
     }
