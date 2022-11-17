@@ -1,9 +1,11 @@
 <template>
   <v-app>
     <CommonHeader :category-list="categoryList" />
-    <v-container>
-      <Nuxt />
-    </v-container>
+    <v-main>
+      <v-container>
+        <Nuxt />
+      </v-container>
+    </v-main>
     <CommonFooter />
   </v-app>
 </template>
@@ -31,12 +33,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped>
-.container {
-  padding-bottom: 100px;
-  min-height: calc(100vh - 136px);
-  position: relative;
-  margin-top: 76px;
-}
-</style>
