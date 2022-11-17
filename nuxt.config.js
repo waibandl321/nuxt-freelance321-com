@@ -25,6 +25,7 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/css/post.css',
+    '@/assets/css/style.scss',
     {
       src: '~/node_modules/highlight.js/styles/atom-one-light.css',
       lang: 'css'

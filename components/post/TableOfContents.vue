@@ -1,8 +1,9 @@
 <template>
-  <v-list class="first">
+  <v-list class="outline">
     <div
       v-for="(h2Element, idx) in items"
       :key="idx"
+      class="outline__first"
     >
       <v-list-item
         v-scroll-to="'#' + h2Element.h2.id"
@@ -14,9 +15,7 @@
           {{ h2Element.h2.name }}
         </v-list-item-content>
       </v-list-item>
-      <div
-        class="second"
-      >
+      <div class="outline__second">
         <v-list-item
           v-for="(item, idx2) in h2Element.h2.sub"
           :key="idx2"
@@ -79,19 +78,17 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.v-list-item {
-  display: block;
-}
-.first {
-  font-size: 13px;
+<style scoped lang="scss">
+@import "assets/css/style.scss";
+.outline {
+  font-size: $font-size-small;
   position: sticky;
   padding-top: 0;
-  top: 84px;
-  max-height: calc(100vh - 162px);
+  top: $header-height;
+  max-height: $content-max-height;
   overflow: auto;
-}
-.second {
-  padding-left: 16px;
+  &__second {
+    padding-left: 16px;
+  }
 }
 </style>

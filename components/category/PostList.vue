@@ -129,9 +129,6 @@ export default defineComponent({
 })
 </script>
 <style scoped>
-.p-relative {
-  position: relative;
-}
 .pagination >>> .theme--light.v-pagination .v-pagination__item--active {
   background: #1867c0;
 }

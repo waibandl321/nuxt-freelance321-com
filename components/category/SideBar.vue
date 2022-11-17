@@ -1,5 +1,5 @@
 <template>
-  <v-list class="side-menu">
+  <v-list class="side-nav">
     <div
       v-for="(category, idx) in categoryList"
       :key="idx"
@@ -13,7 +13,7 @@
       </v-list-item>
       <div
         v-show="category.sub_categories"
-        class="second"
+        class="side-nav__second"
       >
         <v-list-item
           v-for="(sub, idx2) in category.sub_categories"
@@ -66,15 +66,16 @@ export default defineComponent({
   }
 })
 </script>
-<style scoped>
-.side-menu {
+<style scoped lang="scss">
+@import "assets/css/style.scss";
+.side-nav {
   padding-top: 0;
   position: sticky;
-  top: 76px;
-  max-height: calc(100vh - 162px);
+  top: $header-height;
+  max-height: $content-max-height;
   overflow: auto;
-}
-.second {
-  padding-left: 16px;
+  &__second {
+    padding-left: 16px;
+  }
 }
 </style>
