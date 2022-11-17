@@ -1,5 +1,5 @@
 <template>
-  <div class="search d-none d-sm-block">
+  <div class="search p-relative d-none d-sm-block">
     <v-responsive max-width="260">
       <v-text-field
         v-model.trim="state.search_query"
@@ -14,10 +14,11 @@
         @focus="handleInput"
       />
     </v-responsive>
-    <!-- 検索結果？ -->
-    <div
+    <!-- 検索結果 -->
+    <v-card
       v-if="state.search_items.length > 0"
-      class="search-result"
+      max-width="400"
+      class="search__result"
     >
       <LoadingPageInner v-if="state.search_loading" />
       <v-list v-else>
@@ -41,7 +42,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </div>
+    </v-card>
   </div>
 </template>
 
@@ -118,20 +119,17 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "assets/css/style.scss";
 .search {
-  position: relative;
-}
-.search-result {
-  font-size: 12px;
-  width: 150%;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  min-height: 200px;
-  max-height: 500px;
-  overflow-y: auto;
-  background-color: #fff;
-  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  &__result {
+    font-size: 12px;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-height: 200px;
+    max-height: 500px;
+    overflow-y: auto;
+  }
 }
 </style>

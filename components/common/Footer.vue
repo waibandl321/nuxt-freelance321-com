@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <v-footer app inset>
-    <v-container class="px-0">
+  <v-footer app inset class="footer">
+    <v-container class="pa-0">
       <v-btn
         v-for="(link, idx) in footer_links"
         :key="idx"
@@ -39,3 +39,9 @@ export default defineComponent({
   }
 })
 </script>
+<style scoped lang="scss">
+@import "assets/css/style.scss";
+.footer {
+  height: $footer-height;
+}
+</style>

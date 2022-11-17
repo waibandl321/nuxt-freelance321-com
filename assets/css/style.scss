@@ -1,0 +1,21 @@
+// color
+$bg-white: white;
+$bg-light-gray: #f8f5f5;
+
+// font
+$font-size-default: 14px;
+$font-size-small: 12px;
+$font-size-block-title: 16px;
+
+// position
+.p-relative {
+  position: relative;
+}
+
+// box-shadow
+$box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+
+// height / width
+$header-height: 64px;
+$footer-height: 64px;
+$content-max-height: calc(100vh - calc(#{$header-height} + #{$footer-height}));

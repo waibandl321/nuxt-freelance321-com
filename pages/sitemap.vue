@@ -8,10 +8,10 @@
           :key="i"
           class="mb-10"
         >
-          <div class="sitemap-category">
+          <div class="sitemap__category">
             {{ category.name }}
           </div>
-          <ul class="sitemap-posts">
+          <ul class="sitemap__posts">
             <li
               v-for="(post, idx2) in category.posts"
               :key="idx2"
@@ -91,14 +91,15 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import "assets/css/style.scss";
 .sitemap {
-  &-category {
+  &__category {
     font-weight: bold;
-    font-size: 16px;
+    font-size: $font-size-block-title;
   }
-  &-posts {
-    font-size: 14px;
-    margin-top: 12px;
+  &__posts {
+    font-size: $font-size-default;
+    margin-top: $font-size-small;
   }
 }
 </style>

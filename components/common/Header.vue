@@ -2,7 +2,7 @@
 <template>
   <v-app-bar app flat>
     <v-container class="fill-height pa-0">
-      <div class="menu-wrap">
+      <div class="header-menu">
         <div>
           <v-btn
             text
@@ -15,17 +15,17 @@
         <!-- カテゴリ -->
         <div class="p-relative">
           <v-btn
-            class="first"
+            class="header-menu__first"
             text
           >
             カテゴリー
             <v-icon>mdi-chevron-down</v-icon>
           </v-btn>
-          <div class="second">
+          <div class="header-menu__second">
             <div
               v-for="(category, index) in categoryList"
               :key="index"
-              class="menu-item p-relative"
+              class="header-menu__item p-relative"
               @click.stop="handleClickCategory(category)"
             >
               <div class="d-flex justify-space-between">
@@ -38,12 +38,12 @@
               </div>
               <div
                 v-if="category.sub_categories && category.sub_categories.length > 0"
-                class="third"
+                class="header-menu__third"
               >
                 <div
                   v-for="(sub, index) in category.sub_categories"
                   :key="index"
-                  class="menu-item p-relative"
+                  class="header-menu__item p-relative"
                   @click.stop="handleClickCategory(sub)"
                 >
                   {{ sub.name }}
@@ -85,56 +85,42 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.p-relative {
-  position: relative;
-}
-.menu-wrap {
-  display: flex;
-}
-.first:hover + .second {
-  display: block;
-}
-.second,
-.third {
+<style scoped lang="scss">
+@import "assets/css/style.scss";
+@mixin common-style() {
   width: 220px;
   display: none;
   position: absolute;
-  background: #fff;
+  background: $bg-white;
   z-index: 2;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: $box-shadow;
 }
-.second:hover {
-  display: block;
-}
-.menu-item {
-  padding: 8px 16px;
-  font-size: 13px;
-}
-.menu-item:hover {
-  background: #f8f5f5;
-  cursor: pointer;
-}
-.second .menu-item:hover .third {
-  display: block;
-}
-.third {
-  left: 100%;
-  top: 0;
-}
-.search {
-  position: relative;
-}
-.search-result {
-  font-size: 12px;
-  width: 150%;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  min-height: 200px;
-  max-height: 500px;
-  overflow-y: auto;
-  background-color: #fff;
-  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+.header-menu {
+  display: flex;
+  &__first:hover + &__second {
+    display: block;
+  }
+  &__second {
+    @include common-style();
+    &:hover {
+      display: block;
+    }
+  }
+  &__third {
+    @include common-style();
+    left: 100%;
+    top: 0;
+  }
+  &__second &__item:hover &__third {
+    display: block;
+  }
+  &__item {
+    padding: 8px 16px;
+    font-size: $font-size-default;
+    &:hover {
+      background: $bg-light-gray;
+      cursor: pointer;
+    }
+  }
 }
 </style>

@@ -31,7 +31,7 @@
     </v-row>
     <div
       v-if="!state.loading"
-      class="text-center mt-10 pagination"
+      class="text-center mt-6 pagination"
     >
       <v-pagination
         v-model="state.current_page"
