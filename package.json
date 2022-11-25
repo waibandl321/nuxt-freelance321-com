@@ -20,6 +20,8 @@
     "core-js": "^3.19.3",
     "lodash": "^4.17.21",
     "nuxt": "latest",
+    "sass": "^1.56.1",
+    "sass-loader": "^13.2.0",
     "vue": "^2.6.14",
     "vue-axios": "^3.5.1",
     "vue-highlightjs": "^1.3.3",
@@ -33,7 +35,7 @@
     "webpack": "^4.46.0"
   },
   "devDependencies": {
-    "@nuxt/types": "latest",
+    "@nuxt/types": "^2.15.5",
     "@nuxt/typescript-build": "latest",
     "@nuxtjs/eslint-config": "^11.0.0",
     "@nuxtjs/eslint-config-typescript": "^11.0.0",
