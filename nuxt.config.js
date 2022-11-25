@@ -47,8 +47,17 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
-    '@nuxtjs/composition-api/module'
+    '@nuxtjs/composition-api/module',
+    '@nuxtjs/google-analytics'
   ],
+  googleAnalytics: {
+    id: 'G-HFB5R1ZBG2'
+  },
+  publicRuntimeConfig: {
+    googleAnalytics: {
+      id: 'G-HFB5R1ZBG2'
+    }
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
