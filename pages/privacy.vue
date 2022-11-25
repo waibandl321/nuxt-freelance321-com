@@ -12,6 +12,7 @@
         class="post-content"
         v-html="pageContent"
       />
+
     </div>
   </v-app>
 </template>
