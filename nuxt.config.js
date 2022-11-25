@@ -48,9 +48,9 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/composition-api/module',
-    '@nuxtjs/google-analytics'
+    '@nuxtjs/google-gtag'
   ],
-  googleAnalytics: {
+  'google-gtag': {
     id: 'G-HFB5R1ZBG2'
   },
   publicRuntimeConfig: {
