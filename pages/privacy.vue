@@ -6,7 +6,7 @@
       <v-card-title
         class="px-0 font-weight-bold"
       >
-        {{ pageTitle }}
+        :{{ pageTitle }}
       </v-card-title>
       <div
         class="post-content"
