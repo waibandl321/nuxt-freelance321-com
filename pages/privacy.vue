@@ -7,7 +7,6 @@
         class="px-0 font-weight-bold"
       >
         {{ pageTitle }}
-
       </v-card-title>
       <div
         class="post-content"
